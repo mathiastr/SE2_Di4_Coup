@@ -3,9 +3,11 @@ package com.example.coup;
 public class Card {
     private boolean isRevealed;
     private CardType typeOfCard;
+    private static int cardID=1;
 
     public Card(CardType typeOfCard){
         this.typeOfCard=typeOfCard;
+        cardID++;
     }
 
     public boolean isCardRevealed(){
