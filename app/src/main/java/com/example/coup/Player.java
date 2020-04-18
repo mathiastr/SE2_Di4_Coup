@@ -1,6 +1,7 @@
 package com.example.coup;
 
 import java.util.List;
+import java.util.Random;
 
 public class Player {
     private String name;
@@ -12,6 +13,7 @@ public class Player {
     public Player(String name){
         this.name=name;
         playerID++;
+        coins = 0;
     }
     public int getCoins(){
         return this.coins;
@@ -22,7 +24,17 @@ public class Player {
     public void setCoins(int coins){
         this.coins=coins;
     }
-
+    public void addCoins(int coinsToAdd) {this.coins += coinsToAdd; }
+    public void setCards(Card card1, Card card2){
+        cards.add(card1);
+        cards.add(card2);
+    }
+    public void loseCard(Card card){
+        cards.remove(card);
+        if(cards.isEmpty()){
+            inGame = false;
+        }
+    }
 
 
 }

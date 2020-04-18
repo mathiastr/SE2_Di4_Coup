@@ -5,6 +5,11 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Die Startseite anzeigen wo man ein spiel starten kann, warten bis alle spieler da sind
+    //und dann das game starten mit den Spielern
+    // new Game
+    //und jedem Spieler seine Ansicht anzeigen
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

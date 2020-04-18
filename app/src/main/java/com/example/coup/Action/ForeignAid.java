@@ -1,4 +1,6 @@
-package com.example.coup;
+package com.example.coup.Action;
+
+import com.example.coup.Player;
 
 public class ForeignAid implements Action {
 
