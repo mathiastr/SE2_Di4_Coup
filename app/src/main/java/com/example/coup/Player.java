@@ -56,7 +56,7 @@ public class Player  {
     public void doForeignAidAction(){
         coins+=2;
     }
-    public boolean isCoupPossible(){
+    public boolean ifCoupPossibleDoIt(){
         if(coins>=7){
             coins-=7;
             return true;

@@ -13,5 +13,8 @@ public class ForeignAid extends Action {
 
         }
     public void playAction(){
-    }
+            if(isActionBlocked==false){
+                playerDoingAction.doForeignAidAction();
+            }
+        }
 }

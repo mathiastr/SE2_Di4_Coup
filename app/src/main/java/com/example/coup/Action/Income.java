@@ -11,5 +11,6 @@ public class Income extends Action{
             this.playerDoingAction=playerDoingAction;
     }
     public void playAction(){
+        playerDoingAction.doIncomeAction();
     }
 }

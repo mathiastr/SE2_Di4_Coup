@@ -4,6 +4,7 @@ import com.example.coup.Player;
 
 public class Coup extends Action {
 
+    Player targetPlayer;
 
         //-7 coins
         //read the input against what player
@@ -17,5 +18,17 @@ public class Coup extends Action {
 
 }
     public void playAction(){
+        if(playerDoingAction.ifCoupPossibleDoIt()==true){
+            getTargetPlayer().loseInfluence();
+        }
     }
+    public void setTargetPlayer(Player player){
+        this.targetPlayer=player;
+    }
+    public Player getTargetPlayer(){
+        return this.targetPlayer;
+    }
+
+
+
 }

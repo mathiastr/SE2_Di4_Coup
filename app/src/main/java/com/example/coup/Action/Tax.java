@@ -15,6 +15,6 @@ public class Tax extends Action {
 
     }
     public void playAction(){
-
+        playerDoingAction.doDukesAction();
     }
 }

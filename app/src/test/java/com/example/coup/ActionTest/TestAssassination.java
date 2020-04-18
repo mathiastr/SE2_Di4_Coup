@@ -51,11 +51,11 @@ public class TestAssassination {
     //P2 has no Contessa
     @Test
     public void testAsssassinationKilled() {
-        p1.setCards(handDUKEandASSASSIAN);
-        p2.setCards(handABASSADORandCAPTIAN);
-
-        p1.checkForReactions();
-        p2.checkForReactions();
+//        p1.setCards(handDUKEandASSASSIAN);
+//        p2.setCards(handABASSADORandCAPTIAN);
+//
+//        p1.checkForReactions();
+//        p2.checkForReactions();
 
         p1.doIncomeAction();
 
@@ -64,7 +64,8 @@ public class TestAssassination {
 
         Assert.assertEquals(1,p2.getInfluence());
     }
-    //P2 has Contessa
+
+    //P2 has Contessa ***This should be in TestStopAssassination***
     @Test
     public void testAssassinationNotKilled(){
         p1.setCards(handDUKEandASSASSIAN);
