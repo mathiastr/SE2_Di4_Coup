@@ -1,7 +1,12 @@
 package com.example.coup;
 
-public class ForeignAid implements Action {
+public class ForeignAid extends Action {
 
-    public void playAction(Player playerDoingAction){
+    public ForeignAid(Player playerDoingAction){
+        super(playerDoingAction);
+        this.playerDoingAction=playerDoingAction;
+
+    }
+    public void playAction(){
     }
 }

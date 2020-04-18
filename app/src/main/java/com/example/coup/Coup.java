@@ -1,7 +1,12 @@
 package com.example.coup;
 
-public class Coup implements Action {
+public class Coup extends Action {
 
-    public void playAction(Player playerDoingAction){
+    public Coup(Player playerDoingAction){
+        super(playerDoingAction);
+        this.playerDoingAction=playerDoingAction;
+
+    }
+    public void playAction(){
     }
 }

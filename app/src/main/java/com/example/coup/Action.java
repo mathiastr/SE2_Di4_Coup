@@ -1,8 +1,17 @@
 package com.example.coup;
 
-public interface Action {
+public  class Action {
 
-    public void playAction(Player playerDoingAction);
+    Player playerDoingAction;
+
+    public Action(Player playerDoingAction){
+        this.playerDoingAction=playerDoingAction;
+    }
+
+
+    public  void playAction(Player playerDoingAction,Player target){
+
+    }
 
 
 }

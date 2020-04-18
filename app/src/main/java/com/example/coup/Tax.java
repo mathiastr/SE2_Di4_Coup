@@ -1,7 +1,12 @@
 package com.example.coup;
 
-public class Tax implements Action {
+public class Tax extends Action {
 
-    public void playAction(Player playerDoingAction){
+    public Tax(Player playerDoingAction){
+        super(playerDoingAction);
+        this.playerDoingAction=playerDoingAction;
+
+    }
+    public void playAction(){
     }
 }

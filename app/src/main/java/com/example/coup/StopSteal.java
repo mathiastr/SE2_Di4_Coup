@@ -1,8 +1,10 @@
-public class Doubt {
+package com.example.coup;
+
+public class StopSteal extends Reaction{
     Player player;
     Action preAction;
 
-    public Doubt(Player player, Action preAction){
+    public StopSteal(Player player, Action preAction){
         this.player = player;
         this.preAction = preAction;
     }

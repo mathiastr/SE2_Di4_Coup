@@ -1,3 +1,5 @@
+package com.example.coup;
+
 public class Reaction {
 
     public void playReaction(){

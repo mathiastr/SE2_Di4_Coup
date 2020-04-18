@@ -1,7 +1,12 @@
 package com.example.coup;
 
-public class Exchange {
+public class Exchange extends Action{
 
-    public void playAction(Player playerDoingAction){
+    public Exchange(Player playerDoingAction){
+        super(playerDoingAction);
+        this.playerDoingAction=playerDoingAction;
+
+    }
+    public void playAction(){
     }
 }
