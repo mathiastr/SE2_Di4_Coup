@@ -16,13 +16,14 @@ public class Game {
             playingCards.add(new Card(type));
             playingCards.add(new Card(type));
         }
-        //for each Player set 2 random Cards
+        //for each Player set 2 random Cards and remove these cards from playingCards (deck)
         play();
     }
 
     private void play(){
         //while 2 Players inGame = true
             //get next player whos turn it is
+            //if player has more than 10 coins, Action Coup is required
             //choosenAction = manager.next(players.get(x));
             //choosenAction.playAction();
     }

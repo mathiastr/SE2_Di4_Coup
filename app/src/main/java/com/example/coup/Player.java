@@ -13,7 +13,7 @@ public class Player {
     public Player(String name){
         this.name=name;
         playerID++;
-        coins = 0;
+        coins = 2;
     }
     public int getCoins(){
         return this.coins;
