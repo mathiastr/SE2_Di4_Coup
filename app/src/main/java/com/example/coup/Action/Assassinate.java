@@ -19,7 +19,7 @@ public class Assassinate extends Action  {
         //needs to check if challanged also!!!
 
         if(playerDoingAction.isAssassinsActionPossible()==true&&!playerToAssassinate.getCanBlockAssassination()){
-            playerToAssassinate.setInfluence(1);
+            playerToAssassinate.loseInfluence();
         }
     }
     public void setPlayerToAssassinate(Player p){
