@@ -8,6 +8,7 @@ public class Card {
     public Card(CardType typeOfCard){
         this.typeOfCard=typeOfCard;
         cardID++;
+        isRevealed = false;
     }
 
     public boolean isCardRevealed(){
