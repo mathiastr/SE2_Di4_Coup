@@ -5,8 +5,16 @@ import com.example.coup.Player;
 public class Tax extends Action {
 
     //needed Card is Duke
-    public void playAction(Player playerDoingAction){
+
         //+3 coins
         //every player can challenge
+
+    public Tax(Player playerDoingAction){
+        super(playerDoingAction);
+        this.playerDoingAction=playerDoingAction;
+
+    }
+    public void playAction(){
+
     }
 }

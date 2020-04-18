@@ -1,15 +1,14 @@
 package com.example.coup.Action;
 
-import com.example.coup.Action.Action;
 import com.example.coup.Player;
 
 public class StopAssassinate extends Action {
-    Player player;
     Action preAction;
     boolean bluffing;
 
     public StopAssassinate(Player player, Action preAction){
-        this.player = player;
+        super(player);
+        this.playerDoingAction = player;
         this.preAction = preAction;
     }
 

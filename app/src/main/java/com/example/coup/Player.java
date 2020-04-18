@@ -48,8 +48,6 @@ public class Player  {
 
     public void loseInfluence(){
         this.influence--;
-
-
     }
 
     public void doIncomeAction(){

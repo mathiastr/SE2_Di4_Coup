@@ -3,11 +3,11 @@ package com.example.coup.Action;
 import com.example.coup.Player;
 
 public class Challenge extends Action{
-    Player player;
     Action preAction;
 
     public Challenge(Player player, Action preAction){
-        this.player = player;
+        super(player);
+        this.playerDoingAction = player;
         this.preAction = preAction;
     }
 

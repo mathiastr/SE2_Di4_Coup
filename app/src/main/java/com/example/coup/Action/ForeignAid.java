@@ -4,8 +4,14 @@ import com.example.coup.Player;
 
 public class ForeignAid extends Action {
 
-    public void playAction(Player playerDoingAction){
+
         //+2 coins
         //every player has chance to play StopForeignAid
+        public ForeignAid(Player playerDoingAction){
+            super(playerDoingAction);
+            this.playerDoingAction=playerDoingAction;
+
+        }
+    public void playAction(){
     }
 }
