@@ -1,9 +1,9 @@
-package com.example.coup.Reaction;
+package com.example.coup.Action;
 
 import com.example.coup.Action.Action;
 import com.example.coup.Player;
 
-public class StopAssassinate implements Reaction {
+public class StopAssassinate extends Action {
     Player player;
     Action preAction;
     boolean bluffing;
@@ -13,7 +13,6 @@ public class StopAssassinate implements Reaction {
         this.preAction = preAction;
     }
 
-    @Override
     public void playReaction(){
         //preaction = Assassinate
         //bluffing = false if player has Contessa

@@ -1,9 +1,9 @@
-package com.example.coup.Reaction;
+package com.example.coup.Action;
 
 import com.example.coup.Action.Action;
 import com.example.coup.Player;
 
-public class StopSteal implements Reaction{
+public class StopSteal extends Action{
     Player player;
     Action preAction;
     boolean bluffing;
@@ -13,7 +13,6 @@ public class StopSteal implements Reaction{
         this.preAction = preAction;
     }
 
-    @Override
     public void playReaction(){
         //preaction = Steal
         //player can choose between Ambassador or Captain to block the steal

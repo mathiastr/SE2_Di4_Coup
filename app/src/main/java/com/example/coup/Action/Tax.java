@@ -2,7 +2,7 @@ package com.example.coup.Action;
 
 import com.example.coup.Player;
 
-public class Tax implements Action {
+public class Tax extends Action {
 
     //needed Card is Duke
     public void playAction(Player playerDoingAction){

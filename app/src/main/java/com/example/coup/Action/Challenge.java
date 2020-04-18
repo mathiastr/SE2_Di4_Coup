@@ -1,9 +1,8 @@
-package com.example.coup.Reaction;
+package com.example.coup.Action;
 
-import com.example.coup.Action.Action;
 import com.example.coup.Player;
 
-public class Challenge implements Reaction{
+public class Challenge extends Action{
     Player player;
     Action preAction;
 
@@ -12,7 +11,6 @@ public class Challenge implements Reaction{
         this.preAction = preAction;
     }
 
-    @Override
     public void playReaction(){
         //preAction.getNeededCardType
         //Player who is challenged:

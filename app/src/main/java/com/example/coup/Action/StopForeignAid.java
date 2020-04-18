@@ -1,10 +1,10 @@
-package com.example.coup.Reaction;
+package com.example.coup.Action;
 
 import com.example.coup.Action.Action;
 import com.example.coup.Action.ForeignAid;
 import com.example.coup.Player;
 
-public class StopForeignAid implements Reaction{
+public class StopForeignAid extends Action{
     Player player;
     Action preAction;
     boolean bluffing;
@@ -15,7 +15,6 @@ public class StopForeignAid implements Reaction{
         this.preAction = preAction;
     }
 
-    @Override
     public void playReaction(){
         //anderer Spieler (preAction) muss ForeignAid gespielt haben
         //bluffing is false wenn player.cards.contains(Duke)

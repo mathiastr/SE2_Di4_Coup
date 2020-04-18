@@ -2,7 +2,7 @@ package com.example.coup.Action;
 
 import com.example.coup.Player;
 
-public class Steal implements Action {
+public class Steal extends Action {
 
     public void playAction(Player playerDoingAction){
         //+2 coins and -2 coins from choosen player

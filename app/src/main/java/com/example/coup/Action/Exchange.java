@@ -2,7 +2,7 @@ package com.example.coup.Action;
 
 import com.example.coup.Player;
 
-public class Exchange {
+public class Exchange extends Action {
 
     public void playAction(Player playerDoingAction){
         //get 2 Random cards from the deck
