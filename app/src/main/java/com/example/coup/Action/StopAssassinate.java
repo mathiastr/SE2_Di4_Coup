@@ -1,5 +1,6 @@
 package com.example.coup.Action;
 
+import com.example.coup.CardType;
 import com.example.coup.Player;
 
 public class StopAssassinate extends Action {
@@ -12,10 +13,16 @@ public class StopAssassinate extends Action {
         this.preAction = preAction;
     }
 
-    public void playReaction(){
+    //return true when stopAssassinate geht durch
+    public boolean playReaction(){
         //preaction = Assassinate
-        //bluffing = false if player has Contessa
+
         //every player has a chance to challenge
+        //es gibt eine bestimmte Zeit um Challenge zu klicken
+        //der erste der challenge klickt, new Challenge().playAction; und return den Rückgabetyp
+        //keiner klickt auf challenge, return true;
+        return true;
+
     }
 }
 

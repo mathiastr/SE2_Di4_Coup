@@ -22,4 +22,8 @@ public class Action {
         public void setActionBlocked(boolean actionBlocked) {
                 isActionBlocked = actionBlocked;
         }
+
+        public void stop(){
+
+        }
 }

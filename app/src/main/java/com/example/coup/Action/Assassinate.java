@@ -7,6 +7,9 @@ public class Assassinate extends Action  {
         //-3 coins
         //launch an assassination against a specific player
         //specific player can counteract with playing StopAssassinate or loseCard
+    //stopAssassinate hat einen Rückgabewert der angibt ob das Stoppen erfolgreich war und er nicht gechallenged wurde
+    //wenn true dann dann verliert kein Spieler eine Karte
+    //wenn false dann loseCard
 
     Player playerToAssassinate;
 

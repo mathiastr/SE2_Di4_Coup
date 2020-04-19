@@ -1,10 +1,10 @@
 package com.example.coup.Action;
 
+import com.example.coup.CardType;
 import com.example.coup.Player;
 
 public class StopSteal extends Action{
     Action preAction;
-    boolean bluffing;
 
     public StopSteal(Player player, Action preAction){
         super(player);
@@ -12,10 +12,15 @@ public class StopSteal extends Action{
         this.preAction = preAction;
     }
 
-    public void playReaction(){
+    public boolean playReaction(){
         //preaction = Steal
-        //player can choose between Ambassador or Captain to block the steal
-        //bluffing = false if player has either Ambassador or Captain
+        //TODO player can choose between Ambassador or Captain to block the steal
+        CardType choosenCardType = CardType.AMBASSADOR;
         //every Player can challange
+        //wenn ein Spieler Challenge klickt:
+        Challenge c = new Challenge(new Player("der geklickt hat"),this);
+        boolean challengedHasCorrectCard = c.playReaction(choosenCardType);
+        //return true wenn der Steal gestoppt wird
+        return challengedHasCorrectCard;
     }
 }
