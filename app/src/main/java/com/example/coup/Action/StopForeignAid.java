@@ -1,11 +1,10 @@
 package com.example.coup.Action;
 
+import com.example.coup.CardType;
 import com.example.coup.Player;
 
 public class StopForeignAid extends Action{
     Action preAction;
-    boolean bluffing;
-    //needed Card is Duke
 
     public StopForeignAid(Player player, Action preAction){
         super(player);
@@ -13,10 +12,14 @@ public class StopForeignAid extends Action{
         this.preAction = preAction;
     }
 
-    public void playReaction(){
+    public boolean playReaction(){
         //anderer Spieler (preAction) muss ForeignAid gespielt haben
-        //bluffing is false wenn player.cards.contains(Duke)
-        //every player has a chance to challenge
-        //
+
+        //TODO every player has a chance to challenge
+        //wenn ein Spieler Challenge klickt:
+        Challenge c = new Challenge(new Player("der geklickt hat"),this);
+        boolean challengedHasCorrectCard = c.playReaction(CardType.DUKE);
+        //return true wenn der ForeignAid gestoppt wird
+        return challengedHasCorrectCard;
     }
 }

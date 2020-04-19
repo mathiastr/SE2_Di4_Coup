@@ -21,6 +21,15 @@ public class Player  {
         playerID++;
     }
 
+    public int hasCard(CardType type){
+        //return -1 when Player doesnt have that Cardtype
+        //return 0 when index of that Card is 0 (first card)
+        //return 1 when index of that Card is 1 (second card)
+        if(cards.get(0).getTypeOfCard().equals(type)) return 0;
+        else if(cards.get(1).getTypeOfCard().equals(type)) return 1;
+        else return -1;
+    }
+
     public List<Card> getCards() {
         return cards;
     }
@@ -39,6 +48,7 @@ public class Player  {
         this.coins=coins;
     }
 
+    //TODO influence sind die Anzahl der Karten
     public int getInfluence() {
         return influence;
     }
@@ -46,8 +56,22 @@ public class Player  {
         this.influence = influence;
     }
 
+    //lose Influence heißt der Spieler verliert eine Karte
     public void loseInfluence(){
         this.influence--;
+    }
+
+    public void loseCard(){
+        int cardIndex = 0;
+        if(cards.size()==2){
+            //TODO let player choose which card to lose, cardIndex = 0 oder 1
+            cards.remove(cardIndex);
+        }
+        else {
+            cards.clear();
+            inGame = false;
+        }
+
     }
 
     public void doIncomeAction(){
