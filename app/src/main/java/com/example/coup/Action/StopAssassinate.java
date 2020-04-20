@@ -28,7 +28,7 @@ public class StopAssassinate extends Action {
         /*when player1 challenges player2 and Challenge is successful
         * successful means -> player2 not having the card he claimed.
         * than method playReaction returns true
-        * and if challenge is unsuccessful that means player1 has the proper card
+        * and if challenge is unsuccessful that means player2 has the proper card
         * for action he called than playReaction should return false
         * ???
         * */
