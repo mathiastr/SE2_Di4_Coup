@@ -5,7 +5,9 @@ import com.example.coup.Player;
 
 public class Challenge extends Action{
     Action preAction;
-    boolean showCard;
+
+    // true by default? *mesa*
+    boolean showCard=true;
 
     public Challenge(Player player, Action preAction){
         //TODO machen die Folgenden Zeilen nicht genau das gleiche zwei mal?
@@ -30,12 +32,15 @@ public class Challenge extends Action{
                 if(firstCardIsNeeded) challenged.getCards().get(0).revealCard();
                 else challenged.getCards().get(1).revealCard();
                 this.playerDoingAction.loseCard();
-                return true;
+                //true<->false *mesa*
+                return false;
             }
             else challenged.loseCard();
         }
         else challenged.loseCard();
-        return false;
+
+        // false <->true *mesa*
+        return true;
 
         //else the player doesn't have that card -> loseCard
         //when he showed the card -> the other player (played the challenge) loseCard

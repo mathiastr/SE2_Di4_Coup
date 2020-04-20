@@ -14,6 +14,7 @@ public class TestForeignAid {
         ForeignAid fa1 = new ForeignAid(p1);
 
         fa1.playAction();
-        Assert.assertEquals(4,p1.getCoins());
+        Assert.assertEquals(4
+                ,p1.getCoins());
     }
 }
