@@ -18,19 +18,12 @@ public class StopAssassinate extends Action {
     public boolean playReaction(){
         //preaction = Assassinate
 
-
-        //every player has a chance to challenge
-        //es gibt eine bestimmte Zeit um Challenge zu klicken
-        //der erste der challenge klickt, new Challenge().playAction; und return den Rückgabetyp
-        //keiner klickt auf challenge, return true;
-
     // mesa:
         /*when player1 challenges player2 and Challenge is successful
         * successful means -> player2 not having the card he claimed.
         * than method playReaction returns true
         * and if challenge is unsuccessful that means player2 has the proper card
         * for action he called than playReaction should return false
-        * ???
         * */
 
         Challenge c1 = new Challenge(playerDoingAction,preAction);

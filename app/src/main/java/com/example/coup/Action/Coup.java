@@ -19,7 +19,8 @@ public class Coup extends Action {
 }
     public void playAction(){
         if(playerDoingAction.ifCoupPossibleDoIt()==true){
-            getTargetPlayer().loseInfluence();
+            //getTargetPlayer().loseInfluence();
+            getTargetPlayer().loseCard();
         }
     }
     public void setTargetPlayer(Player player){

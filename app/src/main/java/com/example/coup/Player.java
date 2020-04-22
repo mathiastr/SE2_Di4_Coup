@@ -3,6 +3,8 @@ package com.example.coup;
 import java.util.List;
 import java.util.Observable;
 
+// Organisiert die Übersicht der einzelnen Spieler und deren Verfügbare Aktionen
+
 public class Player  {
     private String name;
     public  int coins=2;
@@ -57,9 +59,9 @@ public class Player  {
     }
 
     //lose Influence heißt der Spieler verliert eine Karte
-    public void loseInfluence(){
-        this.influence--;
-    }
+    //public void loseInfluence(){
+    //    this.influence--;
+    //}
 
     public void loseCard(){
         int cardIndex = 0;
@@ -74,6 +76,7 @@ public class Player  {
 
     }
 
+    //Umsetzung der gewählten Aktionen beim Spieler, durch Aufruf der Methoden in Action Klassen
     public void doIncomeAction(){
         coins++;
     }
@@ -112,27 +115,21 @@ public class Player  {
             }
         }
     }
-
     public boolean getCanBlockAssassination() {
         return canBlockAssassination;
     }
-
     public void setCanBlockAssassination(boolean canBlockAssassination) {
         this.canBlockAssassination = canBlockAssassination;
     }
-
     public boolean getCanBlockForeignAid() {
         return canBlockForeignAid;
     }
-
     public void setCanBlockForeignAid(boolean canBlockForeignAid) {
         this.canBlockForeignAid = canBlockForeignAid;
     }
-
     public boolean getCanBlockSteal() {
         return canBlockSteal;
     }
-
     public void setCanBlockSteal(boolean canBlockSteal) {
         this.canBlockSteal = canBlockSteal;
     }

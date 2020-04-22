@@ -21,6 +21,7 @@ public class Game {
     }
 
     private void play(){
+        //TODO
         //while 2 Players inGame = true
             //get next player whos turn it is
             //if player has more than 10 coins, Action Coup is required

@@ -13,8 +13,9 @@ public class ForeignAid extends Action {
 
         }
     public void playAction(){
-            if(isActionBlocked==false){
+            //TODO announce ForeignAid and give every Player chance to block. if blocked: new StopForeignAid
+            //if(isActionBlocked==false){
                 playerDoingAction.doForeignAidAction();
-            }
+            //}
         }
 }

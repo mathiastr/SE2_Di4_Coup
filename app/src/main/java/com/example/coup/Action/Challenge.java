@@ -17,7 +17,7 @@ public class Challenge extends Action{
         this.preAction = preAction;
     }
 
-    //returns true when challenged player has the correct card
+    //returns true when challenged player does not have the correct card
     public boolean playReaction(CardType neededCardType){
         //preAction.getNeededCardType
         //Player who is challenged:
@@ -32,14 +32,12 @@ public class Challenge extends Action{
                 if(firstCardIsNeeded) challenged.getCards().get(0).revealCard();
                 else challenged.getCards().get(1).revealCard();
                 this.playerDoingAction.loseCard();
-                //true<->false *mesa*
                 return false;
             }
             else challenged.loseCard();
         }
         else challenged.loseCard();
 
-        // false <->true *mesa*
         return true;
 
         //else the player doesn't have that card -> loseCard

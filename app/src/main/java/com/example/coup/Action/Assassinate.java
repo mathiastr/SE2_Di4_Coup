@@ -22,6 +22,7 @@ public class Assassinate extends Action  {
         //needs to check if challanged also!!!
 
         if(playerDoingAction.isAssassinsActionPossible()==true&&!playerToAssassinate.getCanBlockAssassination()){
+            //TODO let target player choose StopAssassinate or LoseCard
             //playerToAssassinate.loseInfluence();
             playerToAssassinate.loseCard();
         }

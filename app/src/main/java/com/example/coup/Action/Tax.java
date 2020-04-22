@@ -15,6 +15,7 @@ public class Tax extends Action {
 
     }
     public void playAction(){
+        //TODO announce Tax and give every Player chance to challenge, if challenged: new Challenge();
         playerDoingAction.doDukesAction();
     }
 }
