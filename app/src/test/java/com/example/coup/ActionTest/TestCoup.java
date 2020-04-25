@@ -42,6 +42,8 @@ public class TestCoup {
 
     @Test
     public void testCoupCostSevenCoins(){
+        p1.setCards(handABASSADORandCAPTIAN);
+        p2.setCards(handDUKEandASSASSIAN);
         p1.setCoins(7);
         coup1.setTargetPlayer(p2);
 
@@ -51,12 +53,14 @@ public class TestCoup {
     }
     @Test
     public void testCoupTargetPlayerLostInfluence(){
+        p1.setCards(handABASSADORandCAPTIAN);
+        p2.setCards(handDUKEandASSASSIAN);
         p1.setCoins(7);
         coup1.setTargetPlayer(p2);
 
         coup1.playAction();
 
-        Assert.assertEquals(1,p2.getInfluence());
+        Assert.assertEquals(1,p2.getCards().size());
     }
 
 }
