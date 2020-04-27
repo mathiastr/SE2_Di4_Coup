@@ -1,5 +1,8 @@
 package com.example.coup;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button ButtonToLobby;
     private Button QuitButton;
+    private AlertDialog QuitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         ButtonToLobby = (Button) findViewById(R.id.button_play);
         QuitButton = (Button) findViewById(R.id.button_quit);
+
 
         ButtonToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         QuitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                quitApp();
+                quitWarning();
             }
         });
 
@@ -55,5 +60,27 @@ public class MainActivity extends AppCompatActivity {
     public void quitApp() {
         MainActivity.this.finish();
         System.exit(0);
+    }
+    
+    private void quitWarning() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Are you sure you want to quit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog quitDialog = builder.create();
+        quitDialog.show();
     }
 }
