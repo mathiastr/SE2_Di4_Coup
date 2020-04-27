@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.finish();
         System.exit(0);
     }
-    
+
     private void quitWarning() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
