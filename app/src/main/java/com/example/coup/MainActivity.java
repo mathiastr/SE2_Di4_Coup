@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     // Dies ist die erste Aktivität, die gestartet wird.
 
     private Button ButtonToLobby;
+    private Button QuitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +28,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButtonToLobby = (Button) findViewById(R.id.button_play);
+        QuitButton = (Button) findViewById(R.id.button_quit);
 
         ButtonToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openLobby();
+            }
+        });
+
+        QuitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitApp();
             }
         });
 
@@ -41,5 +50,10 @@ public class MainActivity extends AppCompatActivity {
     public void openLobby() {
         Intent launchLobby = new Intent(this, LobbyScreen.class);
         startActivity(launchLobby);
+    }
+
+    public void quitApp() {
+        MainActivity.this.finish();
+        System.exit(0);
     }
 }
