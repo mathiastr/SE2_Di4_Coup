@@ -7,6 +7,7 @@ public class Action {
         Player playerDoingAction;
         boolean isActionBlocked=false;
 
+
         public Action(Player playerDoingAction){
             this.playerDoingAction=playerDoingAction;
         }

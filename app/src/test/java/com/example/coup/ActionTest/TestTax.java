@@ -48,7 +48,4 @@ public class TestTax {
         Assert.assertEquals(5,p1.getCoins());
     }
 
-    //Missing Implementation
-    @Test
-    public void testStopForeignAid(){}
 }

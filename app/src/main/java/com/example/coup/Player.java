@@ -85,7 +85,6 @@ public class Player  {
     }
     public boolean ifCoupPossibleDoIt(){
         if(coins>=7){
-            coins-=7;
             return true;
         }else {
             return false;
@@ -132,5 +131,13 @@ public class Player  {
     }
     public void setCanBlockSteal(boolean canBlockSteal) {
         this.canBlockSteal = canBlockSteal;
+    }
+
+    public boolean getInGame() {
+        return inGame;
+    }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
     }
 }

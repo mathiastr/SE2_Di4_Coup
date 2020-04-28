@@ -51,8 +51,8 @@ public class TestAssassination {
     //P2 has no Contessa
     @Test
     public void testAsssassinationKilled() {
-//        p1.setCards(handDUKEandASSASSIAN);
-//        p2.setCards(handABASSADORandCAPTIAN);
+        p1.setCards(handDUKEandASSASSIAN);
+        p2.setCards(handABASSADORandCAPTIAN);
 //
 //        p1.checkForReactions();
 //        p2.checkForReactions();
@@ -62,7 +62,7 @@ public class TestAssassination {
         a1.setPlayerToAssassinate(p2);
         a1.playAction();
 
-        Assert.assertEquals(1,p2.getInfluence());
+        Assert.assertEquals(1,p2.getCards().size());
     }
 
     //P2 has Contessa ***This should be in TestStopAssassination***
