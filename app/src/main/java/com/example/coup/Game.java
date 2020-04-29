@@ -44,4 +44,24 @@ public class Game {
     public List<Card> getCards(){
         return this.cards;
     }
+    public void returnCardtoDeck(Card c){
+        cards.push(c);
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+    public void dealStartOfGame() {
+            for (Player p : getPlayers()) {
+                List<Card> cards = new ArrayList<>();
+                cards.add(dealCard());
+                cards.add(dealCard());
+                p.setCards(cards);
+            }
+    }
+
 }

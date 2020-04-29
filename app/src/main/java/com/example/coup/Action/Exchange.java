@@ -4,6 +4,7 @@ import com.example.coup.Card;
 import com.example.coup.Game;
 import com.example.coup.Player;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -15,9 +16,9 @@ public class Exchange extends Action {
     Game game;
     List<Card> cardsToChoose= new LinkedList<>();
     //user choose from cardsToChoose.
-    //for example index 1,3
-    int indexOfFirstChoosenCard=1;
-    int indexOfSecondChoosenCard=3;
+    //for example index 0,2
+    int indexOfFirstChoosenCard=0;
+    int indexOfSecondChoosenCard=2;
 
     //TODO
         //get 2 Random cards from the deck
@@ -54,19 +55,33 @@ public class Exchange extends Action {
                 }else{
                     cardsToChoose.add(playerHand.get(0));
                 }
-                cardsToChoose.add(gameCards.get(gameCards.size()-1));
-                cardsToChoose.add(gameCards.get(gameCards.size()-2));
+                game.shuffleCards();
+//                cardsToChoose.add(gameCards.get(gameCards.size()-1));
+//                cardsToChoose.add(gameCards.get(gameCards.size()-2));
+                cardsToChoose.add(game.dealCard());
+                cardsToChoose.add(game.dealCard());
 
-                chooseCards(indexOfFirstChoosenCard,indexOfFirstChoosenCard);
+                chooseCards(indexOfFirstChoosenCard,indexOfSecondChoosenCard);
             }
         }
 
         public List<Card> chooseCards(int index1, int index2){
             //needs User Input: which specific cards we want to choose and what to return tp the deck;
 
-           LinkedList<Card> list = new LinkedList<>();
-            list.add(cardsToChoose.get(index1));
-            list.add(cardsToChoose.get(index2));
+           List<Card> list = new ArrayList<>();
+
+            if(playerDoingAction.getCards().size()==2) {
+                list.add(cardsToChoose.get(index1));
+                list.add(cardsToChoose.get(index2));
+
+                cardsToChoose.remove(index1);
+                cardsToChoose.remove(index2);
+
+                game.returnCardtoDeck(cardsToChoose.get(0));
+                game.returnCardtoDeck(cardsToChoose.get(1));
+                game.shuffleCards();
+            }
+
 
             playerDoingAction.setCards(list);
 
@@ -86,5 +101,9 @@ public class Exchange extends Action {
 
     public void setIndexOfSecondChoosenCard(int indexOfSecondChoosenCard) {
         this.indexOfSecondChoosenCard = indexOfSecondChoosenCard;
+    }
+
+    public List<Card> getCardsToChoose() {
+        return cardsToChoose;
     }
 }

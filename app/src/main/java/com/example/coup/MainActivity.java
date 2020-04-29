@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ButtonToLobby = (Button) findViewById(R.id.button_play);
-        QuitButton = (Button) findViewById(R.id.button_quit);
+//        ButtonToLobby = (Button) findViewById(R.id.button_play);
+//        QuitButton = (Button) findViewById(R.id.button_quit);
 
 
         ButtonToLobby.setOnClickListener(new View.OnClickListener() {
