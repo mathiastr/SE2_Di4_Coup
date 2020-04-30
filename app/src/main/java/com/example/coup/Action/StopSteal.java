@@ -15,12 +15,17 @@ public class StopSteal extends Action{
     public boolean playReaction(){
         //preaction = Steal
         //TODO player can choose between Ambassador or Captain to block the steal
-        CardType choosenCardType = CardType.AMBASSADOR;
         //every Player can challange
         //wenn ein Spieler Challenge klickt:
-        Challenge c = new Challenge(new Player("der geklickt hat"),this);
-        boolean challengedHasCorrectCard = c.playReaction(choosenCardType);
+
         //return true wenn der Steal gestoppt wird
-        return challengedHasCorrectCard;
+//        Challenge c = new Challenge((playerDoingAction),this);
+          Challenge c = new Challenge((playerDoingAction),preAction);
+
+//        if(c.playReaction(CardType.AMBASSADOR)==false||c.playReaction(CardType.CAPTIAN)==false){
+//            return false;
+//        }
+//        else return true;
+       return c.playReaction(CardType.CAPTAIN);
     }
 }

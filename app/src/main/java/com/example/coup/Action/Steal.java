@@ -5,6 +5,7 @@ import com.example.coup.Player;
 public class Steal extends Action {
         Player targetPlayer;
         boolean targetPlayerWantsToChallenge =false;
+        boolean targetPlayerWantsToBlock =false;
 
     //choosen player can counteract by playing StopSteal or they accept -2 coins
         //+2 coins and -2 coins from choosen player
@@ -32,7 +33,19 @@ public class Steal extends Action {
                 targetPlayer.loseCard();
                 //PlayerdoingAction draws another Card
             }
-        }else{
+        }else if(targetPlayerWantsToBlock==true){
+            BlockSteal bs1 = new BlockSteal(targetPlayer,this);
+            boolean result = bs1.playReaction();
+            if(result&&bs1.isBlockStealChallanged()){
+                playerDoingAction.loseCard();
+            }if(!result){
+                targetPlayer.loseCard();
+            }else{
+                //blocking player not challanged
+                //Steal Action blocked!!!
+            }
+        }
+        else{
             targetPlayer.setCoins(targetPlayer.getCoins() - 2);
             playerDoingAction.setCoins(playerDoingAction.getCoins() + 2);
         }

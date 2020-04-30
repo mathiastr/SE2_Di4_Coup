@@ -15,35 +15,46 @@ public class Assassinate extends Action  {
 
     Player playerToAssassinate;
     boolean targetPlayerWantsToChallenge =false;
+    boolean targetPlayerWantsToBlock=false;
 
     public Assassinate(Player playerDoingAction){
         super(playerDoingAction);
         this.playerDoingAction=playerDoingAction;
     }
 
-    public void playAction(){
+    public void playAction() {
         //needs to check if challanged also!!!
 
-        if(playerDoingAction.isAssassinsActionPossible()==true&&!playerToAssassinate.getCanBlockAssassination()){
+        if (playerDoingAction.isAssassinsActionPossible() == true) {
             //TODO let target player choose StopAssassinate or LoseCard
 
             //playerToAssassinate.loseInfluence();
-            if(targetPlayerWantsToChallenge ==true){
-            StopAssassinate sa1 =new StopAssassinate(playerToAssassinate,this);
-            boolean result = sa1.playReaction();
-            if(result==true){
+            if (targetPlayerWantsToChallenge == true) {
+                StopAssassinate sa1 = new StopAssassinate(playerToAssassinate, this);
+                boolean result = sa1.playReaction();
+                if (result == true) {
+                    playerDoingAction.loseCard();
+                } else {
+                    playerToAssassinate.loseCard();
+                    //playerDoingAction  replace Assassin Card with random card from the deck
+                }
+            }
+            else if(targetPlayerWantsToBlock==true){
+            BlockAssassinate ba1 = new BlockAssassinate(playerToAssassinate,this);
+            boolean result = ba1.playReaction();
+            if(result&&ba1.isBlockAssassinateChallanged()){
                 playerDoingAction.loseCard();
+            }if(!result){
+                playerToAssassinate.loseCard();
             }else{
+                //blocking player not challanged
+                //Assassinate Action blocked!!!
+            }
+            } else {
+                playerDoingAction.setCoins(playerDoingAction.getCoins() - 3);
                 playerToAssassinate.loseCard();
-                //playerDoingAction  replace Assassin Card with random card from the deck
             }
-            }
-            else {
-                playerDoingAction.setCoins(playerDoingAction.getCoins()-3);
-                playerToAssassinate.loseCard();
-            }
-        }
-        else{
+        } else {
             //Print Action not possible
         }
     }

@@ -33,19 +33,17 @@ public class Exchange extends Action {
         }
     public void playAction(){
             if(otherPlayerWantsToChallenge==true){
-                // Needs Implementation
 
-//                StopExchange se1= new StopExchange(playerChallenging,this);
-//                boolean result = se1.playReaction();
-//
-//                if(result==true) {
-//                    playerDoingAction.loseCard();
-//                }else{
-//                    playerChallenging.loseCard();
-//                    //PlayerdoingAction draws another Card
-//                }
+                StopExchange se1= new StopExchange(playerChallenging,this);
+                boolean result = se1.playReaction();
 
-            } else {
+                if(result==true) {
+                    playerDoingAction.loseCard();
+                }else{
+                    playerChallenging.loseCard();
+                    //PlayerdoingAction draws another Card
+                }
+            }else {
                 //playerCards= playerDoingAction.getCards();
                 List<Card> gameCards = game.getCards();
                 List<Card> playerHand= playerDoingAction.getCards();

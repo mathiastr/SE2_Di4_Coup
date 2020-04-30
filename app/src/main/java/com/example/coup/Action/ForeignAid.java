@@ -21,18 +21,32 @@ public class ForeignAid extends Action {
             //}
 
         if(otherPlayerWantsToBlock==true){
-            StopForeignAid sfa1 = new StopForeignAid(playerBlocking,this);
-            boolean result = sfa1.playReaction();
-
-            if(result==true){
+            BlockForeignAid ba1= new BlockForeignAid(playerBlocking,this);
+            boolean result = ba1.playReaction();
+            //blocking player has Duke and he has been challenged
+            if(result&&ba1.isBlockForeignAidChallanged){
+                playerDoingAction.loseCard();
+            }
+            //blocking player has no Duke and he has benn challenged
+            if(!result){
                 playerBlocking.loseCard();
             }
+            //blocking player not challanged
             else{
-                playerDoingAction.doForeignAidAction();
+            //Action blocked!!!
             }
+        //foreign aid successfull... nobody wants to block
         }else{
             playerDoingAction.doForeignAidAction();
         }
 
         }
+
+    public boolean isOtherPlayerWantsToBlock() {
+        return otherPlayerWantsToBlock;
+    }
+
+    public void setOtherPlayerWantsToBlock(boolean otherPlayerWantsToBlock) {
+        this.otherPlayerWantsToBlock = otherPlayerWantsToBlock;
+    }
 }

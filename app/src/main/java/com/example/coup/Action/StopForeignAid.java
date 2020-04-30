@@ -4,6 +4,8 @@ import com.example.coup.CardType;
 import com.example.coup.Player;
 
 public class StopForeignAid extends Action{
+
+    //// THIS CLASS SHOULD BE DELETED??? -> BlockForeignAid added.
     Action preAction;
 
     public StopForeignAid(Player player, Action preAction){
@@ -17,9 +19,9 @@ public class StopForeignAid extends Action{
 
         //TODO every player has a chance to challenge
         //wenn ein Spieler Challenge klickt:
-        Challenge c = new Challenge(new Player("der geklickt hat"),this);
-        boolean challengedHasCorrectCard = c.playReaction(CardType.DUKE);
+        Challenge c = new Challenge(playerDoingAction,this);
         //return true wenn der ForeignAid gestoppt wird
-        return challengedHasCorrectCard;
+        return c.playReaction(CardType.DUKE);
+
     }
 }
