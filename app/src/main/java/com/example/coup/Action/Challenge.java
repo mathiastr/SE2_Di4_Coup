@@ -41,57 +41,16 @@ public class Challenge extends Action{
         firstCardIsNeeded = challenged.getCards().get(0).getTypeOfCard().equals(neededCardType);
         secondCardIsNeeded = challenged.getCards().get(1).getTypeOfCard().equals(neededCardType);
         if(firstCardIsNeeded | secondCardIsNeeded){
-
-            //give Player option to choose "show your Card" or "lose a card"
-            btnShowCard.setVisibility(View.VISIBLE);
-            btnLoseCard.setVisibility(View.VISIBLE);
-            btnShowCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    returnValue = show();
-                    clicked = true;
-                    btnShowCard.setVisibility(View.INVISIBLE);
-                    btnLoseCard.setVisibility(View.INVISIBLE);
-                }
-            });
-            btnLoseCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    challenged.loseCard();
-                    returnValue = true;
-                    clicked = true;
-                    btnShowCard.setVisibility(View.INVISIBLE);
-                    btnLoseCard.setVisibility(View.INVISIBLE);
-                }
-            });
-            //wait until clicked
-            try {
-                int time = waitingTimeinSec;
-                timer.setVisibility(View.VISIBLE);
-                while(time>=0 && !clicked) {
-                    timer.setText(time + " sec");
-                    wait(1000);
-                    time--;
-                }
-                timer.setVisibility(View.INVISIBLE);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return returnValue;
+            int i;
+            if(firstCardIsNeeded) i=0;
+            else i=1;
+            return challenged.showOrLoose(i, playerDoingAction);
+            //False if show, true if loose
         }
         else challenged.loseCard();
-
         return true;
 
         //else the player doesn't have that card -> loseCard
         //when he showed the card -> the other player (played the challenge) loseCard
-    }
-
-
-    private boolean show(){
-        if(firstCardIsNeeded) challenged.getCards().get(0).revealCard();
-        else challenged.getCards().get(1).revealCard();
-        this.playerDoingAction.loseCard();
-        return false;
     }
 }
