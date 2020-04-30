@@ -4,7 +4,9 @@ import com.example.coup.Player;
 
 public class Steal extends Action {
         Player targetPlayer;
-        //choosen player can counteract by playing StopSteal or they accept -2 coins
+        boolean targetPlayerWantsToChallenge =false;
+
+    //choosen player can counteract by playing StopSteal or they accept -2 coins
         //+2 coins and -2 coins from choosen player
         //if choosen player coins = 1, take -1 coin
         //first let player counteract and then fulfill the actions, so it can be stopped before
@@ -19,11 +21,23 @@ public class Steal extends Action {
             //TODO get input who the Target Player is
         //TODO announce to target Player that this player wants to steal from him.
         //TODO give Target player option to block, if blocked: new StopSteal();
-            //if(!targetPlayer.getCanBlockSteal()) {
-                targetPlayer.setCoins(targetPlayer.getCoins() - 2);
-                playerDoingAction.setCoins(playerDoingAction.getCoins() + 2);
-            //}
-    }
+           
+        if(targetPlayerWantsToChallenge==true){
+            StopSteal ss1= new StopSteal(targetPlayer,this);
+            boolean result = ss1.playReaction();
+
+            if(result==true) {
+                playerDoingAction.loseCard();
+            }else{
+                targetPlayer.loseCard();
+                //PlayerdoingAction draws another Card
+            }
+        }else{
+            targetPlayer.setCoins(targetPlayer.getCoins() - 2);
+            playerDoingAction.setCoins(playerDoingAction.getCoins() + 2);
+        }
+
+        }
     public void setTargetPlayer(Player player){
             this.targetPlayer=player;
     }

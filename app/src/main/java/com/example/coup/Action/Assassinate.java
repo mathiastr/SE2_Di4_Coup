@@ -4,6 +4,8 @@ import com.example.coup.Player;
 
 public class Assassinate extends Action  {
 
+
+
         //-3 coins
         //launch an assassination against a specific player
         //specific player can counteract with playing StopAssassinate or loseCard
@@ -12,6 +14,7 @@ public class Assassinate extends Action  {
     //wenn false dann loseCard
 
     Player playerToAssassinate;
+    boolean targetPlayerWantsToChallenge =false;
 
     public Assassinate(Player playerDoingAction){
         super(playerDoingAction);
@@ -23,8 +26,25 @@ public class Assassinate extends Action  {
 
         if(playerDoingAction.isAssassinsActionPossible()==true&&!playerToAssassinate.getCanBlockAssassination()){
             //TODO let target player choose StopAssassinate or LoseCard
+
             //playerToAssassinate.loseInfluence();
-            playerToAssassinate.loseCard();
+            if(targetPlayerWantsToChallenge ==true){
+            StopAssassinate sa1 =new StopAssassinate(playerToAssassinate,this);
+            boolean result = sa1.playReaction();
+            if(result==true){
+                playerDoingAction.loseCard();
+            }else{
+                playerToAssassinate.loseCard();
+                //playerDoingAction  replace Assassin Card with random card from the deck
+            }
+            }
+            else {
+                playerDoingAction.setCoins(playerDoingAction.getCoins()-3);
+                playerToAssassinate.loseCard();
+            }
+        }
+        else{
+            //Print Action not possible
         }
     }
     public void setPlayerToAssassinate(Player p){
@@ -34,5 +54,11 @@ public class Assassinate extends Action  {
         return this.playerToAssassinate;
     }
 
+    public boolean getOtherPlayerWantsToChallenge() {
+        return targetPlayerWantsToChallenge;
+    }
 
+    public void setOtherPlayerWantsToChallenge(boolean otherPlayerWantsToChallenge) {
+        this.targetPlayerWantsToChallenge = otherPlayerWantsToChallenge;
+    }
 }
