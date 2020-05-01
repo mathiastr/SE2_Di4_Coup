@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TestExchange {
+    /*
     Player p1,p2,p3,p4;
     LinkedList<Player>listOfPlayers;
     Game game;
@@ -69,5 +70,7 @@ public class TestExchange {
 
         Assert.assertNotEquals(copyOfCards, p1.getCards());
     }
+
+     */
 
 }

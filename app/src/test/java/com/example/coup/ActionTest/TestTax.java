@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TestTax {
+    /*
     Player p1,p2;
     Card c1,c2,c3,c4,c5;
     Tax t1;
@@ -45,5 +46,7 @@ public class TestTax {
         t1.playAction();
         Assert.assertEquals(5,p1.getCoins());
     }
+
+     */
 
 }

@@ -12,7 +12,6 @@ public class Player {
     private List<Card> cards;
     private boolean inGame=true;
     private static int playerID= 1;
-    private Game game;
 
     private boolean canBlockAssassination=false;
     private boolean canBlockForeignAid=false;
@@ -20,11 +19,10 @@ public class Player {
 
 
 
-    public Player(String name, Game game){
+    public Player(String name){
         this.name=name;
         playerID++;
         cards = new ArrayList<Card>();
-        this.game = game;
     }
 
     public int hasCard(CardType type){
@@ -41,9 +39,7 @@ public class Player {
         //wait(1000); or show message what card
         cards.remove(cardIndex);
     }
-    public Game getGame(){
-        return game;
-    }
+
     public List<Card> getCards() {
         return cards;
     }

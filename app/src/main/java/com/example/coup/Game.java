@@ -31,6 +31,8 @@ public class Game {
             //if player has more than 10 coins, Action Coup is required
             //choosenAction = manager.next(players.get(x));
             //choosenAction.playAction();
+            //depending on action blocks might be possible by certain players
+            //chance to challenge after every Action
     }
     public void shuffleCards(){
         Collections.shuffle(cards);

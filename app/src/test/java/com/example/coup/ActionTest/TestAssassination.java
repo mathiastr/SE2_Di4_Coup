@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TestAssassination {
-
+/*
     Player p1,p2;
     Card c1,c2,c3,c4,c5;
     Assassinate a1;
@@ -95,4 +95,6 @@ public class TestAssassination {
         c4=null;
         c5=null;
     }
+
+ */
 }
