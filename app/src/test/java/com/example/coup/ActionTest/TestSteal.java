@@ -1,7 +1,5 @@
 package com.example.coup.ActionTest;
 
-import com.example.coup.Action.Assassinate;
-import com.example.coup.Action.Steal;
 import com.example.coup.Card;
 import com.example.coup.CardType;
 import com.example.coup.Player;

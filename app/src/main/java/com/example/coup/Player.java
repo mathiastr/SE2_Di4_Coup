@@ -1,26 +1,18 @@
 package com.example.coup;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
-import com.example.coup.Action.Action;
-import com.example.coup.Action.StopForeignAid;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 // Organisiert die Übersicht der einzelnen Spieler und deren Verfügbare Aktionen
 
-public class Player extends MainActivity {
+public class Player {
     private String name;
     public  int coins=2;
     public  int influence=2;
     private List<Card> cards;
     private boolean inGame=true;
     private static int playerID= 1;
+    private Game game;
 
     private boolean canBlockAssassination=false;
     private boolean canBlockForeignAid=false;
@@ -28,10 +20,11 @@ public class Player extends MainActivity {
 
 
 
-    public Player(String name){
+    public Player(String name, Game game){
         this.name=name;
         playerID++;
         cards = new ArrayList<Card>();
+        this.game = game;
     }
 
     public int hasCard(CardType type){
@@ -43,6 +36,14 @@ public class Player extends MainActivity {
         else return -1;
     }
 
+    public void revealCard(int cardIndex){
+        //TODO show card for a view sec and then delete it
+        //wait(1000); or show message what card
+        cards.remove(cardIndex);
+    }
+    public Game getGame(){
+        return game;
+    }
     public List<Card> getCards() {
         return cards;
     }
@@ -157,7 +158,8 @@ public class Player extends MainActivity {
     }
 
 
-
+    //TODO bitte alles folgende Löschen, wenn du es nicht brauchst @Mathias
+/*
     //Regelt das Layout jedes Spielers für die einzelnen Aktionen
     TextView tvTimer;
     boolean timerOn;
@@ -280,4 +282,6 @@ public class Player extends MainActivity {
             return true;
         }
     }
+
+ */
 }

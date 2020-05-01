@@ -1,8 +1,5 @@
 package com.example.coup.ActionTest;
 
-import com.example.coup.Action.Challenge;
-import com.example.coup.Action.StopForeignAid;
-import com.example.coup.CardType;
 import com.example.coup.Player;
 
 import org.junit.Assert;
@@ -13,9 +10,6 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
-
-import java.util.Arrays;
-import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestStopForeignAid {

@@ -39,8 +39,10 @@ public class Game {
         return cards.size();
     }
     public Card dealCard(){
+        shuffleCards();
         return cards.pop();
     }
+    public void pushCard(Card card) { cards.push(card); }
     public List<Card> getCards(){
         return this.cards;
     }
