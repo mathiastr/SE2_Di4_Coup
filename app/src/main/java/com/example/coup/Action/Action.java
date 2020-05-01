@@ -1,9 +1,12 @@
 package com.example.coup.Action;
 
+import com.example.coup.Game;
 import com.example.coup.Player;
 
 public class Action {
 
+        public Player whoClickedChallenge;
+        public int isClickedChallenge;
         Player playerDoingAction;
         boolean isActionBlocked=false;
 

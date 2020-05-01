@@ -1,18 +1,33 @@
 package com.example.coup.Action;
 
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
 import com.example.coup.CardType;
 import com.example.coup.Player;
 
 public class Challenge extends Action{
     Action preAction;
 
-    // true by default? *mesa*
-    boolean showCard=true;
+    int waitingTimeinSec = 30;
+
+    Button btnShowCard;
+    Button btnLoseCard;
+    TextView timer;
+
+    boolean clicked = false;
+
+    Player challenged;
+    boolean firstCardIsNeeded;
+    boolean secondCardIsNeeded;
+
+    boolean returnValue = true;
 
     public Challenge(Player player, Action preAction){
-        //TODO machen die Folgenden Zeilen nicht genau das gleiche zwei mal?
         super(player);
-        this.playerDoingAction = player;
+
+        //TODO get btnShowCard and btnLoseCard and timer from the Player Layout
 
         this.preAction = preAction;
     }
@@ -21,23 +36,18 @@ public class Challenge extends Action{
     public boolean playReaction(CardType neededCardType){
         //preAction.getNeededCardType
         //Player who is challenged:
-        Player challenged = preAction.playerDoingAction;
+        challenged = preAction.playerDoingAction;
         //if player has that Card, he can choose show card or loseCard
-        boolean firstCardIsNeeded = challenged.getCards().get(0).getTypeOfCard().equals(neededCardType);
-        boolean secondCardIsNeeded = challenged.getCards().get(1).getTypeOfCard().equals(neededCardType);
+        firstCardIsNeeded = challenged.getCards().get(0).getTypeOfCard().equals(neededCardType);
+        secondCardIsNeeded = challenged.getCards().get(1).getTypeOfCard().equals(neededCardType);
         if(firstCardIsNeeded | secondCardIsNeeded){
-            //TODO give Player option to choose "show your Card" or "lose a card"
-            //showCard = input vom Spieler
-            if(showCard){
-                if(firstCardIsNeeded) challenged.getCards().get(0).revealCard();
-                else challenged.getCards().get(1).revealCard();
-                this.playerDoingAction.loseCard();
-                return false;
-            }
-            else challenged.loseCard();
+            int i;
+            if(firstCardIsNeeded) i=0;
+            else i=1;
+            return challenged.showOrLoose(i, playerDoingAction);
+            //False if show, true if loose
         }
         else challenged.loseCard();
-
         return true;
 
         //else the player doesn't have that card -> loseCard
