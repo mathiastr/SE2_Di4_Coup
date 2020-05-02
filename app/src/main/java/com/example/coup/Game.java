@@ -69,4 +69,18 @@ public class Game {
             p.setCards(cards);
         }
     }
+    public Player getWinnerOfGame(){
+        Player isWinner = null;
+        for(Player p: players) {
+            if (p.getInGame()) {
+                if (isWinner != null) {
+                    return null;
+                } else {
+                    isWinner = p;
+                }
+            }
+        }
+        return isWinner;
+    }
+    
 }

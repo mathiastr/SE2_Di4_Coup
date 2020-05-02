@@ -64,11 +64,9 @@ public class Player {
 
     //TODO influence sind die Anzahl der Karten
     public int getInfluence() {
-        return influence;
+        return this.getCards().size();
     }
-    public void setInfluence(int influence) {
-        this.influence = influence;
-    }
+
 
     //lose Influence heißt der Spieler verliert eine Karte
     //public void loseInfluence(){
