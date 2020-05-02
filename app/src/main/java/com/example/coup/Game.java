@@ -19,6 +19,9 @@ public class Game {
             cards.push(new Card(CardType.AMBASSADOR));
             cards.push(new Card(CardType.ASSASSIN));
         }
+        for(Player p: players){
+            p.setCoins(2);
+        }
         shuffleCards();
         //for each Player set 2 random Cards and remove these cards from playingCards (deck)
         play();

@@ -44,9 +44,11 @@ public class AllActions {
         cardsToChoose.add(game.dealCard());
         cardsToChoose.add(game.dealCard());
 
+        //Example: User Choose Cards with index 1 and 2.
+        chooseCards(1,2);
     }
 
-
+    // Needs User Input: Which specific  2 Cards User Wants to Choose from given.
     public List<Card> chooseCards(int index1, int index2){
         //needs User Input: which specific cards we want to choose and what to return tp the deck;
 
