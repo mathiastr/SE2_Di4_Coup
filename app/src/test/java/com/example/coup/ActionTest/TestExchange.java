@@ -1,6 +1,5 @@
 package com.example.coup.ActionTest;
 
-import com.example.coup.Action.Exchange;
 import com.example.coup.Card;
 import com.example.coup.CardType;
 import com.example.coup.Game;
@@ -13,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TestExchange {
+    /*
     Player p1,p2,p3,p4;
     LinkedList<Player>listOfPlayers;
     Game game;
@@ -70,5 +70,7 @@ public class TestExchange {
 
         Assert.assertNotEquals(copyOfCards, p1.getCards());
     }
+
+     */
 
 }

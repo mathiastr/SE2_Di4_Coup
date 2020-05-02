@@ -1,55 +1,65 @@
 package com.example.coup.ActionTest;
 
-import com.example.coup.Action.Action;
-import com.example.coup.Action.Challenge;
-import com.example.coup.Action.StopSteal;
+import com.example.coup.AllActions;
 import com.example.coup.Card;
 import com.example.coup.CardType;
+import com.example.coup.Game;
 import com.example.coup.Player;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+//@RunWith(MockitoJUnitRunner.class)
 public class TestChallenge {
-    Challenge challenge;
-    Player stopStealer;
-    Player challenger;
-    Action preAction;
+    //p1 clicked Challenge
+    //p2 is challenged
+    Player p1;
+    Player p2;
+    Game game;
+    AllActions actions;
+
 
     @Before
     public void before(){
-        stopStealer = new Player("Stop the Steal");
-        stopStealer.setCards(new ArrayList<Card>());
-        challenger = new Player("challenge him");
-        challenger.addCard(new Card(CardType.AMBASSADOR));
-        challenger.addCard(new Card(CardType.CONTESSA));
-        preAction = new StopSteal(stopStealer, null);
-        challenge = new Challenge(challenger,preAction);
+        p1 = new Player("clicked challenge");
+        p2 = new Player("is challenged");
+        game = new Game(Arrays.asList(p1,p2));
+        p1.addCard(new Card(CardType.AMBASSADOR));
+        p1.addCard(new Card(CardType.AMBASSADOR));
+        p2.addCard(new Card(CardType.ASSASSIN));
+        p2.addCard(new Card(CardType.CONTESSA));
+        actions = new AllActions(game);
     }
 
     @Test
-    public void playReactionWrongCard(){
-        Assert.assertEquals(2, stopStealer.getCards().size());
-        stopStealer.addCard(new Card(CardType.AMBASSADOR));
-        stopStealer.addCard(new Card(CardType.CONTESSA));
-        boolean value = challenge.playReaction(CardType.CAPTAIN);
-        Assert.assertEquals(true, value);
-        Assert.assertEquals(1, stopStealer.getCards().size());
+    public void testWrongCard(){
+        Assert.assertEquals(2, p2.getCards().size());
+        Assert.assertEquals(true, actions.challenge(CardType.DUKE, p1, p2));
+        //p2 lost one card
+        Assert.assertEquals(1, p2.getCards().size());
+
     }
 
     @Test
-    public void playReactionRightCardTimeOut(){
-        stopStealer.addCard(new Card(CardType.CAPTAIN));
-        stopStealer.addCard(new Card(CardType.CONTESSA));
-        Assert.assertEquals(2, stopStealer.getCards().size());
-        boolean value = challenge.playReaction(CardType.CAPTAIN);
+    public void testFirstCardRight(){
+        Assert.assertEquals(2, p1.getCards().size());
+        Assert.assertEquals(false,actions.challenge(CardType.ASSASSIN, p1, p2));
+        //p1 lost one card
+        Assert.assertEquals(1, p1.getCards().size());
+    }
 
-
-        Assert.assertEquals(true, value);
-        Assert.assertEquals(1, stopStealer.getCards().size());
+    @Test
+    public void testSecondCardRight(){
+        Assert.assertEquals(2, p1.getCards().size());
+        Assert.assertEquals(false,actions.challenge(CardType.CONTESSA, p1, p2));
+        //p1 lost one card
+        Assert.assertEquals(1, p1.getCards().size());
     }
 
 }
