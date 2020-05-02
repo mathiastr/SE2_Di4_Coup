@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Game {
     List<Player> players;
+    List<Card> playingCards;
     LayoutManager manager = new LayoutManager();
     Stack<Card> cards;
 
@@ -26,9 +27,10 @@ public class Game {
         shuffleCards();
         for (int i  = 0; i < cards.size(); i++){
 
-            players.get(i).setCards(cards.subList(0,1));
-            cards.remove(0);
-            cards.remove(1);
+            playingCards.add(dealCard());
+            playingCards.add(dealCard());
+            players.get(i).setCards(playingCards);
+
         }
 
         play();
