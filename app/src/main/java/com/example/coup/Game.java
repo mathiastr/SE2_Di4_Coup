@@ -19,6 +19,9 @@ public class Game {
             cards.push(new Card(CardType.AMBASSADOR));
             cards.push(new Card(CardType.ASSASSIN));
         }
+        for(Player p: players){
+            p.setCoins(2);
+        }
         shuffleCards();
         //for each Player set 2 random Cards and remove these cards from playingCards (deck)
         play();
@@ -66,4 +69,18 @@ public class Game {
             p.setCards(cards);
         }
     }
+    public Player getWinnerOfGame(){
+        Player isWinner = null;
+        for(Player p: players) {
+            if (p.getInGame()) {
+                if (isWinner != null) {
+                    return null;
+                } else {
+                    isWinner = p;
+                }
+            }
+        }
+        return isWinner;
+    }
+    
 }
