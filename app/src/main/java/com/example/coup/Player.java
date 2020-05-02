@@ -1,20 +1,11 @@
 package com.example.coup;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
-import com.example.coup.Action.Action;
-import com.example.coup.Action.StopForeignAid;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 // Organisiert die Übersicht der einzelnen Spieler und deren Verfügbare Aktionen
 
-public class Player extends MainActivity {
+public class Player {
     private String name;
     public  int coins=2;
     public  int influence=2;
@@ -43,6 +34,12 @@ public class Player extends MainActivity {
         else return -1;
     }
 
+    public void revealCard(int cardIndex){
+        //TODO show card for a view sec and then delete it
+        //wait(1000); or show message what card
+        cards.remove(cardIndex);
+    }
+
     public List<Card> getCards() {
         return cards;
     }
@@ -67,11 +64,9 @@ public class Player extends MainActivity {
 
     //TODO influence sind die Anzahl der Karten
     public int getInfluence() {
-        return influence;
+        return this.getCards().size();
     }
-    public void setInfluence(int influence) {
-        this.influence = influence;
-    }
+
 
     //lose Influence heißt der Spieler verliert eine Karte
     //public void loseInfluence(){
@@ -157,7 +152,8 @@ public class Player extends MainActivity {
     }
 
 
-
+    //TODO bitte alles folgende Löschen, wenn du es nicht brauchst @Mathias
+/*
     //Regelt das Layout jedes Spielers für die einzelnen Aktionen
     TextView tvTimer;
     boolean timerOn;
@@ -280,4 +276,6 @@ public class Player extends MainActivity {
             return true;
         }
     }
+
+ */
 }
