@@ -1,7 +1,5 @@
 package com.example.coup.ActionTest;
 
-import com.example.coup.Action.Assassinate;
-import com.example.coup.Action.Steal;
 import com.example.coup.Card;
 import com.example.coup.CardType;
 import com.example.coup.Player;
@@ -13,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TestSteal {
+    /*
     Player p1,p2;
     Card c1,c2,c3,c4,c5;
 
@@ -61,5 +60,7 @@ public class TestSteal {
 
         Assert.assertEquals(0,p2.getCoins());
     }
+
+     */
 
 }

@@ -19,6 +19,9 @@ public class Game {
             cards.push(new Card(CardType.AMBASSADOR));
             cards.push(new Card(CardType.ASSASSIN));
         }
+        for(Player p: players){
+            p.setCoins(2);
+        }
         shuffleCards();
         //for each Player set 2 random Cards and remove these cards from playingCards (deck)
         play();
@@ -31,6 +34,8 @@ public class Game {
             //if player has more than 10 coins, Action Coup is required
             //choosenAction = manager.next(players.get(x));
             //choosenAction.playAction();
+            //depending on action blocks might be possible by certain players
+            //chance to challenge after every Action
     }
     public void shuffleCards(){
         Collections.shuffle(cards);
@@ -39,9 +44,43 @@ public class Game {
         return cards.size();
     }
     public Card dealCard(){
+        shuffleCards();
         return cards.pop();
     }
+    public void pushCard(Card card) { cards.push(card); }
     public List<Card> getCards(){
         return this.cards;
     }
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+    public void returnCardtoDeck(Card c){
+        cards.push(c);
+    }
+    public void dealStartOfGame() {
+        for (Player p : getPlayers()) {
+            List<Card> cards = new ArrayList<>();
+            cards.add(dealCard());
+            cards.add(dealCard());
+            p.setCards(cards);
+        }
+    }
+    public Player getWinnerOfGame(){
+        Player isWinner = null;
+        for(Player p: players) {
+            if (p.getInGame()) {
+                if (isWinner != null) {
+                    return null;
+                } else {
+                    isWinner = p;
+                }
+            }
+        }
+        return isWinner;
+    }
+    
 }

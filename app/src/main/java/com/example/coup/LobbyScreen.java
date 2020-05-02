@@ -37,10 +37,10 @@ public class LobbyScreen extends AppCompatActivity {
                     //TODO Implement a Toast notification if the nameInput is empty
                     Toast.makeText(getApplicationContext(), "You did not enter a name", Toast.LENGTH_SHORT).show();
                 } else {
-                    //TODO Implement the READY functionality and a notification
-                    //Intent intent = new Intent(LobbyScreen.this, InGame.class);
-                    //intent.putExtra("name", nameInput.getText().toString());
-                    //startActivity(intent);
+
+                    Intent intent = new Intent(LobbyScreen.this, InGame.class);
+                    intent.putExtra("name", nameInput.getText().toString());
+                    startActivity(intent);
                 }
             }
         });

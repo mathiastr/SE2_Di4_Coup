@@ -1,7 +1,5 @@
 package com.example.coup.ActionTest;
 
-import com.example.coup.Action.Coup;
-import com.example.coup.Action.Tax;
 import com.example.coup.Card;
 import com.example.coup.CardType;
 import com.example.coup.Player;
@@ -13,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TestCoup {
+    /*
     Player p1, p2;
     Card c1, c2, c3, c4, c5;
     Coup coup1;
@@ -62,5 +61,7 @@ public class TestCoup {
 
         Assert.assertEquals(1,p2.getCards().size());
     }
+
+     */
 
 }
