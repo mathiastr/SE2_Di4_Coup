@@ -20,6 +20,14 @@
         app:layout_constraintVertical_bias="0.857" />
 
     <Button
+        android:id="@+id/button_challenge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Challenge"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="586dp" />
+
+    <Button
         android:id="@+id/button_assassinate"
         android:layout_width="49dp"
         android:layout_height="44dp"
@@ -73,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Coup"
-        tools:layout_editor_absoluteX="159dp"
+        tools:layout_editor_absoluteX="293dp"
         tools:layout_editor_absoluteY="586dp" />
 
     <ImageView
@@ -109,5 +117,157 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         tools:layout_editor_absoluteX="237dp"
         tools:layout_editor_absoluteY="460dp" />
+
+    <TextView
+        android:id="@+id/textView_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        tools:layout_editor_absoluteX="54dp"
+        tools:layout_editor_absoluteY="547dp" />
+
+    <TextView
+        android:id="@+id/textView_timer_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your turn:"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="528dp" />
+
+    <TextView
+        android:id="@+id/textView_coins"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:text="X"
+        tools:layout_editor_absoluteX="322dp"
+        tools:layout_editor_absoluteY="550dp" />
+
+    <TextView
+        android:id="@+id/textView_coins_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your coins:"
+        tools:layout_editor_absoluteX="293dp"
+        tools:layout_editor_absoluteY="528dp" />
+
+    <ImageView
+        android:id="@+id/imageView_enemy_one"
+        android:layout_width="63dp"
+        android:layout_height="160dp"
+        app:srcCompat="@drawable/userbeta"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="-35dp" />
+
+    <TextView
+        android:id="@+id/textView_name_enemy_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User"
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/textView1_enemy_one_coins_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coins:"
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="35dp" />
+
+    <TextView
+        android:id="@+id/textView_enemy_one_coins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="54dp" />
+
+    <ImageView
+        android:id="@+id/imageView_enemy_two"
+        android:layout_width="63dp"
+        android:layout_height="160dp"
+        app:srcCompat="@drawable/userbeta"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="-34dp" />
+
+    <TextView
+        android:id="@+id/textView_name_enemy_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User"
+        tools:layout_editor_absoluteX="215dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/textView1_enemy_two_coins_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coins:"
+        tools:layout_editor_absoluteX="215dp"
+        tools:layout_editor_absoluteY="35dp" />
+
+    <TextView
+        android:id="@+id/textView_enemy_two_coins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        tools:layout_editor_absoluteX="215dp"
+        tools:layout_editor_absoluteY="54dp" />
+
+    <ImageView
+        android:id="@+id/imageView_enemy_three"
+        android:layout_width="63dp"
+        android:layout_height="160dp"
+        app:srcCompat="@drawable/userbeta"
+        tools:layout_editor_absoluteX="284dp"
+        tools:layout_editor_absoluteY="-34dp" />
+
+    <TextView
+        android:id="@+id/textView_name_enemy_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User"
+        tools:layout_editor_absoluteX="347dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/textView1_enemy_three_coins_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coins:"
+        tools:layout_editor_absoluteX="347dp"
+        tools:layout_editor_absoluteY="35dp" />
+
+    <TextView
+        android:id="@+id/textView_enemy_three_coins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        tools:layout_editor_absoluteX="347dp"
+        tools:layout_editor_absoluteY="54dp" />
+
+    <TextView
+        android:id="@+id/textView_timer_enemy_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="89dp" />
+
+    <TextView
+        android:id="@+id/textView_timer_enemy_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="89dp" />
+
+    <TextView
+        android:id="@+id/textView_timer_enemy_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        tools:layout_editor_absoluteX="284dp"
+        tools:layout_editor_absoluteY="89dp" />
 
 </android.support.constraint.ConstraintLayout>

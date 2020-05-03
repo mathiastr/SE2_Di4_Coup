@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,6 +23,15 @@ public class InGame extends AppCompatActivity {
     private ServerConnection connection;
     private AlertDialog.Builder builder;
 
+    //Action buttons
+    private Button Assasinate;
+    private Button Tax;
+    private Button Steal;
+    private Button Exchange;
+    private Button Income;
+    private Button Foreign_Aid;
+    private Button Coup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,7 @@ public class InGame extends AppCompatActivity {
 
 
         next = findViewById(R.id.button_next);
-        textView = findViewById(R.id.textView3);
+        textView = findViewById(R.id.text_playercard1);
         surrender = findViewById(R.id.button_surrender);
 
         connection=new ServerConnection();
