@@ -1,17 +1,20 @@
 package com.example.coup;
 
-import com.example.coup.Action.Action;
+
+import android.drm.DrmStore;
 
 import java.util.*;
 
 public class Game {
     List<Player> players;
     List<Card> playingCards;
-    LayoutManager manager = new LayoutManager();
+    InGame InGame = new InGame();
     Stack<Card> cards;
 
-    //Should we use Stack instead of List for Cards?
+
+
     public Game(List<Player> players){
+        Player isWinner = null;
         this.players = players;
         cards = new Stack<Card>();
         for(int i = 0; i < 3; i++){
@@ -22,38 +25,102 @@ public class Game {
             cards.push(new Card(CardType.ASSASSIN));
         }
 
+        for(Player p: players){
+            p.setCoins(2);
+        }
+
 
         //for each Player set 2 random Cards and remove these cards from cards (deck)
         shuffleCards();
-        for (int i  = 0; i < cards.size(); i++){
-
+        for (Player p : players){
             playingCards.add(dealCard());
             playingCards.add(dealCard());
-            players.get(i).setCards(playingCards);
-
+            p.setCards(playingCards);
         }
 
         play();
     }
 
+
+
     private void play(){
 
+        Game g = new Game(players);
+        AllActions playAction = new AllActions(g);
 
         //while 2 Players inGame = true
         //get next player whos turn it is
         while (twoinGame()){
-            for (int i  = 0; i < players.size(); i++){
+            for (Player p : players){
 
-                //Action choosenAction = manager.next(players.get(i));
-                //choosenAction.playAction();
+                boolean Actionisblocked;
+                boolean playerbluffed = false;
+                Object [] chooseAction = InGame.next(p);
+                Action choosenAction = (Action) chooseAction[0];
+                Player attackedPlayer = (Player) chooseAction[1];
 
+                //check if player bluffed (if someone challenged him)
+                if (InGame.waitForChallenge()!=null) {
+                    Object[] challengeAction = InGame.waitForChallenge();
+                    Player challengingPlayer1 = (Player) challengeAction[0];
+                    CardType neededCardType1 = (CardType) challengeAction[1];
+                    playerbluffed = playAction.challenge(neededCardType1, challengingPlayer1, p);
+                }
+
+                // Action steal or assassinate can only be blocked by the attacked player
+                if (choosenAction == Action.STEAL || choosenAction == Action.ASSASSINATE){
+                    List<Player> Playerscanblock = new ArrayList<>();
+                    Playerscanblock.add(attackedPlayer);
+                    Actionisblocked = InGame.waitForBlock(Playerscanblock);
+                }else {
+                    Actionisblocked = InGame.waitForBlock(players);
+                }
+
+
+                //if action is blocked and block is challenged, check if blocking player bluffed
+                if (Actionisblocked && InGame.waitForChallenge()!=null){
+                    Object[] challengeBlock = InGame.waitForChallenge();
+                    Player challengingPlayer2 = (Player)challengeBlock[0];
+                    CardType neededCardType2 = (CardType)challengeBlock[1];
+                    boolean blockingplayerbluffed = playAction.challenge(neededCardType2,challengingPlayer2,p);
+                    if (blockingplayerbluffed){
+                        Actionisblocked = false;
+                    }
+
+                }
+                // if player is not challenged or is challenged but didn't bluff and action is not blocked -> play choosen action
+                if (!playerbluffed && !Actionisblocked) {
+
+                    switch (choosenAction) {
+                        case ASSASSINATE:
+                            playAction.assassinate(p, attackedPlayer);
+                        case FOREIGNAID:
+                            playAction.foreignAid(p);
+                        case INCOME:
+                            playAction.income(p);
+                        case EXCHANGE:
+                            playAction.exchange(p);
+                        case STEAL:
+                            playAction.steal(p, attackedPlayer);
+                            break;
+                        case TAX:
+                            playAction.tax(p);
+                            break;
+                        case COUP:
+                            playAction.coup(p, attackedPlayer);
+                            break;
+
+                    }
+                }
             }
-
         }
-        for (int i  = 0; i < players.size(); i++){
-            boolean inGame = players.get(i).getInGame();
+
+        for (Player p : players){
+            boolean inGame = p.getInGame();
             if (inGame= true){
-                //  players.get(i) ist Gewinner
+
+                //p is winner
+
             }
 
         }
@@ -71,19 +138,49 @@ public class Game {
     public List<Card> getCards(){
         return this.cards;
     }
+    public void pushCard(Card card) { cards.push(card); }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+    public void returnCardtoDeck(Card c){
+        cards.push(c);
+    }
+    public void dealStartOfGame() {
+        for (Player p : getPlayers()) {
+            List<Card> cards = new ArrayList<>();
+            cards.add(dealCard());
+            cards.add(dealCard());
+            p.setCards(cards);
+        }
+    }
+    public Player getWinnerOfGame(){
+        Player isWinner = null;
+        for(Player p: players) {
+            if (p.getInGame()) {
+                if (isWinner != null) {
+                    return null;
+                } else {
+                    isWinner = p;
+                }
+            }
+        }
+        return isWinner;
+    }
+    
     //check if >1 Players are inGame
     public boolean twoinGame(){
-
         int inGame = 0;
 
-        for (int i  = 0; i < players.size(); i++) {
-            boolean x = players.get(i).getInGame();
+        for (Player p : players) {
+            boolean x = p.getInGame();
             if (x = true) {
                 inGame++;
             }
         }
-
         if (inGame > 1) {
             return true;
         } else {
