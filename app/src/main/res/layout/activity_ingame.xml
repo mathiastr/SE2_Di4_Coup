@@ -6,41 +6,108 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="109dp"
-        android:layout_height="52dp"
-        android:text="TextView"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/button_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.173"
+        app:layout_constraintHorizontal_bias="0.083"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
+        app:layout_constraintVertical_bias="0.857" />
 
     <Button
-        android:id="@+id/button_surrender"
+        android:id="@+id/button_assassinate"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="27dp"
+        android:text="A"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="657dp" />
+
+    <Button
+        android:id="@+id/button_tax"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:text="T"
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="657dp" />
+
+    <Button
+        android:id="@+id/button_steal"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:text="S"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="657dp" />
+
+    <Button
+        android:id="@+id/button_exchange"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:text="E"
+        tools:layout_editor_absoluteX="211dp"
+        tools:layout_editor_absoluteY="657dp" />
+
+    <Button
+        android:id="@+id/button_income"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:text="I"
+        tools:layout_editor_absoluteX="273dp"
+        tools:layout_editor_absoluteY="657dp" />
+
+    <Button
+        android:id="@+id/button_foreign_aid"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:text="FA"
+        tools:layout_editor_absoluteX="332dp"
+        tools:layout_editor_absoluteY="657dp" />
+
+    <Button
+        android:id="@+id/button_coup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Give up"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.804"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
+        android:text="Coup"
+        tools:layout_editor_absoluteX="159dp"
+        tools:layout_editor_absoluteY="586dp" />
+
+    <ImageView
+        android:id="@+id/card_playercard1"
+        android:layout_width="108dp"
+        android:layout_height="154dp"
+        app:srcCompat="@drawable/cardbackgroundbeta"
+        tools:layout_editor_absoluteX="76dp"
+        tools:layout_editor_absoluteY="288dp" />
+
+    <ImageView
+        android:id="@+id/card_playercard2"
+        android:layout_width="108dp"
+        android:layout_height="154dp"
+        app:srcCompat="@drawable/cardbackgroundbeta"
+        tools:layout_editor_absoluteX="224dp"
+        tools:layout_editor_absoluteY="288dp" />
+
+    <TextView
+        android:id="@+id/text_playercard1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CardName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="460dp" />
+
+    <TextView
+        android:id="@+id/text_playercard2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CardName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        tools:layout_editor_absoluteX="237dp"
+        tools:layout_editor_absoluteY="460dp" />
+
 </android.support.constraint.ConstraintLayout>
