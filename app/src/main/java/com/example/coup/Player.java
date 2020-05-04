@@ -1,11 +1,11 @@
 package com.example.coup;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 // Organisiert die Übersicht der einzelnen Spieler und deren Verfügbare Aktionen
 
-public class Player  {
+public class Player {
     private String name;
     public  int coins=2;
     public  int influence=2;
@@ -18,9 +18,11 @@ public class Player  {
     private boolean canBlockSteal=false;
 
 
+
     public Player(String name){
         this.name=name;
         playerID++;
+        cards = new ArrayList<Card>();
     }
 
     public int hasCard(CardType type){
@@ -32,12 +34,22 @@ public class Player  {
         else return -1;
     }
 
+    public void revealCard(int cardIndex){
+        //TODO show card for a view sec and then delete it
+        //wait(1000); or show message what card
+        cards.remove(cardIndex);
+    }
+
     public List<Card> getCards() {
         return cards;
     }
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+    }
+
+    public void addCard(Card c){
+        this.cards.add(c);
     }
 
     public int getCoins(){
@@ -52,11 +64,9 @@ public class Player  {
 
     //TODO influence sind die Anzahl der Karten
     public int getInfluence() {
-        return influence;
+        return this.getCards().size();
     }
-    public void setInfluence(int influence) {
-        this.influence = influence;
-    }
+
 
     //lose Influence heißt der Spieler verliert eine Karte
     //public void loseInfluence(){
@@ -85,7 +95,6 @@ public class Player  {
     }
     public boolean ifCoupPossibleDoIt(){
         if(coins>=7){
-            coins-=7;
             return true;
         }else {
             return false;
@@ -133,4 +142,140 @@ public class Player  {
     public void setCanBlockSteal(boolean canBlockSteal) {
         this.canBlockSteal = canBlockSteal;
     }
+
+    public boolean getInGame() {
+        return inGame;
+    }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
+    }
+
+
+    //TODO bitte alles folgende Löschen, wenn du es nicht brauchst @Mathias
+/*
+    //Regelt das Layout jedes Spielers für die einzelnen Aktionen
+    TextView tvTimer;
+    boolean timerOn;
+    Button btnChallenge;
+    boolean challengeClicked;
+
+    Button btnChooseAmbassador;
+    Button btnChooseCaptain;
+    int choosenType;
+
+    Button btnShow;
+    Button btnLoose;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.test_player_layout);
+
+        tvTimer = findViewById(R.id.tvTimer);
+        btnChallenge = findViewById(R.id.btnChallenge);
+        btnChallenge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                challengeClicked = true;
+                timerOn = false;
+            }
+        });
+
+        btnChooseAmbassador = findViewById(R.id.btnChooseAmb);
+        btnChooseCaptain = findViewById(R.id.btnChooseCap);
+        btnChooseAmbassador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosenType = 1;
+            }
+        });
+        btnChooseCaptain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosenType = 2;
+            }
+        });
+
+        btnShow = findViewById(R.id.btnShow);
+        btnLoose = findViewById(R.id.btnLoose);
+        btnShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosenType = 1;
+            }
+        });
+        btnLoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosenType = 2;
+            }
+        });
+    }
+
+    public void startTimer(int sec, Action a){
+        timerOn = true;
+        long currentTime;
+        long endTime = System.currentTimeMillis() + (sec*1000);
+        do{
+            currentTime = System.currentTimeMillis();
+            tvTimer.setText(((endTime-currentTime)/1000) + "sec");
+        } while(currentTime < endTime && timerOn);
+        if(currentTime>=endTime) a.isClickedChallenge = -1;
+    }
+
+    public void stopTimer(){
+        timerOn = false;
+    }
+
+    public void challenge(Action a){
+        btnChallenge.setVisibility(View.VISIBLE);
+        challengeClicked = false;
+        while(!challengeClicked && timerOn){
+
+        }
+        if(challengeClicked){
+            a.whoClickedChallenge = this;
+            a.isClickedChallenge = 1;
+        }
+        btnChallenge.setVisibility(View.INVISIBLE);
+    }
+
+    public CardType chooseAmOrCa(){
+        btnChooseAmbassador.setVisibility(View.VISIBLE);
+        btnChooseCaptain.setVisibility(View.VISIBLE);
+        choosenType = 0;
+        while(choosenType==0){
+
+        }
+        btnChooseAmbassador.setVisibility(View.INVISIBLE);
+        btnChooseCaptain.setVisibility(View.INVISIBLE);
+        if(choosenType==1){
+            return CardType.AMBASSADOR;
+        }
+        else return CardType.CAPTAIN;
+    }
+
+    public boolean showOrLoose(int card, Player p){
+        btnShow.setVisibility(View.VISIBLE);
+        btnLoose.setVisibility(View.VISIBLE);
+        choosenType = 0;
+        while(choosenType==0){
+
+        }
+        btnShow.setVisibility(View.INVISIBLE);
+        btnLoose.setVisibility(View.INVISIBLE);
+
+        if(choosenType==1){
+            getCards().get(card).revealCard();
+            p.loseCard();
+            return false;
+        }
+        else {
+            loseCard();
+            return true;
+        }
+    }
+
+ */
 }
