@@ -46,7 +46,7 @@ public class InGame extends AppCompatActivity {
 
         next = findViewById(R.id.button_next);
         textView = findViewById(R.id.text_playercard1);
-        surrender = findViewById(R.id.button_surrender);
+        //surrender = findViewById(R.id.button_surrender);
 
         connection=new ServerConnection();
 
