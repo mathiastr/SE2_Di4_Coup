@@ -349,4 +349,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/button_surrender"
+        style="@android:style/Widget.Holo.Button.Small"
+        android:layout_width="97dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginBottom="27dp"
+        android:text="Surrender"
+        app:layout_constraintBottom_toTopOf="@+id/button_challenge"
+        app:layout_constraintStart_toEndOf="@+id/textView_timer" />
+
 </android.support.constraint.ConstraintLayout>

@@ -11,12 +11,6 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Die Startseite anzeigen wo man ein spiel starten kann, warten bis alle spieler da sind
-    //und dann das game starten mit den Spielern
-    // new Game
-    //und jedem Spieler  bescheid sagen seine Ansicht anzeigen
-
-
     //Amar
     //Dies ist das Hauptmenü und führt zu weiteren Aktivitäten.
     // Wir werden einen separaten Bildschirm für die Lobby und den Spielbildschirm haben.
@@ -26,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
     private Button QuitButton;
     private AlertDialog QuitDialog;
 
+    //These button are used just for presentation - remove after functionality for lobby to game implemented.
+    private Button testGameScreen;
+    private Button testEndGame;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +31,28 @@ public class MainActivity extends AppCompatActivity {
 
         ButtonToLobby = (Button) findViewById(R.id.button_play);
         QuitButton = (Button) findViewById(R.id.button_quit);
+
+        //Remove
+        testGameScreen = (Button) findViewById(R.id.button_test_gamescreen);
+        testEndGame = (Button) findViewById(R.id.button_test_endgamescreen);
+
+        //Remove
+        testGameScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGameScreen();
+            }
+        });
+
+        //Remove
+        testEndGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAfterGameScreen();
+            }
+        });
+
+
 
 
         ButtonToLobby.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +70,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    //Remove
+    public void openGameScreen() {
+        Intent launchGameScreen = new Intent(this, InGame.class);
+        startActivity(launchGameScreen);
+    }
+
+    //Remove
+    public void openAfterGameScreen() {
+        Intent launchAfterScreen = new Intent(this, AfterGame.class);
+        startActivity(launchAfterScreen);
     }
 
     public void openLobby() {

@@ -18,10 +18,11 @@ import java.util.concurrent.ExecutionException;
 public class InGame extends AppCompatActivity {
 
     private Button next, surrender;
-    private TextView textView;
+    private TextView textView; //Change to TextView Timer
     private String name;
     private ServerConnection connection;
     private AlertDialog.Builder builder;
+
 
     //Action buttons
     private Button Assasinate;
@@ -46,7 +47,7 @@ public class InGame extends AppCompatActivity {
 
         next = findViewById(R.id.button_next);
         textView = findViewById(R.id.text_playercard1);
-        //surrender = findViewById(R.id.button_surrender);
+        surrender = findViewById(R.id.button_surrender);
 
         connection=new ServerConnection();
 
@@ -182,7 +183,7 @@ public class InGame extends AppCompatActivity {
                 surrender.setVisibility(View.VISIBLE);
 
                 if(res.equals("turn"))
-                    textView.setText("Your turn");
+                    textView.setText("Your turn"); //Change to TextView Timer
 
                 if(res.equals("wait")){
                     ReadTask read = new ReadTask();
@@ -222,7 +223,7 @@ public class InGame extends AppCompatActivity {
         protected void onPreExecute(){
             next.setEnabled(false);
             surrender.setEnabled(false);
-            textView.setText("Opponents turn");
+            textView.setText("Opponents turn"); //Change to TextView Timer
 
         }
         @Override
