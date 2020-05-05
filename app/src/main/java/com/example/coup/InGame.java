@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,13 +20,23 @@ import java.util.concurrent.ExecutionException;
 public class InGame extends AppCompatActivity {
 
     private Button next, surrender;
-    private TextView textView;
+    private TextView textView; //Change to TextView Timer
     private String name;
     private ServerConnection connection;
     private AlertDialog.Builder builder;
 
 
-    // should return choosen Action and attacked Player
+
+    //Action buttons
+    private Button Assasinate;
+    private Button Tax;
+    private Button Steal;
+    private Button Exchange;
+    private Button Income;
+    private Button Foreign_Aid;
+    private Button Coup;
+
+    /*// should return choosen Action and attacked Player
     public Object[] next(Player CurrentPlayer){
 
         return  null;
@@ -43,7 +52,8 @@ public class InGame extends AppCompatActivity {
     public boolean waitForBlock(List<Player> Playerscanblock){
 
         return false;
-    }
+    }*/
+
 
 
     @Override
@@ -62,7 +72,7 @@ public class InGame extends AppCompatActivity {
 
 
         next = findViewById(R.id.button_next);
-        textView = findViewById(R.id.textView3);
+        textView = findViewById(R.id.text_playercard1);
         surrender = findViewById(R.id.button_surrender);
 
         connection=new ServerConnection();
@@ -202,7 +212,7 @@ public class InGame extends AppCompatActivity {
                 surrender.setVisibility(View.VISIBLE);
 
                 if(res.equals("turn"))
-                    textView.setText("Your turn");
+                    textView.setText("Your turn"); //Change to TextView Timer
 
                 if(res.equals("wait")){
                     ReadTask read = new ReadTask();
@@ -242,7 +252,7 @@ public class InGame extends AppCompatActivity {
         protected void onPreExecute(){
             next.setEnabled(false);
             surrender.setEnabled(false);
-            textView.setText("Opponents turn");
+            textView.setText("Opponents turn"); //Change to TextView Timer
 
         }
         @Override

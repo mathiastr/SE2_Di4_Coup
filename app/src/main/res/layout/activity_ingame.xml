@@ -1,46 +1,363 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="109dp"
-        android:layout_height="52dp"
-        android:text="TextView"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/button_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="8dp"
         android:text="Next"
-        android:visibility="invisible"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/button_assassinate"
+        app:layout_constraintEnd_toStartOf="@+id/button_challenge"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_timer" />
+
+    <Button
+        android:id="@+id/button_challenge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="23dp"
+        android:text="Challenge"
+        app:layout_constraintBottom_toTopOf="@+id/button_tax"
+        app:layout_constraintEnd_toStartOf="@+id/button_coup"
+        app:layout_constraintStart_toEndOf="@+id/button_next" />
+
+    <Button
+        android:id="@+id/button_assassinate"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="30dp"
+        android:text="A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_tax"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_next" />
+
+    <Button
+        android:id="@+id/button_tax"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="30dp"
+        android:text="T"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_steal"
+        app:layout_constraintStart_toEndOf="@+id/button_assassinate"
+        app:layout_constraintTop_toBottomOf="@+id/button_next" />
+
+    <Button
+        android:id="@+id/button_steal"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="30dp"
+        android:text="S"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_exchange"
+        app:layout_constraintStart_toEndOf="@+id/button_tax"
+        app:layout_constraintTop_toBottomOf="@+id/button_challenge" />
+
+    <Button
+        android:id="@+id/button_exchange"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="30dp"
+        android:text="E"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_income"
+        app:layout_constraintStart_toEndOf="@+id/button_steal"
+        app:layout_constraintTop_toBottomOf="@+id/button_challenge" />
+
+    <Button
+        android:id="@+id/button_income"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="30dp"
+        android:text="I"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_foreign_aid"
+        app:layout_constraintStart_toEndOf="@+id/button_exchange"
+        app:layout_constraintTop_toBottomOf="@+id/button_coup" />
+
+    <Button
+        android:id="@+id/button_foreign_aid"
+        android:layout_width="49dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:text="FA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.173"
+        app:layout_constraintStart_toEndOf="@+id/button_income"
+        app:layout_constraintTop_toBottomOf="@+id/button_coup" />
+
+    <Button
+        android:id="@+id/button_coup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="32dp"
+        android:text="Coup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_challenge"
+        app:layout_constraintTop_toBottomOf="@+id/textView_coins" />
+
+    <ImageView
+        android:id="@+id/card_playercard1"
+        android:layout_width="108dp"
+        android:layout_height="154dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/text_playercard1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
+        app:srcCompat="@drawable/cardbackgroundbeta" />
+
+    <ImageView
+        android:id="@+id/card_playercard2"
+        android:layout_width="108dp"
+        android:layout_height="154dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/text_playercard2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/cardbackgroundbeta" />
+
+    <TextView
+        android:id="@+id/text_playercard1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="45dp"
+        android:text="CardName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/textView_action"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/text_playercard2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="45dp"
+        android:text="CardName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/textView_action"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_timer"
+        android:layout_width="98dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="154dp"
+        android:layout_marginBottom="23dp"
+        android:text="Your turn: 00:00"
+        app:layout_constraintBottom_toTopOf="@+id/button_next"
+        app:layout_constraintEnd_toStartOf="@+id/textView_coins"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_action" />
+
+    <TextView
+        android:id="@+id/textView_coins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="40dp"
+        android:text="Your coins: X"
+        app:layout_constraintBottom_toTopOf="@+id/button_coup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView_timer"
+        app:layout_constraintTop_toBottomOf="@+id/textView_action" />
+
+    <ImageView
+        android:id="@+id/imageView_enemy_one"
+        android:layout_width="63dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="98dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/userbeta" />
+
+    <TextView
+        android:id="@+id/textView_name_enemy_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User"
+        app:layout_constraintBottom_toTopOf="@+id/textView1_enemy_one_coins_description"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one" />
+
+    <TextView
+        android:id="@+id/textView1_enemy_one_coins_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coins:"
+        app:layout_constraintBottom_toTopOf="@+id/textView_enemy_one_coins"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one" />
+
+    <TextView
+        android:id="@+id/textView_enemy_one_coins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:text="X"
+        app:layout_constraintBottom_toTopOf="@+id/textView_timer_enemy_one"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one" />
+
+    <ImageView
+        android:id="@+id/imageView_enemy_two"
+        android:layout_width="63dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="97dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
+        app:layout_constraintStart_toEndOf="@+id/textView1_enemy_one_coins_description"
+        app:srcCompat="@drawable/userbeta" />
+
+    <TextView
+        android:id="@+id/textView_name_enemy_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:text="User"
+        app:layout_constraintBottom_toTopOf="@+id/textView1_enemy_two_coins_description"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two" />
+
+    <TextView
+        android:id="@+id/textView1_enemy_two_coins_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:text="Coins:"
+        app:layout_constraintBottom_toTopOf="@+id/textView_enemy_two_coins"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two" />
+
+    <TextView
+        android:id="@+id/textView_enemy_two_coins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="9dp"
+        android:text="X"
+        app:layout_constraintBottom_toTopOf="@+id/textView_timer_enemy_two"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two" />
+
+    <ImageView
+        android:id="@+id/imageView_enemy_three"
+        android:layout_width="63dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="97dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard2"
+        app:layout_constraintStart_toEndOf="@+id/textView1_enemy_two_coins_description"
+        app:srcCompat="@drawable/userbeta" />
+
+    <TextView
+        android:id="@+id/textView_name_enemy_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:text="User"
+        app:layout_constraintBottom_toTopOf="@+id/textView1_enemy_three_coins_description"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three" />
+
+    <TextView
+        android:id="@+id/textView1_enemy_three_coins_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:text="Coins:"
+        app:layout_constraintBottom_toTopOf="@+id/textView_enemy_three_coins"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three" />
+
+    <TextView
+        android:id="@+id/textView_enemy_three_coins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="9dp"
+        android:text="X"
+        app:layout_constraintBottom_toTopOf="@+id/textView_timer_enemy_three"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three" />
+
+    <TextView
+        android:id="@+id/textView_timer_enemy_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="123dp"
+        android:text="00:00"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one" />
+
+    <TextView
+        android:id="@+id/textView_timer_enemy_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="123dp"
+        android:text="00:00"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard2"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two" />
+
+    <TextView
+        android:id="@+id/textView_timer_enemy_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="123dp"
+        android:text="00:00"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard2"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three" />
+
+    <TextView
+        android:id="@+id/textView_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="88dp"
+        android:text="User did SOMETHING."
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintBottom_toTopOf="@+id/button_challenge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_surrender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Give up"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.804"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
+        style="@android:style/Widget.Holo.Button.Small"
+        android:layout_width="97dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginBottom="27dp"
+        android:text="Surrender"
+        app:layout_constraintBottom_toTopOf="@+id/button_challenge"
+        app:layout_constraintStart_toEndOf="@+id/textView_timer" />
+
 </android.support.constraint.ConstraintLayout>
