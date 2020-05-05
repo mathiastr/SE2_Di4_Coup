@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class InGame extends AppCompatActivity {
@@ -24,6 +26,7 @@ public class InGame extends AppCompatActivity {
     private AlertDialog.Builder builder;
 
 
+
     //Action buttons
     private Button Assasinate;
     private Button Tax;
@@ -33,8 +36,31 @@ public class InGame extends AppCompatActivity {
     private Button Foreign_Aid;
     private Button Coup;
 
+    /*// should return choosen Action and attacked Player
+    public Object[] next(Player CurrentPlayer){
+
+        return  null;
+    }
+
+    //should return Player who clicked challenge and needed CardType
+    public Object[] waitForChallenge(){
+
+        return  null;
+    }
+
+    //should return boolean, if someone clicked block Action
+    public boolean waitForBlock(List<Player> Playerscanblock){
+
+        return false;
+    }*/
+
+
 
     @Override
+
+
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -123,6 +149,9 @@ public class InGame extends AppCompatActivity {
 
             }
         });
+
+
+
 
 
     }
