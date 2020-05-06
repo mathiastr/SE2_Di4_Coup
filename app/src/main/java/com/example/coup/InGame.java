@@ -1,13 +1,17 @@
 package com.example.coup;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,10 +20,11 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class InGame extends AppCompatActivity {
+public class InGame extends Activity {
 
     Player player;
     Game game;
@@ -27,7 +32,9 @@ public class InGame extends AppCompatActivity {
     private TextView textView; //Change to TextView Timer
     private String name;
     private ServerConnection connection;
-    private AlertDialog.Builder builder;
+    private List<String> playernames;
+    private Handler handler;
+
 
 
 
@@ -71,90 +78,73 @@ public class InGame extends AppCompatActivity {
 
         setContentView(R.layout.activity_ingame);
 
+
         Bundle b = getIntent().getExtras();
         if (b != null)
             name = b.getString("name");
 
         challenge = (Button) findViewById(R.id.button_challenge);
         next = findViewById(R.id.button_next);
-        textView = findViewById(R.id.text_playercard1);
-//        surrender = findViewById(R.id.button_surrender);
+        textView = findViewById(R.id.textView_timer);
+        //surrender = findViewById(R.id.button_surrender);
 
         connection = new ServerConnection();
 
-        builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                try {
-                    connection.disconnect();
-                    Toast.makeText(InGame.this, "Disconnected", Toast.LENGTH_SHORT).show();
-                    finish();
-                    dialogInterface.dismiss();
-                } catch (IOException e) {
-                    Toast.makeText(InGame.this, "Connection Error", Toast.LENGTH_SHORT).show();
-                    finish();
-                    dialogInterface.dismiss();
-                    e.printStackTrace();
-                }
+        handler=new Handler();
 
 
-            }
-        });
 
-        ConnectTask connectTask = new ConnectTask();
+        final ConnectTask connectTask = new ConnectTask();
         connectTask.execute();
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WriteTask write = new WriteTask();
-                Boolean res = false;
-                try {
-                    res = write.execute("next").get();
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("next");
 
-                if (res) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                next.setEnabled(false);
+                                textView.setVisibility(View.INVISIBLE);
+                            }
+                        });
 
-                    ReadTask read = new ReadTask();
-                    read.execute();
 
-                }
+
+                    }
+                });
+
+                thread.start();
+
             }
         });
 
-
-        surrender.setOnClickListener(new View.OnClickListener() {
+        challenge.setOnClickListener(new View.OnClickListener() {
+            //will be changed
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("exit");
 
-                WriteTask write = new WriteTask();
-                Boolean res = false;
-                try {
-                    res = write.execute("exit").get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
+                    }
+                });
 
-                if (res) {
-
-                    ReadTask read = new ReadTask();
-                    read.execute();
-
-                }
+                thread.start();
 
             }
         });
+
+
     }
+
+
 
     public void updateOpponentInfluence(Player player){
         TextView numOfCards=null;
@@ -281,7 +271,10 @@ public class InGame extends AppCompatActivity {
 
         @Override
         protected void onPreExecute(){
-            progressDialog = ProgressDialog.show(InGame.this, "ProgressDialog", "connecting");
+            progressDialog = ProgressDialog.show(InGame.this, "Starting game", "connecting");
+
+            next.setEnabled(false);
+            textView.setVisibility(View.INVISIBLE);
 
         }
 
@@ -289,67 +282,93 @@ public class InGame extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... voids) {
-            String res=null;
+
+            String msg;
 
             try{
 
                 connection.connect("se2-demo.aau.at",53214);
-                String msg = connection.getMessage();
+                msg = connection.getMessage();
 
-                if(msg.equals("noplayer")){
-                    res=msg;
-                }else res=msg;
-
-            }
-            catch (IOException e){
-                e.printStackTrace();
-
-            }
+                if(msg.equals("ok")){
+                    connection.sendMessage(name);
 
 
+                    //get player names
+                    playernames = new LinkedList<>();
+                    msg=connection.getMessage();
 
+                    //message like: playername player95
+                    String[] split = msg.split(" ");
 
-            return res;
+                    while (msg.startsWith("playername")){
+                        playernames.add(split[1]);
+                        msg=connection.getMessage();
 
-        }
-        @Override
-        protected void onPostExecute(String res){
-
-            //Enable/Disable functions for player on turn/wait
-
-            if(res.equals("turn")||res.equals("wait")){
-                Toast.makeText(InGame.this,"Connected",Toast.LENGTH_SHORT).show();
-
-                next.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.VISIBLE);
-                surrender.setVisibility(View.VISIBLE);
-
-                if(res.equals("turn"))
-                    textView.setText("Your turn"); //Change to TextView Timer
-
-                if(res.equals("wait")){
-                    ReadTask read = new ReadTask();
-                    read.execute();
+                    }
 
 
                 }
 
 
 
+            }
+            catch (IOException e){
+                e.printStackTrace();
+                msg=null;
 
 
-            }//no player found
-            else if(res.equals("noplayer")){
+            }
+
+
+
+
+            return msg;
+
+        }
+        @Override
+        protected void onPostExecute(String res){
+
+            //no server connection
+            if(res==null){
+                Toast.makeText(InGame.this,"Cannot reach server! Try again.",Toast.LENGTH_SHORT).show();
+                finish();
+                progressDialog.dismiss();
+                return;
+
+            }
+
+            //Enable/Disable functions for player on turn/wait
+
+            if(res.equals("turn")||res.equals("wait")){
+                Toast.makeText(InGame.this,"Connected",Toast.LENGTH_SHORT).show();
+
+                if(res.equals("turn")){
+                    next.setEnabled(true);
+                    textView.setVisibility(View.VISIBLE);
+                }
+
+
+                ReadTask read = new ReadTask();
+                read.execute();
+
+
+                Log.e("DEBUG", "SUCCESS");
+
+
+
+
+
+            }
+
+            //no player found
+            if(res.equals("noplayer")){
                 Toast.makeText(InGame.this,"No players found. Try again.",Toast.LENGTH_SHORT).show();
 
                 finish();
 
-            }// no connection to server
-            else{
-                Toast.makeText(InGame.this,"Cannot reach server! Try again.",Toast.LENGTH_SHORT).show();
-                finish();
-
             }
+
 
             progressDialog.dismiss();
 
@@ -363,9 +382,7 @@ public class InGame extends AppCompatActivity {
 
         @Override
         protected void onPreExecute(){
-            next.setEnabled(false);
-            surrender.setEnabled(false);
-            textView.setText("Opponents turn"); //Change to TextView Timer
+
 
         }
         @Override
@@ -375,8 +392,19 @@ public class InGame extends AppCompatActivity {
             try {
                 while (true){
                     msg=connection.getMessage();
-                    if(msg.equals("turn")||msg.equals("win")||msg.equals("lose"))
+                    if(msg==null||msg.equals("win")||msg.equals("lose"))
                         break;
+
+                    if(msg.equals("turn")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                next.setEnabled(true);
+                                textView.setVisibility(View.VISIBLE);
+
+                            }
+                        });
+                    }
 
                 }
             } catch (IOException e) {
@@ -388,42 +416,37 @@ public class InGame extends AppCompatActivity {
 
         protected void onPostExecute(String res){
 
-            if(res.equals("turn")){
-                textView.setText("Your turn");
-                next.setEnabled(true);
-                surrender.setEnabled(true);
-            }
+            //switch to Aftergame on win
             if(res.equals("win")){
-                builder.setTitle("You win");
-                AlertDialog dialog = builder.create();
-                dialog.show();
+
+                try {
+                    connection.disconnect();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Intent i = new Intent(InGame.this, AfterGame.class);
+                i.putExtra("result", "win");
+                startActivity(i);
             }
+
+            //switch on lose
             if(res.equals("lose")){
-                builder.setTitle("You lose");
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                try {
+                    connection.disconnect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Intent i = new Intent(InGame.this, AfterGame.class);
+                i.putExtra("result", "lose");
+                startActivity(i);
             }
 
 
         }
     }
 
-    //called every time an Action is done
 
-    private class WriteTask extends AsyncTask<String,Void,Boolean>{
-
-
-        @Override
-        protected Boolean doInBackground(String... strings) {
-
-            connection.sendMessage(strings[0]);
-
-            return true;
-
-        }
-
-
-    }
 
 
 

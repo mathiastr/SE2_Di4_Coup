@@ -1,5 +1,6 @@
 package com.example.coup;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LobbyScreen extends AppCompatActivity {
+public class LobbyScreen extends Activity {
 
     private Button buttonReady;
     private Button buttonRules;
@@ -37,6 +38,7 @@ public class LobbyScreen extends AppCompatActivity {
                     //TODO Implement a Toast notification if the nameInput is empty
                     Toast.makeText(getApplicationContext(), "You did not enter a name", Toast.LENGTH_SHORT).show();
                 } else {
+
 
                     Intent intent = new Intent(LobbyScreen.this, InGame.class);
                     intent.putExtra("name", nameInput.getText().toString());

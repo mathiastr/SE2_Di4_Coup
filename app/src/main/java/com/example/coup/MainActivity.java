@@ -1,5 +1,6 @@
 package com.example.coup;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -11,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import org.w3c.dom.Text;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     //Amar
     //Dies ist das Hauptmenü und führt zu weiteren Aktivitäten.
@@ -36,25 +37,7 @@ public class MainActivity extends AppCompatActivity {
         ButtonToLobby = (Button) findViewById(R.id.button_play);
         QuitButton = (Button) findViewById(R.id.button_quit);
 
-        //Remove
-//        testGameScreen = (Button) findViewById(R.id.button_test_gamescreen);
-//        testEndGame = (Button) findViewById(R.id.button_test_endgamescreen);
 
-        //Remove
-        testGameScreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGameScreen();
-            }
-        });
-
-        //Remove
-        testEndGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAfterGameScreen();
-            }
-        });
 
 
 

@@ -6,13 +6,14 @@
     android:layout_height="match_parent">
 
     <TextView
-            android:id="@+id/textView_timer_enemy_one2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="123dp"
-            android:text="00:00"
-            app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
-            app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one"/>
+        android:id="@+id/textView_timer_enemy_one2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="123dp"
+        android:text="00:00"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one"
+        tools:visibility="visible" />
     <Button
         android:id="@+id/button_next"
         android:layout_width="wrap_content"
@@ -137,21 +138,19 @@
         android:id="@+id/card_playercard1"
         android:layout_width="108dp"
         android:layout_height="154dp"
-        android:layout_marginStart="60dp"
         android:layout_marginBottom="6dp"
+        android:layout_marginStart="60dp"
         app:layout_constraintBottom_toTopOf="@+id/text_playercard1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/cardbackgroundbeta" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/card_playercard2"
         android:layout_width="108dp"
         android:layout_height="154dp"
-        android:layout_marginEnd="60dp"
         android:layout_marginBottom="6dp"
+        android:layout_marginEnd="60dp"
         app:layout_constraintBottom_toTopOf="@+id/text_playercard2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/cardbackgroundbeta" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/text_playercard1"
@@ -206,11 +205,12 @@
         android:id="@+id/imageView_enemy_one"
         android:layout_width="63dp"
         android:layout_height="160dp"
-        android:layout_marginStart="25dp"
         android:layout_marginBottom="98dp"
+        android:layout_marginStart="25dp"
         app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/userbeta" />
+        app:srcCompat="@drawable/userbeta"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_name_enemy_one"
@@ -218,7 +218,8 @@
         android:layout_height="wrap_content"
         android:text="User"
         app:layout_constraintBottom_toTopOf="@+id/textView1_enemy_one_coins_description"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView1_enemy_one_coins_description"
@@ -226,7 +227,8 @@
         android:layout_height="wrap_content"
         android:text="Coins:"
         app:layout_constraintBottom_toTopOf="@+id/textView_enemy_one_coins"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_enemy_one_coins"
@@ -235,17 +237,19 @@
         android:layout_marginBottom="9dp"
         android:text="X"
         app:layout_constraintBottom_toTopOf="@+id/textView_timer_enemy_one"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/imageView_enemy_two"
         android:layout_width="63dp"
         android:layout_height="160dp"
-        android:layout_marginStart="24dp"
         android:layout_marginBottom="97dp"
+        android:layout_marginStart="24dp"
         app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
         app:layout_constraintStart_toEndOf="@+id/textView1_enemy_one_coins_description"
-        app:srcCompat="@drawable/userbeta" />
+        app:srcCompat="@drawable/userbeta"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_name_enemy_two"
@@ -254,7 +258,8 @@
         android:layout_marginStart="1dp"
         android:text="User"
         app:layout_constraintBottom_toTopOf="@+id/textView1_enemy_two_coins_description"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView1_enemy_two_coins_description"
@@ -263,27 +268,30 @@
         android:layout_marginStart="1dp"
         android:text="Coins:"
         app:layout_constraintBottom_toTopOf="@+id/textView_enemy_two_coins"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_enemy_two_coins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
         android:layout_marginBottom="9dp"
+        android:layout_marginStart="1dp"
         android:text="X"
         app:layout_constraintBottom_toTopOf="@+id/textView_timer_enemy_two"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/imageView_enemy_three"
         android:layout_width="63dp"
         android:layout_height="160dp"
-        android:layout_marginStart="30dp"
         android:layout_marginBottom="97dp"
+        android:layout_marginStart="30dp"
         app:layout_constraintBottom_toTopOf="@+id/card_playercard2"
         app:layout_constraintStart_toEndOf="@+id/textView1_enemy_two_coins_description"
-        app:srcCompat="@drawable/userbeta" />
+        app:srcCompat="@drawable/userbeta"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_name_enemy_three"
@@ -292,7 +300,8 @@
         android:layout_marginStart="1dp"
         android:text="User"
         app:layout_constraintBottom_toTopOf="@+id/textView1_enemy_three_coins_description"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView1_enemy_three_coins_description"
@@ -301,17 +310,19 @@
         android:layout_marginStart="1dp"
         android:text="Coins:"
         app:layout_constraintBottom_toTopOf="@+id/textView_enemy_three_coins"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_enemy_three_coins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
         android:layout_marginBottom="9dp"
+        android:layout_marginStart="1dp"
         android:text="X"
         app:layout_constraintBottom_toTopOf="@+id/textView_timer_enemy_three"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_timer_enemy_one"
@@ -320,27 +331,30 @@
         android:layout_marginBottom="123dp"
         android:text="00:00"
         app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_timer_enemy_two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
         android:layout_marginBottom="123dp"
+        android:layout_marginStart="1dp"
         android:text="00:00"
         app:layout_constraintBottom_toTopOf="@+id/card_playercard2"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_two"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_timer_enemy_three"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
         android:layout_marginBottom="123dp"
+        android:layout_marginStart="1dp"
         android:text="00:00"
         app:layout_constraintBottom_toTopOf="@+id/card_playercard2"
-        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_enemy_three"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textView_action"
@@ -357,27 +371,34 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-            android:text="Cards: 2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/opponentNumOfCards1"
-            app:layout_constraintBottom_toTopOf="@+id/card_playercard1" android:layout_marginBottom="104dp"
-            app:layout_constraintStart_toStartOf="@+id/textView_timer_enemy_one"/>
+        android:id="@+id/opponentNumOfCards1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="104dp"
+        android:text="Cards: 2"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
+        app:layout_constraintStart_toStartOf="@+id/textView_timer_enemy_one"
+        tools:visibility="visible" />
 
     <TextView
-            android:text="Cards: 2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/opponentNumOfCards2"
-            app:layout_constraintBottom_toTopOf="@+id/card_playercard2" android:layout_marginBottom="104dp"
-            app:layout_constraintStart_toStartOf="@+id/textView_timer_enemy_two"/>
+        android:id="@+id/opponentNumOfCards2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="104dp"
+        android:text="Cards: 2"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard2"
+        app:layout_constraintStart_toStartOf="@+id/textView_timer_enemy_two"
+        tools:visibility="visible" />
+
     <TextView
-            android:text="Cards: 2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/opponentNumOfCards3"
-            app:layout_constraintBottom_toTopOf="@+id/card_playercard2" android:layout_marginBottom="104dp"
-            app:layout_constraintStart_toStartOf="@+id/textView_timer_enemy_three"/>
+        android:id="@+id/opponentNumOfCards3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="104dp"
+        android:text="Cards: 2"
+        app:layout_constraintBottom_toTopOf="@+id/card_playercard2"
+        app:layout_constraintStart_toStartOf="@+id/textView_timer_enemy_three"
+        tools:visibility="visible" />
     <TextView
             android:text="Player Name"
             android:layout_width="wrap_content"
