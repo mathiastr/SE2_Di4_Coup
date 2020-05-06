@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     //Dies ist das Hauptmenü und führt zu weiteren Aktivitäten.
     // Wir werden einen separaten Bildschirm für die Lobby und den Spielbildschirm haben.
     // Dies ist die erste Aktivität, die gestartet wird.
+
+    Game game;
 
     private Button ButtonToLobby;
     private Button QuitButton;
@@ -33,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
         QuitButton = (Button) findViewById(R.id.button_quit);
 
         //Remove
-        testGameScreen = (Button) findViewById(R.id.button_test_gamescreen);
-        testEndGame = (Button) findViewById(R.id.button_test_endgamescreen);
+//        testGameScreen = (Button) findViewById(R.id.button_test_gamescreen);
+//        testEndGame = (Button) findViewById(R.id.button_test_endgamescreen);
 
         //Remove
         testGameScreen.setOnClickListener(new View.OnClickListener() {
@@ -115,4 +119,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog quitDialog = builder.create();
         quitDialog.show();
     }
+
+
 }

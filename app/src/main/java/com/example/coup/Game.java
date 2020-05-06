@@ -10,6 +10,8 @@ public class Game {
     List<Card> playingCards;
     InGame InGame = new InGame();
     Stack<Card> cards;
+    Action lastAction;
+    Player playerDoingLastAction;
 
 
 
@@ -38,12 +40,12 @@ public class Game {
             p.setCards(playingCards);
         }
 
-        play();
+//        play();
     }
 
 
 
-    private void play(){
+   /* private void play(){
 
         Game g = new Game(players);
         AllActions playAction = new AllActions(g);
@@ -126,6 +128,8 @@ public class Game {
         }
 
     }
+    */
+
     public void shuffleCards(){
         Collections.shuffle(cards);
     }
@@ -186,5 +190,17 @@ public class Game {
         } else {
             return false;
         }
+    }
+    public void setLastAction(Action action){
+        this.lastAction=action;
+    }
+    public Action getLastAction(){
+        return this.lastAction;
+    }
+    public void setPlayerDoingLastAction(Player player){
+        this.playerDoingLastAction=player;
+    }
+    public Player getPlayerDoingLastAction(){
+        return this.playerDoingLastAction;
     }
 }

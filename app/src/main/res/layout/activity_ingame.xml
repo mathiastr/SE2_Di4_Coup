@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+            android:id="@+id/textView_timer_enemy_one2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="123dp"
+            android:text="00:00"
+            app:layout_constraintBottom_toTopOf="@+id/card_playercard1"
+            app:layout_constraintStart_toEndOf="@+id/imageView_enemy_one"/>
     <Button
         android:id="@+id/button_next"
         android:layout_width="wrap_content"
@@ -19,17 +27,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView_timer" />
 
     <Button
-        android:id="@+id/button_challenge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="52dp"
-        android:layout_marginBottom="23dp"
-        android:text="Challenge"
-        app:layout_constraintBottom_toTopOf="@+id/button_tax"
-        app:layout_constraintEnd_toStartOf="@+id/button_coup"
-        app:layout_constraintStart_toEndOf="@+id/button_next" />
-
+            android:id="@+id/button_challenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="52dp"
+            android:layout_marginBottom="24dp"
+            android:text="Challenge"
+            app:layout_constraintBottom_toTopOf="@+id/button_tax"
+            app:layout_constraintEnd_toStartOf="@+id/button_coup"
+            app:layout_constraintStart_toEndOf="@+id/button_next"/>
     <Button
         android:id="@+id/button_assassinate"
         android:layout_width="49dp"
@@ -349,15 +356,34 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button_surrender"
-        style="@android:style/Widget.Holo.Button.Small"
-        android:layout_width="97dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginBottom="27dp"
-        android:text="Surrender"
-        app:layout_constraintBottom_toTopOf="@+id/button_challenge"
-        app:layout_constraintStart_toEndOf="@+id/textView_timer" />
+    <TextView
+            android:text="Cards: 2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/opponentNumOfCards1"
+            app:layout_constraintBottom_toTopOf="@+id/card_playercard1" android:layout_marginBottom="104dp"
+            app:layout_constraintStart_toStartOf="@+id/textView_timer_enemy_one"/>
+
+    <TextView
+            android:text="Cards: 2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/opponentNumOfCards2"
+            app:layout_constraintBottom_toTopOf="@+id/card_playercard2" android:layout_marginBottom="104dp"
+            app:layout_constraintStart_toStartOf="@+id/textView_timer_enemy_two"/>
+    <TextView
+            android:text="Cards: 2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/opponentNumOfCards3"
+            app:layout_constraintBottom_toTopOf="@+id/card_playercard2" android:layout_marginBottom="104dp"
+            app:layout_constraintStart_toStartOf="@+id/textView_timer_enemy_three"/>
+    <TextView
+            android:text="Player Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_player_NAME"
+            app:layout_constraintBottom_toTopOf="@+id/button_challenge" android:layout_marginBottom="40dp"
+            app:layout_constraintStart_toEndOf="@+id/textView_timer" android:layout_marginStart="28dp"/>
 
 </android.support.constraint.ConstraintLayout>
