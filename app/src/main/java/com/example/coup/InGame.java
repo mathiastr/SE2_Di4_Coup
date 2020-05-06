@@ -4,11 +4,13 @@ package com.example.coup;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +21,9 @@ import java.util.concurrent.ExecutionException;
 
 public class InGame extends AppCompatActivity {
 
-    private Button next, surrender;
+    Player player;
+    Game game;
+    private Button next, surrender, challenge;
     private TextView textView; //Change to TextView Timer
     private String name;
     private ServerConnection connection;
@@ -41,14 +45,15 @@ public class InGame extends AppCompatActivity {
 
         return  null;
     }
+    */
+
 
     //should return Player who clicked challenge and needed CardType
     public Object[] waitForChallenge(){
-
-        return  null;
+        return null;
     }
 
-    //should return boolean, if someone clicked block Action
+    /*//should return boolean, if someone clicked block Action
     public boolean waitForBlock(List<Player> Playerscanblock){
 
         return false;
@@ -67,15 +72,15 @@ public class InGame extends AppCompatActivity {
         setContentView(R.layout.activity_ingame);
 
         Bundle b = getIntent().getExtras();
-        if(b!=null)
-            name=b.getString("name");
+        if (b != null)
+            name = b.getString("name");
 
-
+        challenge = (Button) findViewById(R.id.button_challenge);
         next = findViewById(R.id.button_next);
         textView = findViewById(R.id.text_playercard1);
-        surrender = findViewById(R.id.button_surrender);
+//        surrender = findViewById(R.id.button_surrender);
 
-        connection=new ServerConnection();
+        connection = new ServerConnection();
 
         builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
@@ -85,11 +90,11 @@ public class InGame extends AppCompatActivity {
 
                 try {
                     connection.disconnect();
-                    Toast.makeText(InGame.this,"Disconnected",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InGame.this, "Disconnected", Toast.LENGTH_SHORT).show();
                     finish();
                     dialogInterface.dismiss();
                 } catch (IOException e) {
-                    Toast.makeText(InGame.this,"Connection Error",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InGame.this, "Connection Error", Toast.LENGTH_SHORT).show();
                     finish();
                     dialogInterface.dismiss();
                     e.printStackTrace();
@@ -116,7 +121,7 @@ public class InGame extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if(res){
+                if (res) {
 
                     ReadTask read = new ReadTask();
                     read.execute();
@@ -140,7 +145,7 @@ public class InGame extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if(res){
+                if (res) {
 
                     ReadTask read = new ReadTask();
                     read.execute();
@@ -149,14 +154,122 @@ public class InGame extends AppCompatActivity {
 
             }
         });
+    }
 
+    public void updateOpponentInfluence(Player player){
+        TextView numOfCards=null;
 
+        TextView tvOpp1name=(TextView) findViewById(R.id.textView_name_enemy_one);
+        TextView tvOpp2name=(TextView) findViewById(R.id.textView_name_enemy_two);
+        TextView tvOpp3name=(TextView) findViewById(R.id.textView_name_enemy_three);
 
+        TextView tvOpp1cards=(TextView) findViewById(R.id.opponentNumOfCards1);
+        TextView tvOpp2cards=(TextView) findViewById(R.id.opponentNumOfCards2);
+        TextView tvOpp3cards=(TextView) findViewById(R.id.opponentNumOfCards3);
+
+        if(player.getName().equals(tvOpp1name)){
+            numOfCards=tvOpp1cards;
+        }
+        else if(player.getName().equals(tvOpp2name)){
+            numOfCards=tvOpp2cards;
+        }
+        else if(player.getName().equals(tvOpp3name)){
+            numOfCards=tvOpp3cards;
+        }
+        numOfCards.setText(player.getCards().size()-1);
+    }
+
+    //not finished
+    public void settingOpponentNamesAtStartOfGame() {
+        TextView tvOpp1name=(TextView) findViewById(R.id.textView_name_enemy_one);
+        TextView tvOpp2name=(TextView) findViewById(R.id.textView_name_enemy_two);
+        TextView tvOpp3name=(TextView) findViewById(R.id.textView_name_enemy_three);
 
 
     }
 
+    //needs work
+    public void updateCoins(){
+       // TextView tvCoins= null;
 
+        TextView tvPlayerName=(TextView) findViewById(R.id.textView_player_NAME);
+        TextView tvOpp1name=(TextView) findViewById(R.id.textView_name_enemy_one);
+        TextView tvOpp2name=(TextView) findViewById(R.id.textView_name_enemy_two);
+        TextView tvOpp3name=(TextView) findViewById(R.id.textView_name_enemy_three);
+
+        TextView tvPlayerCoins= (TextView) findViewById(R.id.textView_coins);
+        TextView tvOpp1coins=(TextView) findViewById(R.id.textView1_enemy_one_coins_description);
+        TextView tvOpp2coins=(TextView) findViewById(R.id.textView1_enemy_two_coins_description);
+        TextView tvOpp3coins=(TextView) findViewById(R.id.textView1_enemy_three_coins_description);
+
+
+        for(Player p: game.getPlayers()){
+            if(p.getName().equals(tvOpp1name)){
+                tvOpp1coins.setText(p.getCoins());
+            }else if(p.getName().equals(tvOpp2name)){
+                tvOpp2coins.setText(p.getCoins());
+            }
+            else if(p.getName().equals(tvOpp3name)){
+                tvOpp3coins.setText(p.getCoins());
+            }
+            else if(p.getName().equals(tvPlayerName)){
+                tvPlayerCoins.setText(p.getCoins());
+            }
+        }
+    }
+    public void mainPlayerChoosesCardToLose(){
+        final ImageView ivCard1 = (ImageView) findViewById(R.id.card_playercard1);
+        final ImageView ivCard2 = (ImageView) findViewById(R.id.card_playercard2);
+
+        // Display: "Click on the Card you want to lose."
+
+        if(ivCard1.isShown()&&ivCard2.isShown()) {
+            ivCard1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    player.getCards().remove(0);
+                    ivCard1.setVisibility(View.INVISIBLE);
+                }
+            });
+
+            ivCard2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    player.getCards().remove(1);
+                    ivCard2.setVisibility(View.INVISIBLE);
+                }
+            });
+        }else{
+            player.getCards().remove(0);
+        }
+    }
+    public void settingCardImagesAtStartOfGame() {
+        ImageView ivCard1 = (ImageView) findViewById(R.id.card_playercard1);
+        ImageView ivCard2 = (ImageView) findViewById(R.id.card_playercard2);
+
+            if (player.getCards().get(0).getTypeOfCard().equals(CardType.CONTESSA)) {
+                ivCard1.setImageResource(R.drawable.contessa);
+            } else if (player.getCards().get(0).getTypeOfCard().equals(CardType.DUKE)) {
+                ivCard1.setImageResource(R.drawable.duke);
+            } else if (player.getCards().get(0).getTypeOfCard().equals(CardType.ASSASSIN)) {
+                ivCard1.setImageResource(R.drawable.assassin);
+            } else if (player.getCards().get(0).getTypeOfCard().equals(CardType.CAPTAIN)) {
+                ivCard1.setImageResource(R.drawable.captain);
+            } else if (player.getCards().get(0).getTypeOfCard().equals(CardType.AMBASSADOR)) {
+                ivCard1.setImageResource(R.drawable.ambassador);
+            }
+            if (player.getCards().get(1).getTypeOfCard().equals(CardType.CONTESSA)) {
+                ivCard2.setImageResource(R.drawable.contessa);
+            } else if (player.getCards().get(1).getTypeOfCard().equals(CardType.DUKE)) {
+                ivCard2.setImageResource(R.drawable.duke);
+            } else if (player.getCards().get(1).getTypeOfCard().equals(CardType.ASSASSIN)) {
+                ivCard2.setImageResource(R.drawable.assassin);
+            } else if (player.getCards().get(1).getTypeOfCard().equals(CardType.CAPTAIN)) {
+                ivCard2.setImageResource(R.drawable.captain);
+            } else if (player.getCards().get(1).getTypeOfCard().equals(CardType.AMBASSADOR)) {
+                ivCard2.setImageResource(R.drawable.ambassador);
+            }
+    }
     /****************AsynTask classes********/
 
     //Connect to Server and finally enable Action-Buttons
