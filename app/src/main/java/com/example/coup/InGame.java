@@ -50,25 +50,6 @@ public class InGame extends AppCompatActivity {
 
     //should return Player who clicked challenge and needed CardType
     public Object[] waitForChallenge(){
-//                Object[] arr;
-//
-//                CardType neededCard;
-//                neededCard = null;
-//                AllActions allActions = new AllActions(game);
-//                if (game.getLastAction().equals(Action.ASSASSINATE)) {
-//                    neededCard = CardType.ASSASSIN;
-//                } else if (game.getLastAction().equals(Action.TAX)) {
-//                    neededCard = CardType.DUKE;
-//                } else if (game.getLastAction().equals(Action.STEAL)) {
-//                    neededCard = CardType.CAPTAIN;
-//                } else if (game.getLastAction().equals(Action.EXCHANGE)) {
-//                    neededCard = CardType.AMBASSADOR;
-//                }
-//                Player p = new Player("");
-//                arr= new Object[]{
-//                        neededCard,p};
-//
-//        return arr;
         return null;
     }
 
@@ -174,23 +155,7 @@ public class InGame extends AppCompatActivity {
             }
         });
     }
-//        challenge.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CardType neededCard=null;
-//                AllActions allActions = new AllActions(game);
-//                if(game.getLastAction().equals(Action.ASSASSINATE)){
-//                    neededCard=CardType.ASSASSIN;
-//                }else if(game.getLastAction().equals(Action.TAX)){
-//                    neededCard=CardType.DUKE;
-//                }else if(game.getLastAction().equals(Action.STEAL)){
-//                    neededCard=CardType.CAPTAIN;
-//                }else if(game.getLastAction().equals(Action.EXCHANGE)){
-//                    neededCard=CardType.AMBASSADOR;
-//                }
-//            }
-//        });
-//    }
+
     public void updateOpponentInfluence(Player player){
         TextView numOfCards=null;
 
@@ -236,20 +201,7 @@ public class InGame extends AppCompatActivity {
         TextView tvOpp1coins=(TextView) findViewById(R.id.textView1_enemy_one_coins_description);
         TextView tvOpp2coins=(TextView) findViewById(R.id.textView1_enemy_two_coins_description);
         TextView tvOpp3coins=(TextView) findViewById(R.id.textView1_enemy_three_coins_description);
-//
-//        if(player.getName().equals(tvOpp1name)){
-//            tvCoins=tvOpp1coins;
-//        }
-//        else if(player.getName().equals(tvOpp2name)){
-//            tvCoins=tvOpp2coins;
-//        }
-//        else if(player.getName().equals(tvOpp3name)){
-//            tvCoins=tvOpp3coins;
-//        }
-//        else if(player.getName().equals(tvPlayerName)){
-//            tvCoins=tvPlayerCoins;
-//        }
-//        tvCoins.setText(coins);
+
 
         for(Player p: game.getPlayers()){
             if(p.getName().equals(tvOpp1name)){
