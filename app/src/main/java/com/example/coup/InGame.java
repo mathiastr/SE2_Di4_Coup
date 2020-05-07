@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 
 public class InGame extends AppCompatActivity {
 
-    private Button next, surrender;
+    private Button next;
     private TextView timer; //Change to TextView Timer
     private String name;
     private ServerConnection connection;
@@ -97,31 +97,6 @@ public class InGame extends AppCompatActivity {
                     read.execute();
 
                 }
-            }
-        });
-
-
-        surrender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                WriteTask write = new WriteTask();
-                Boolean res = false;
-                try {
-                    res = write.execute("exit").get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-
-                if(res){
-
-                    ReadTask read = new ReadTask();
-                    read.execute();
-
-                }
-
             }
         });
 
@@ -205,11 +180,10 @@ public class InGame extends AppCompatActivity {
                 Toast.makeText(InGame.this,"Connected",Toast.LENGTH_SHORT).show();
 
                 next.setVisibility(View.VISIBLE);
-                //textView.setVisibility(View.VISIBLE);
-                surrender.setVisibility(View.VISIBLE);
+
 
                 if(res.equals("turn"))
-                    //textView.setText("Your turn"); //Change to TextView Timer
+                    turnTimer();
 
                 if(res.equals("wait")){
                     ReadTask read = new ReadTask();
@@ -248,7 +222,6 @@ public class InGame extends AppCompatActivity {
         @Override
         protected void onPreExecute(){
             next.setEnabled(false);
-            surrender.setEnabled(false);
             timer.setText("Opponents turn"); //Change to TextView Timer
 
         }
@@ -273,9 +246,9 @@ public class InGame extends AppCompatActivity {
         protected void onPostExecute(String res){
 
             if(res.equals("turn")){
-                //textView.setText("Your turn");
+                //textView.setText("Your turn"); //Change to timer
                 next.setEnabled(true);
-                surrender.setEnabled(true);
+                //Add challenge button
             }
             if(res.equals("win")){
                 builder.setTitle("You win");
