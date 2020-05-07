@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 public class InGame extends AppCompatActivity {
 
     private Button next, surrender;
-    private TextView textView; //Change to TextView Timer
+    private TextView timer; //Change to TextView Timer
     private String name;
     private ServerConnection connection;
     private AlertDialog.Builder builder;
@@ -46,8 +47,8 @@ public class InGame extends AppCompatActivity {
 
 
         next = findViewById(R.id.button_next);
-        textView = findViewById(R.id.text_playercard1);
-        surrender = findViewById(R.id.button_surrender);
+        timer = findViewById(R.id.textView_timer);
+
 
         connection=new ServerConnection();
 
@@ -127,6 +128,31 @@ public class InGame extends AppCompatActivity {
 
     }
 
+    //Time methods - optimise time after playing game. Either speed up or slow down.
+    public void turnTimer() {
+        new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timer.setText("Your turn: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                timer.setText("Turn over.");
+            }
+        }.start();
+    }
+
+    public void challengeTimer() {
+        new CountDownTimer(10000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timer.setText("Challenge? " + millisUntilFinished);
+            }
+
+            public void onFinish() {
+                timer.setText("Challenge over.");
+            }
+        }.start();
+    }
+
 
     /****************AsynTask classes********/
 
@@ -179,11 +205,11 @@ public class InGame extends AppCompatActivity {
                 Toast.makeText(InGame.this,"Connected",Toast.LENGTH_SHORT).show();
 
                 next.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.VISIBLE);
+                //textView.setVisibility(View.VISIBLE);
                 surrender.setVisibility(View.VISIBLE);
 
                 if(res.equals("turn"))
-                    textView.setText("Your turn"); //Change to TextView Timer
+                    //textView.setText("Your turn"); //Change to TextView Timer
 
                 if(res.equals("wait")){
                     ReadTask read = new ReadTask();
@@ -223,7 +249,7 @@ public class InGame extends AppCompatActivity {
         protected void onPreExecute(){
             next.setEnabled(false);
             surrender.setEnabled(false);
-            textView.setText("Opponents turn"); //Change to TextView Timer
+            timer.setText("Opponents turn"); //Change to TextView Timer
 
         }
         @Override
@@ -247,7 +273,7 @@ public class InGame extends AppCompatActivity {
         protected void onPostExecute(String res){
 
             if(res.equals("turn")){
-                textView.setText("Your turn");
+                //textView.setText("Your turn");
                 next.setEnabled(true);
                 surrender.setEnabled(true);
             }
