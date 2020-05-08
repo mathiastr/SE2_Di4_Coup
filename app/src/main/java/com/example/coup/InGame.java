@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,10 +27,15 @@ import java.util.concurrent.ExecutionException;
 
 public class InGame extends Activity {
 
-    Player player;
-    Game game;
-    private Button next, surrender, challenge;
-    private TextView textView; //Change to TextView Timer
+
+    private Button next;
+    private TextView timer; //Change to TextView Timer
+
+    //Player player;
+    //Game game;
+    //private Button next, surrender, challenge;
+    //private TextView textView; //Change to TextView Timer
+
     private String name;
     private ServerConnection connection;
     private List<String> playernames;
@@ -85,8 +91,9 @@ public class InGame extends Activity {
 
         challenge = (Button) findViewById(R.id.button_challenge);
         next = findViewById(R.id.button_next);
-        textView = findViewById(R.id.textView_timer);
-        //surrender = findViewById(R.id.button_surrender);
+        timer = findViewById(R.id.textView_timer);
+
+
 
         connection = new ServerConnection();
 
@@ -119,7 +126,17 @@ public class InGame extends Activity {
                     }
                 });
 
-                thread.start();
+
+    }
+
+    //Time methods - optimise time after playing game. Either speed up or slow down.
+    public void turnTimer() {
+        new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timer.setText("Your turn: " + millisUntilFinished / 1000);
+            }
+
+       /*         thread.start();
 
             }
         });
@@ -136,12 +153,25 @@ public class InGame extends Activity {
                     }
                 });
 
-                thread.start();
+                thread.start();*/
 
+
+            public void onFinish() {
+                timer.setText("Turn over.");
             }
-        });
+        }.start();
+    }
 
+    public void challengeTimer() {
+        new CountDownTimer(10000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timer.setText("Challenge? " + millisUntilFinished);
+            }
 
+            public void onFinish() {
+                timer.setText("Challenge over.");
+            }
+        }.start();
     }
 
 
@@ -343,10 +373,16 @@ public class InGame extends Activity {
             if(res.equals("turn")||res.equals("wait")){
                 Toast.makeText(InGame.this,"Connected",Toast.LENGTH_SHORT).show();
 
-                if(res.equals("turn")){
+                next.setVisibility(View.VISIBLE);
+
+
+                if(res.equals("turn"))
+                    turnTimer();
+
+               /* if(res.equals("turn")){
                     next.setEnabled(true);
                     textView.setVisibility(View.VISIBLE);
-                }
+                }*/
 
 
                 ReadTask read = new ReadTask();
@@ -382,7 +418,8 @@ public class InGame extends Activity {
 
         @Override
         protected void onPreExecute(){
-
+            next.setEnabled(false);
+            timer.setText("Opponents turn"); //Change to TextView Timer
 
         }
         @Override
@@ -415,6 +452,12 @@ public class InGame extends Activity {
         }
 
         protected void onPostExecute(String res){
+
+            if(res.equals("turn")){
+                //textView.setText("Your turn"); //Change to timer
+                next.setEnabled(true);
+                //Add challenge button
+            }
 
             //switch to Aftergame on win
             if(res.equals("win")){
