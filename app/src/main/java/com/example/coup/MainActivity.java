@@ -1,5 +1,6 @@
 package com.example.coup;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -10,13 +11,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import org.w3c.dom.Text;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends Activity {
 
     //Amar
     //Dies ist das Hauptmenü und führt zu weiteren Aktivitäten.
     // Wir werden einen separaten Bildschirm für die Lobby und den Spielbildschirm haben.
     // Dies ist die erste Aktivität, die gestartet wird.
+
+    Game game;
 
     private Button ButtonToLobby;
     private Button QuitButton;
@@ -80,4 +85,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog quitDialog = builder.create();
         quitDialog.show();
     }
+
+
 }

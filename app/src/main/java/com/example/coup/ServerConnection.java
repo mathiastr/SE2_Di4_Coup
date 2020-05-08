@@ -33,7 +33,12 @@ public class ServerConnection {
 
     public String getMessage() throws IOException {return this.reader.readLine();}
 
-    public void disconnect() throws IOException {this.socket.close();}
+    public void disconnect() throws IOException {
+        this.socket.close();
+        this.socket=null;
+        this.reader=null;
+        this.writer=null;
+    }
 
     public boolean connected(){return this.socket==null?false:true;}
 }
