@@ -47,12 +47,19 @@ public class InGame extends Activity {
     private Button Foreign_Aid;
     private Button Coup;
 
-    /*// should return choosen Action and attacked Player
+    Action ChoosenAktion;
+
+    // should return choosen Action and attacked Player
     public Object[] next(Player CurrentPlayer){
 
-        return  null;
+            Object[] choosenAktion = new Object[2];
+            choosenAktion[0]= ChoosenAktion;
+
+
+
+        return  choosenAktion;
     }
-    */
+
 
 
     //should return Player who clicked challenge and needed CardType
@@ -91,6 +98,52 @@ public class InGame extends Activity {
         connection = new ServerConnection();
 
         handler=new Handler();
+
+
+        //--------
+
+        Assasinate = (Button)findViewById(R.id.button_assassinate);
+        Tax = (Button)findViewById(R.id.button_tax);
+        Steal = (Button)findViewById(R.id.button_steal);
+        Exchange = (Button)findViewById(R.id.button_exchange);
+        Income = (Button)findViewById(R.id.button_income);
+        Foreign_Aid = (Button)findViewById(R.id.button_foreign_aid);
+        Coup = (Button)findViewById(R.id.button_coup);
+
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v == Assasinate){
+                    ChoosenAktion = Action.ASSASSINATE;
+                }else if(v == Tax){
+                    ChoosenAktion = Action.TAX;
+                }else if(v == Steal){
+                    ChoosenAktion = Action.STEAL;
+                }else if(v == Exchange){
+                    ChoosenAktion = Action.EXCHANGE;
+                }else if(v == Income){
+                    ChoosenAktion = Action.INCOME;
+                }else if(v == Foreign_Aid){
+                    ChoosenAktion = Action.FOREIGNAID;
+                }else if(v == Coup){
+                    ChoosenAktion = Action.COUP;
+                }
+            }
+        };
+
+        Assasinate.setOnClickListener(clickListener);
+        Tax.setOnClickListener(clickListener);
+        Steal.setOnClickListener(clickListener);
+        Exchange.setOnClickListener(clickListener);
+        Income.setOnClickListener(clickListener);
+        Foreign_Aid.setOnClickListener(clickListener);
+        Coup.setOnClickListener(clickListener);
+
+
+
+
+
+        //------
 
 
 
