@@ -20,25 +20,23 @@ public class MainActivity extends AppCompatActivity {
 
     Game game;
 
-    private Button ButtonToLobby;
-    private Button QuitButton;
-    private AlertDialog QuitDialog;
+//    private Button ButtonToLobby;
+//    private Button QuitButton;
+//    private AlertDialog QuitDialog;
 
     //These button are used just for presentation - remove after functionality for lobby to game implemented.
-    private Button testGameScreen;
-    private Button testEndGame;
+//    private Button testGameScreen;
+//    private Button testEndGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ButtonToLobby = (Button) findViewById(R.id.button_play);
-        QuitButton = (Button) findViewById(R.id.button_quit);
-
+        Button ButtonToLobby = (Button) findViewById(R.id.button_play);
+        Button QuitButton= (Button) findViewById(R.id.button_quit);
+        Button testGameScreen= (Button) findViewById(R.id.button_test_gamescreen);
+        Button testEndGame=findViewById(R.id.button_test_endgamescreen);
         //Remove
-//        testGameScreen = (Button) findViewById(R.id.button_test_gamescreen);
-//        testEndGame = (Button) findViewById(R.id.button_test_endgamescreen);
 
         //Remove
         testGameScreen.setOnClickListener(new View.OnClickListener() {
