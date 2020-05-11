@@ -5,12 +5,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import org.w3c.dom.Text;
+
 
 public class MainActivity extends Activity {
 
@@ -25,9 +27,6 @@ public class MainActivity extends Activity {
     private Button QuitButton;
     private AlertDialog QuitDialog;
 
-    //These button are used just for presentation - remove after functionality for lobby to game implemented.
-    private Button testGameScreen;
-    private Button testEndGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +35,6 @@ public class MainActivity extends Activity {
 
         ButtonToLobby = (Button) findViewById(R.id.button_play);
         QuitButton = (Button) findViewById(R.id.button_quit);
-
-
-
-
-
 
         ButtonToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,17 +53,6 @@ public class MainActivity extends Activity {
 
     }
 
-    //Remove
-    public void openGameScreen() {
-        Intent launchGameScreen = new Intent(this, InGame.class);
-        startActivity(launchGameScreen);
-    }
-
-    //Remove
-    public void openAfterGameScreen() {
-        Intent launchAfterScreen = new Intent(this, AfterGame.class);
-        startActivity(launchAfterScreen);
-    }
 
     public void openLobby() {
         Intent launchLobby = new Intent(this, LobbyScreen.class);

@@ -8,7 +8,7 @@ import java.util.*;
 public class Game {
     List<Player> players;
     List<Card> playingCards;
-    InGame InGame = new InGame();
+    //InGame InGame = new InGame();
     Stack<Card> cards;
     Action lastAction;
     Player playerDoingLastAction;
@@ -33,12 +33,14 @@ public class Game {
 
 
         //for each Player set 2 random Cards and remove these cards from cards (deck)
+
+        /**
         shuffleCards();
         for (Player p : players){
             playingCards.add(dealCard());
             playingCards.add(dealCard());
             p.setCards(playingCards);
-        }
+        }**/
 
 //        play();
     }
