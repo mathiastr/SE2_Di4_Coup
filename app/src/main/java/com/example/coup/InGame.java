@@ -63,6 +63,11 @@ public class InGame extends Activity {
     private Button Coup;
 
 
+    Action ChoosenAktion;
+    Player attackedPlayer;
+
+    // should return choosen Action and attacked Player
+
     //textviews
 
     private TextView coins;
@@ -86,9 +91,13 @@ public class InGame extends Activity {
     /*// should return choosen Action and attacked Player
     public Object[] next(Player CurrentPlayer){
 
-        return  null;
+            Object[] choosenAktion = new Object[2];
+            choosenAktion[0]= ChoosenAktion;
+            choosenAktion[1]=attackedPlayer;
+
+        return  choosenAktion;
     }
-    */
+
 
 
     //should return Player who clicked challenge and needed CardType
@@ -162,6 +171,54 @@ public class InGame extends Activity {
         connection = new ServerConnection();
 
         handler=new Handler();
+
+        
+
+        Assasinate = (Button)findViewById(R.id.button_assassinate);
+        Tax = (Button)findViewById(R.id.button_tax);
+        Steal = (Button)findViewById(R.id.button_steal);
+        Exchange = (Button)findViewById(R.id.button_exchange);
+        Income = (Button)findViewById(R.id.button_income);
+        Foreign_Aid = (Button)findViewById(R.id.button_foreign_aid);
+        Coup = (Button)findViewById(R.id.button_coup);
+
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v == Assasinate){
+                    ChoosenAktion = Action.ASSASSINATE;
+                    choosePlayer();
+                }else if(v == Tax){
+                    ChoosenAktion = Action.TAX;
+                }else if(v == Steal){
+                    ChoosenAktion = Action.STEAL;
+                    choosePlayer();
+                }else if(v == Exchange){
+                    ChoosenAktion = Action.EXCHANGE;
+                }else if(v == Income){
+                    ChoosenAktion = Action.INCOME;
+                }else if(v == Foreign_Aid){
+                    ChoosenAktion = Action.FOREIGNAID;
+                }else if(v == Coup){
+                    ChoosenAktion = Action.COUP;
+                    choosePlayer();
+                }
+            }
+        };
+
+        Assasinate.setOnClickListener(clickListener);
+        Tax.setOnClickListener(clickListener);
+        Steal.setOnClickListener(clickListener);
+        Exchange.setOnClickListener(clickListener);
+        Income.setOnClickListener(clickListener);
+        Foreign_Aid.setOnClickListener(clickListener);
+        Coup.setOnClickListener(clickListener);
+
+
+
+
+
+
 
 
 
@@ -272,6 +329,35 @@ public class InGame extends Activity {
 
 
     }
+
+
+    public void choosePlayer(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
+        builder.setTitle("Choose Player");
+
+// add a list
+        final String[] players = playernames.toArray(new String[playernames.size()]);
+        builder.setItems(players, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                for(Player p: game.getPlayers()) {
+                    if (p.getName().equals(players[which])) {
+                        attackedPlayer = p;
+                    }
+                }
+            }
+
+        });
+
+// create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+
 
 /***Methods*********/
 
