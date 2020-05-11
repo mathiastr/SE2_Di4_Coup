@@ -48,14 +48,14 @@ public class InGame extends Activity {
     private Button Coup;
 
     Action ChoosenAktion;
+    Player attackedPlayer;
 
     // should return choosen Action and attacked Player
     public Object[] next(Player CurrentPlayer){
 
             Object[] choosenAktion = new Object[2];
             choosenAktion[0]= ChoosenAktion;
-
-
+            choosenAktion[1]=attackedPlayer;
 
         return  choosenAktion;
     }
@@ -99,8 +99,7 @@ public class InGame extends Activity {
 
         handler=new Handler();
 
-
-        //--------
+        
 
         Assasinate = (Button)findViewById(R.id.button_assassinate);
         Tax = (Button)findViewById(R.id.button_tax);
@@ -115,10 +114,12 @@ public class InGame extends Activity {
             public void onClick(View v) {
                 if(v == Assasinate){
                     ChoosenAktion = Action.ASSASSINATE;
+                    choosePlayer();
                 }else if(v == Tax){
                     ChoosenAktion = Action.TAX;
                 }else if(v == Steal){
                     ChoosenAktion = Action.STEAL;
+                    choosePlayer();
                 }else if(v == Exchange){
                     ChoosenAktion = Action.EXCHANGE;
                 }else if(v == Income){
@@ -127,6 +128,7 @@ public class InGame extends Activity {
                     ChoosenAktion = Action.FOREIGNAID;
                 }else if(v == Coup){
                     ChoosenAktion = Action.COUP;
+                    choosePlayer();
                 }
             }
         };
@@ -143,7 +145,7 @@ public class InGame extends Activity {
 
 
 
-        //------
+
 
 
 
@@ -196,6 +198,33 @@ public class InGame extends Activity {
 
 
     }
+
+    public void choosePlayer(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
+        builder.setTitle("Choose Player");
+
+// add a list
+        final String[] players = playernames.toArray(new String[playernames.size()]);
+        builder.setItems(players, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                for(Player p: game.getPlayers()) {
+                    if (p.getName().equals(players[which])) {
+                        attackedPlayer = p;
+                    }
+                }
+            }
+
+        });
+
+// create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
 
 
 
