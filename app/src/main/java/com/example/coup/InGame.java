@@ -105,7 +105,7 @@ public class InGame extends Activity {
         return null;
     }
 
-    /*//should return boolean, if someone clicked block Action
+
     public boolean waitForBlock(List<Player> Playerscanblock){
 
         return false;
@@ -421,9 +421,9 @@ public class InGame extends Activity {
         tvOpp3name.setText(opponents.get(2));
         }
 
-        tvOpp1cards.setText("2");
-        tvOpp2cards.setText("2");
-        tvOpp3cards.setText("2");
+        //tvOpp1cards.setText("2");
+        //tvOpp2cards.setText("2");
+        //tvOpp3cards.setText("2");
 
         tvOpp1coins.setText("2");
         tvOpp2coins.setText("2");
@@ -759,6 +759,20 @@ public class InGame extends Activity {
         }
 
 
+
+
+    }
+
+    //will be removed later
+    private void disableNotImplemented(){
+
+        Assasinate.setEnabled(false);
+        Tax.setEnabled(false);
+        Exchange.setEnabled(false);
+        Steal.setEnabled(false);
+        challenge.setEnabled(false);
+        Coup.setEnabled(false);
+
     }
     /****************AsynTask classes********/
 
@@ -776,6 +790,7 @@ public class InGame extends Activity {
             next.setEnabled(false);
             textView.setVisibility(View.INVISIBLE);
             opponents = new LinkedList<>();
+            disableNotImplemented();
 
         }
 
