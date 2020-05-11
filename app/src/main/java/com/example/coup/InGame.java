@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -30,13 +31,16 @@ public class InGame extends Activity {
 
     private Button next;
     private TextView timer; //Change to TextView Timer
+    private TextView textView;
+    private Button challenge;
 
-    //Player player;
-    //Game game;
+    Player player;
+    Game game;
     //private Button next, surrender, challenge;
     //private TextView textView; //Change to TextView Timer
 
     private String name;
+    private List<String> opponents;
     private ServerConnection connection;
     private List<String> playernames;
     private Handler handler;
@@ -52,6 +56,27 @@ public class InGame extends Activity {
     private Button Income;
     private Button Foreign_Aid;
     private Button Coup;
+
+
+    //textviews
+
+    private TextView coins;
+
+    private TextView tvOpp1name;
+    private TextView tvOpp2name;
+    private TextView tvOpp3name;
+
+    private TextView tvOpp1cards;
+    private TextView tvOpp2cards;
+    private TextView tvOpp3cards;
+
+    private TextView tvOpp1coins;
+    private TextView tvOpp2coins;
+    private TextView tvOpp3coins;
+
+
+    private CountDownTimer countDown;
+
 
     /*// should return choosen Action and attacked Player
     public Object[] next(Player CurrentPlayer){
@@ -92,6 +117,39 @@ public class InGame extends Activity {
         challenge = (Button) findViewById(R.id.button_challenge);
         next = findViewById(R.id.button_next);
         timer = findViewById(R.id.textView_timer);
+        textView = findViewById(R.id.textView_action);
+        Income = findViewById(R.id.button_income);
+        coins = findViewById(R.id.textView_coins);
+        Foreign_Aid = findViewById(R.id.button_foreign_aid);
+
+        //Time methods - optimise time after playing game. Either speed up or slow down.
+        countDown = new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timer.setText("Your turn: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("next");
+                    }
+                });
+
+                thread.start();
+                try {
+                    thread.join();
+                    timer.setText("Turn over.");
+
+                    next.setEnabled(false);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        };
 
 
 
@@ -101,7 +159,7 @@ public class InGame extends Activity {
 
 
 
-        final ConnectTask connectTask = new ConnectTask();
+        ConnectTask connectTask = new ConnectTask();
         connectTask.execute();
 
         next.setOnClickListener(new View.OnClickListener() {
@@ -112,55 +170,99 @@ public class InGame extends Activity {
                     @Override
                     public void run() {
                         connection.sendMessage("next");
+                    }
+                });
 
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                next.setEnabled(false);
-                                textView.setVisibility(View.INVISIBLE);
-                            }
-                        });
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
 
-
-
+                        next.setEnabled(false);
+                        countDown.cancel();
+                        timer.setText("Turn over");
                     }
                 });
 
 
-    }
-
-    //Time methods - optimise time after playing game. Either speed up or slow down.
-    public void turnTimer() {
-        new CountDownTimer(30000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                timer.setText("Your turn: " + millisUntilFinished / 1000);
-            }
-
-       /*         thread.start();
-
+                thread.start();
             }
         });
 
-        challenge.setOnClickListener(new View.OnClickListener() {
-            //will be changed
+        Income.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        connection.sendMessage("exit");
+                        connection.sendMessage("income"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                me.setCoins(me.getCoins()+1);
+                                player=me;
+
+                            }
+
+                    }
+                });
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        textView.setText("You did income");
+                        coins.setText("Your coins: "+player.getCoins());
+                    }
+                });
+
+
+
+
+            }
+        });
+
+        Foreign_Aid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("foreignaid"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                me.setCoins(me.getCoins()+2);
+                                player=me;
+
+                            }
 
                     }
                 });
 
-                thread.start();*/
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        textView.setText("You did foreign aid");
+                        coins.setText("Your coins: "+player.getCoins());
+                    }
+                });
 
 
-            public void onFinish() {
-                timer.setText("Turn over.");
+
+
             }
-        }.start();
+        });
+
+
     }
+
+/***Methods*********/
 
     public void challengeTimer() {
         new CountDownTimer(10000, 1000) {
@@ -199,44 +301,120 @@ public class InGame extends Activity {
         numOfCards.setText(player.getCards().size()-1);
     }
 
-    //not finished
-    public void settingOpponentNamesAtStartOfGame() {
-        TextView tvOpp1name=(TextView) findViewById(R.id.textView_name_enemy_one);
-        TextView tvOpp2name=(TextView) findViewById(R.id.textView_name_enemy_two);
-        TextView tvOpp3name=(TextView) findViewById(R.id.textView_name_enemy_three);
+    //initialize opponent textviews
+    public void initializeOpponents(List<String> opponents) {
+        tvOpp1name=(TextView) findViewById(R.id.textView_name_enemy_one);
+        tvOpp2name=(TextView) findViewById(R.id.textView_name_enemy_two);
+        tvOpp3name=(TextView) findViewById(R.id.textView_name_enemy_three);
+
+        tvOpp1cards=(TextView) findViewById(R.id.opponentNumOfCards1);
+        tvOpp2cards=(TextView) findViewById(R.id.opponentNumOfCards2);
+        tvOpp3cards=(TextView) findViewById(R.id.opponentNumOfCards3);
+
+        tvOpp1coins = findViewById(R.id.textView_enemy_one_coins);
+        tvOpp2coins = findViewById(R.id.textView_enemy_two_coins);
+        tvOpp3coins = findViewById(R.id.textView_enemy_three_coins);
+
+
+        Log.e("DEBUG: ",opponents.get(0));
+
+        tvOpp1name.setText(opponents.get(0));
+
+        if(opponents.size()>2){
+        tvOpp2name.setText(opponents.get(1));
+        tvOpp3name.setText(opponents.get(2));
+        }
+
+        tvOpp1cards.setText("2");
+        tvOpp2cards.setText("2");
+        tvOpp3cards.setText("2");
+
+        tvOpp1coins.setText("2");
+        tvOpp2coins.setText("2");
+        tvOpp3coins.setText("2");
+
+
+
+
 
 
     }
 
-    //needs work
-    public void updateCoins(){
-       // TextView tvCoins= null;
+    //update opponent textview on income
+    public void updateCoinsOnIncome(String onPlayer){
 
-        TextView tvPlayerName=(TextView) findViewById(R.id.textView_player_NAME);
-        TextView tvOpp1name=(TextView) findViewById(R.id.textView_name_enemy_one);
-        TextView tvOpp2name=(TextView) findViewById(R.id.textView_name_enemy_two);
-        TextView tvOpp3name=(TextView) findViewById(R.id.textView_name_enemy_three);
-
-        TextView tvPlayerCoins= (TextView) findViewById(R.id.textView_coins);
-        TextView tvOpp1coins=(TextView) findViewById(R.id.textView1_enemy_one_coins_description);
-        TextView tvOpp2coins=(TextView) findViewById(R.id.textView1_enemy_two_coins_description);
-        TextView tvOpp3coins=(TextView) findViewById(R.id.textView1_enemy_three_coins_description);
-
-
-        for(Player p: game.getPlayers()){
-            if(p.getName().equals(tvOpp1name)){
-                tvOpp1coins.setText(p.getCoins());
-            }else if(p.getName().equals(tvOpp2name)){
-                tvOpp2coins.setText(p.getCoins());
+        //update coins for enemy 1
+        if(tvOpp1name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()+1);
+                    Log.e("DEBUG INCOME", ""+p.getCoins());
+                    tvOpp1coins.setText(Integer.toString(p.getCoins()));
+                }
             }
-            else if(p.getName().equals(tvOpp3name)){
-                tvOpp3coins.setText(p.getCoins());
+
+        }
+        //update coins for enemy 2
+        if(tvOpp2name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()+1);
+                    tvOpp2coins.setText(Integer.toString(p.getCoins()));
+                }
             }
-            else if(p.getName().equals(tvPlayerName)){
-                tvPlayerCoins.setText(p.getCoins());
+
+        }
+        //update coins for enemy 3
+        if(tvOpp3name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()+1);
+                    tvOpp3coins.setText(Integer.toString(p.getCoins()));
+                }
             }
+
         }
     }
+
+    //update on foraign aid
+    public void updateCoinsOnForeignAid(String onPlayer){
+
+        //update coins for enemy 1
+        if(tvOpp1name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()+2);
+                    Log.e("DEBUG INCOME", ""+p.getCoins());
+                    tvOpp1coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
+        //update coins for enemy 2
+        if(tvOpp2name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()+2);
+                    tvOpp2coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
+        //update coins for enemy 3
+        if(tvOpp3name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()+2);
+                    tvOpp3coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
+    }
+
+
+
+
     public void mainPlayerChoosesCardToLose(){
         final ImageView ivCard1 = (ImageView) findViewById(R.id.card_playercard1);
         final ImageView ivCard2 = (ImageView) findViewById(R.id.card_playercard2);
@@ -263,6 +441,8 @@ public class InGame extends Activity {
             player.getCards().remove(0);
         }
     }
+
+
     public void settingCardImagesAtStartOfGame() {
         ImageView ivCard1 = (ImageView) findViewById(R.id.card_playercard1);
         ImageView ivCard2 = (ImageView) findViewById(R.id.card_playercard2);
@@ -305,6 +485,7 @@ public class InGame extends Activity {
 
             next.setEnabled(false);
             textView.setVisibility(View.INVISIBLE);
+            opponents = new LinkedList<>();
 
         }
 
@@ -334,8 +515,34 @@ public class InGame extends Activity {
                     while (msg.startsWith("playername")){
                         playernames.add(split[1]);
                         msg=connection.getMessage();
+                        split=msg.split(" ");
 
                     }
+
+                    List<Player> players = new LinkedList<>();
+
+                    for(String playername: playernames)
+                        players.add(new Player(playername));
+
+
+                    Log.e("DEBUG CONNECTTAST", ""+playernames.size());
+                    game = new Game(players);
+
+
+
+                    for(String playername: playernames){
+                        if(playername.equals(name))
+                            continue;
+                        opponents.add(playername);
+                    }
+
+                    Log.e("DEBUG CONNECTTAST", ""+opponents.size());
+
+
+
+
+
+
 
 
                 }
@@ -374,15 +581,24 @@ public class InGame extends Activity {
                 Toast.makeText(InGame.this,"Connected",Toast.LENGTH_SHORT).show();
 
                 next.setVisibility(View.VISIBLE);
+                textView.setVisibility(View.VISIBLE);
 
 
-                if(res.equals("turn"))
-                    turnTimer();
+                initializeOpponents(opponents);
 
-               /* if(res.equals("turn")){
+
+                if(res.equals("turn")){
                     next.setEnabled(true);
-                    textView.setVisibility(View.VISIBLE);
-                }*/
+                    textView.setText("Your turn");
+                    timer.setVisibility(View.VISIBLE);
+                    countDown.start();
+
+                }
+                else{
+                    next.setEnabled(false);
+                    timer.setVisibility(View.INVISIBLE);
+
+                }
 
 
                 ReadTask read = new ReadTask();
@@ -412,16 +628,11 @@ public class InGame extends Activity {
         }
     }
 
-    //called when waiting for turn is required
+    //always listening in background and interacting with ui
 
     private class ReadTask extends AsyncTask<Void, Void, String>{
 
-        @Override
-        protected void onPreExecute(){
-            next.setEnabled(false);
-            timer.setText("Opponents turn"); //Change to TextView Timer
 
-        }
         @Override
         protected String doInBackground(Void... voids) {
             String msg=null;
@@ -429,6 +640,7 @@ public class InGame extends Activity {
             try {
                 while (true){
                     msg=connection.getMessage();
+                    final String[] split = msg.split(" ");
                     if(msg==null||msg.equals("win")||msg.equals("lose"))
                         break;
 
@@ -437,11 +649,41 @@ public class InGame extends Activity {
                             @Override
                             public void run() {
                                 next.setEnabled(true);
-                                textView.setVisibility(View.VISIBLE);
+                                Income.setEnabled(true);
+                                Foreign_Aid.setEnabled(true);
+                                textView.setText("Your turn");
+                                timer.setVisibility(View.VISIBLE);
+                                countDown.start();
 
                             }
                         });
                     }
+
+                    if(msg.startsWith("income")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                textView.setText(split[1]+" used income");
+                                updateCoinsOnIncome(split[1]);
+                            }
+                        });
+                    }
+
+                    if(msg.startsWith("foreignaid")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                textView.setText(split[1]+" used foreign aid");
+                                updateCoinsOnForeignAid(split[1]);
+                            }
+                        });
+
+
+                    }
+
+
 
                 }
             } catch (IOException e) {
@@ -452,12 +694,6 @@ public class InGame extends Activity {
         }
 
         protected void onPostExecute(String res){
-
-            if(res.equals("turn")){
-                //textView.setText("Your turn"); //Change to timer
-                next.setEnabled(true);
-                //Add challenge button
-            }
 
             //switch to Aftergame on win
             if(res.equals("win")){
