@@ -12,11 +12,13 @@ public class Server {
 
 
 
+
+
+
     public static void main(String[] args) {
 
 
-
-        List<Socket> players =new LinkedList<Socket>();
+         List<Socket> players = new LinkedList<Socket>();
 
 
         //Work in progress
@@ -51,11 +53,14 @@ public class Server {
                         System.out.println("Staritng Multiplayer Thread");
                         System.out.println(players.isEmpty());
 
-                        final List<Socket> tee = players;
+                        final List<Socket> lobby = new LinkedList<Socket>();
+
+                        for(Socket player:players)
+                            lobby.add(player);
 
 
                         //starts the Player thread to handle game
-                        PlayerThread thread = new PlayerThread(tee);
+                        PlayerThread thread = new PlayerThread(lobby);
                         thread.start();
 
                         long start = System.currentTimeMillis();
@@ -65,8 +70,10 @@ public class Server {
 
                         }
 
-
                         players.clear();
+
+
+
 
                     }
 

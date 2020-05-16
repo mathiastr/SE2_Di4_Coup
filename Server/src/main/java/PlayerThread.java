@@ -1,18 +1,18 @@
+import javax.swing.plaf.basic.BasicScrollPaneUI;
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class PlayerThread extends Thread {
 
 
-    private final List<Socket> players;
-    private PrintWriter writer1;
-    private PrintWriter writer2;
-    private BufferedReader reader1;
-    private BufferedReader reader2;
+    private List<Socket> players;
+    private Map<String, PrintWriter> to;
+    private Map<BufferedReader, String> from;
+    private List<PrintWriter> writers;
+    private List<BufferedReader> readers;
+
+
     private int avaiable = 0;
 
     public PlayerThread(List<Socket> players){
@@ -27,90 +27,246 @@ public class PlayerThread extends Thread {
     @Override
     public void run(){
 
-        //get Sockets
 
-        Socket player1 = players.get(0);
-        Socket player2 = players.get(1);
 
         try {
+            writers = new LinkedList<PrintWriter>();
+            for (int i = 0; i < this.players.size(); i++)
+                writers.add(new PrintWriter(new OutputStreamWriter(this.players.get(i).getOutputStream()),true));
 
-            //set up readers and writers
+            readers = new LinkedList<BufferedReader>();
+            for (int i=0;i<this.players.size();i++)
+                readers.add(new BufferedReader(new InputStreamReader(this.players.get(i).getInputStream())));
 
-            this.writer1 = new PrintWriter(new OutputStreamWriter(player1.getOutputStream()), true);
-            this.writer2 = new PrintWriter(new OutputStreamWriter(player2.getOutputStream()), true);
-            this.reader1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
-            this.reader2 = new BufferedReader(new InputStreamReader(player2.getInputStream()));
 
-            //decide turn
-            writer1.println("turn");
-            writer2.println("wait");
+            //get size
+            avaiable=this.players.size();
 
-            boolean check = true;
+            this.to = new HashMap<String, PrintWriter>(avaiable);
+            this.from = new HashMap<BufferedReader, String>(avaiable);
+
+
+
+
+
+
+
+            //send ok to players
+            for(PrintWriter writer:writers)
+                writer.println("ok");
+
+
+
+            //get and send player names
+            List<String> names = new LinkedList<String>();
+
+            for(BufferedReader reader: readers)
+                names.add(reader.readLine());
+
+            for(PrintWriter writer: writers){
+                for (String name: names)
+                    writer.println("playername"+" "+name);
+            }
+
+
+
+            // map player names to sockets
+
+            for(int i=0;i<avaiable;i++)
+                to.put(names.get(i), writers.get(i));
+
+            for(int i=0;i<avaiable;i++)
+                from.put(readers.get(i), names.get(i));
+
+
+            for(int i=0; i<avaiable;i++){
+                System.out.println(names.get(i));
+            }
+
+
+            ///////////
+
+
+            // send different card to every player
+            Stack<String> cards = new Stack<String>();
+            setUpCards(cards);
+
+            Collections.shuffle(cards);
+
+            for(PrintWriter writer: writers){
+
+                writer.println("card"+" "+cards.pop());
+                Collections.shuffle(cards);
+                writer.println("card"+" "+cards.pop());
+
+
+            }
+
+
+
+
+            //pick random player to start
+
+            int rand = (int) (Math.random() * players.size());
+
+            System.out.println("Random start");
+
+            for(int i=0;i<writers.size();i++) {
+                if(i==rand)
+                    writers.get(i).println("turn");
+                else
+                    writers.get(i).println("wait");
+            }
+
+            System.out.println("random finish");
+
+
+
+
+            boolean running = true;
+
+            int turn =rand;
 
             //game loop
-            while(check&&(isRunning(player1,player2))){
-                while(isRunning(player1,player2)){
-                    String msg = reader1.readLine();
-                    if(msg==null)
+            while (running){
+
+                System.out.println("Avaiable players: "+avaiable);
+
+                String input = readers.get(turn).readLine();
+
+                System.out.println(input);
+
+
+                if(input==null){
+                    System.out.println(players.get(turn).getInetAddress().getHostAddress()+" left the game");
+                    //players.remove(turn);
+                    writers.remove(turn);
+                    readers.remove(turn);
+
+                    avaiable--;
+                    if(avaiable==1)
+                        throw new IOException();
+
+                    if(turn>=writers.size())
+                        turn=0;
+
+                }
+
+                if(input.equals("next")){
+                    System.out.println("next player");
+                    turn++;
+                    if(turn>=writers.size())
+                        turn=0;
+                    writers.get(turn).println("turn");
+
+
+                }
+                if (input.equals("exit")){
+                    writers.get(turn).println("lose");
+
+                    writers.remove(turn);
+                    readers.remove(turn);
+
+                    avaiable--;
+                    System.out.println("players avaiable: "+avaiable);
+                    if(avaiable==1){
+                        writers.get(0).println("win");
                         break;
-                    else if(msg.equals("next")){
-                        writer2.println("turn");
-                        break;
-                    }else
-                        System.out.println(msg);
-                    if(msg.equals("exit")){
-                        writer2.println("win");
-                        writer1.println("lose");
-                        check=false;
-                        break;
+                    }
+
+                }
+
+                if(input.startsWith("income")||input.startsWith("foreignaid")){
+
+                    //pass message to other players
+                    for(int i=0;i<avaiable;i++){
+                        if(i==turn)
+                            continue;
+                        writers.get(i).println(input);
                     }
                 }
 
-                while (isRunning(player1,player2)){
-                    String msg = reader2.readLine();
-                    if(msg==null)
-                        break;
-                    else if(msg.equals("next")){
-                        writer1.println("turn");
-                        break;
-                    }else
-                        System.out.println(msg);
-                    if(msg.equals("exit")){
-                        writer1.println("win");
-                        writer2.println("lose");
-                        check=false;
-                        break;
-                    }
+
+                /**
+
+                if(input.startsWith("exchange")) {
+
+                 input looks like: exchange playername
+
+                 TODO:
+
+                 get two cards from stack
+
+                 send two card to player (use writers.get(turn).println(cardname))
+
+                 receive exchanged cards (use readers.get(0).readline())
+
+                 push received cards back to stack
+
+
+
+
+
+                };
+
+
+
+                if(input.startsWith("coup")){
+
+                 input message looks like coup onPlayer
+
+                 TODO:
+
+                 send message to other players (everyone except turn)
 
                 }
+
+                 **/
+
+
+
             }
 
 
-            System.out.println("Connection to "+player1.getInetAddress().getHostAddress()+" closed");
-            System.out.println("Connection to "+player2.getInetAddress().getHostAddress()+" closed");
-        } catch (IOException e) {
-            e.printStackTrace();
-            //work in progress / the remaining player wins
-            if(player1.isConnected()){
-                try {
-                    this.writer1 =new PrintWriter(new OutputStreamWriter(player1.getOutputStream()), true);
-                    writer1.println("win");
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }else if(player2.isConnected()){
-                try {
-                    this.writer2 =new PrintWriter(new OutputStreamWriter(player2.getOutputStream()), true);
-                    writer2.println("win");
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            System.out.println("Game finished!");
+
+
+
+
         }
+        catch (IOException e){
+            e.printStackTrace();
+
+            if(avaiable==1)
+                writers.get(0).println("win");
+
+
+        }
+
+
+
 
     }
 
-    private boolean isRunning(Socket socket1, Socket socket2){return socket1.isConnected()&&socket2.isConnected();}
+    private void setUpCards(Stack<String> stack){
+        stack.add("contessa");
+        stack.add("contessa");
+        stack.add("contessa");
+        stack.add("duke");
+        stack.add("duke");
+        stack.add("duke");
+        stack.add("ambassador");
+        stack.add("ambassador");
+        stack.add("ambassador");
+        stack.add("captain");
+        stack.add("captain");
+        stack.add("captain");
+        stack.add("assassin");
+        stack.add("assassin");
+        stack.add("assassin");
+    }
+
+
 }
 
 

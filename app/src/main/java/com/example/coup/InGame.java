@@ -105,7 +105,7 @@ public class InGame extends Activity {
         return null;
     }
 
-    /*//should return boolean, if someone clicked block Action
+
     public boolean waitForBlock(List<Player> Playerscanblock){
 
         return false;
@@ -421,9 +421,9 @@ public class InGame extends Activity {
         tvOpp3name.setText(opponents.get(2));
         }
 
-        tvOpp1cards.setText("2");
-        tvOpp2cards.setText("2");
-        tvOpp3cards.setText("2");
+        //tvOpp1cards.setText("2");
+        //tvOpp2cards.setText("2");
+        //tvOpp3cards.setText("2");
 
         tvOpp1coins.setText("2");
         tvOpp2coins.setText("2");
@@ -759,6 +759,20 @@ public class InGame extends Activity {
         }
 
 
+
+
+    }
+
+    //will be removed later
+    private void disableNotImplemented(){
+
+        Assasinate.setEnabled(false);
+        Tax.setEnabled(false);
+        Exchange.setEnabled(false);
+        Steal.setEnabled(false);
+        challenge.setEnabled(false);
+        Coup.setEnabled(false);
+
     }
     /****************AsynTask classes********/
 
@@ -776,6 +790,7 @@ public class InGame extends Activity {
             next.setEnabled(false);
             textView.setVisibility(View.INVISIBLE);
             opponents = new LinkedList<>();
+            disableNotImplemented();
 
         }
 
@@ -809,6 +824,7 @@ public class InGame extends Activity {
 
                     }
 
+                    //set players
                     List<Player> players = new LinkedList<>();
 
                     for(String playername: playernames)
@@ -825,6 +841,50 @@ public class InGame extends Activity {
                             continue;
                         opponents.add(playername);
                     }
+
+                    //get associated card names from server
+                    List<String> cardnames = new LinkedList<>();
+
+                    while(msg.startsWith("card")){
+                        Log.e("DEBUG", msg);
+                        split=msg.split(" ");
+                        cardnames.add(split[1]);
+                        msg=connection.getMessage();
+                    }
+
+
+                    //get starting cards
+                    List<Card> cards = new LinkedList<>();
+
+                    for(String cardname: cardnames){
+
+                        if(cardname.equals("contessa"))
+                            cards.add(new Card(CardType.CONTESSA));
+                        if(cardname.equals("duke"))
+                            cards.add(new Card(CardType.DUKE));
+                        if(cardname.equals("captain"))
+                            cards.add(new Card(CardType.CAPTAIN));
+                        if(cardname.equals("ambassador"))
+                            cards.add(new Card(CardType.AMBASSADOR));
+                        if(cardname.equals("assassin"))
+                            cards.add(new Card(CardType.ASSASSIN));
+
+                    }
+
+                    //set starting cards
+                    for(Player p : game.getPlayers())
+                        if(p.getName().equals(name)){
+                            p.setCards(cards);
+                            player=p;
+                        }
+
+
+
+
+
+
+
+
 
                     Log.e("DEBUG CONNECTTAST", ""+opponents.size());
 
@@ -889,6 +949,8 @@ public class InGame extends Activity {
                     timer.setVisibility(View.INVISIBLE);
 
                 }
+
+                settingCardImagesAtStartOfGame();
 
 
                 ReadTask read = new ReadTask();
@@ -972,6 +1034,34 @@ public class InGame extends Activity {
 
 
                     }
+
+                    /**
+                     * player receives cards from server on exchange
+                    if(msg.startsWith("card")){
+
+                     TODO:
+                     get two card from server, add them to cardtochose
+
+
+
+
+                     }
+
+                     */
+
+                    /**
+                     *
+                    if(msg.startsWith("coup")){
+
+                     TODO:
+                     split msg to get playername
+
+                     if playername is equals to this player, the player loses a card
+                     else display playername with message: playername lost an influence
+
+                     }*/
+
+
 
 
 
