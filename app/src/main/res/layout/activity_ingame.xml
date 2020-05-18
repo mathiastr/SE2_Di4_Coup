@@ -6,49 +6,6 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/textView_timer"
-        android:layout_width="98dp"
-        android:layout_height="wrap_content"
-        android:text="Your turn: 00:00"
-        tools:layout_editor_absoluteX="29dp"
-        tools:layout_editor_absoluteY="550dp" />
-
-
-    <TextView
-        android:id="@+id/textView_coins"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your coins: X"
-        tools:layout_editor_absoluteX="281dp"
-        tools:layout_editor_absoluteY="573dp" />
-
-
-    <TextView
-        android:id="@+id/textView_action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User did SOMETHING."
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="499dp" />
-
-    <TextView
-        android:id="@+id/textView_player_NAME"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Player Name"
-        tools:layout_editor_absoluteX="291dp"
-        tools:layout_editor_absoluteY="546dp" />
-
-    <Button
-        android:id="@+id/btnOK"
-        android:layout_width="49dp"
-        android:layout_height="39dp"
-        android:text="OK"
-        tools:layout_editor_absoluteX="163dp"
-        tools:layout_editor_absoluteY="555dp" />
-
     <LinearLayout
         android:id="@+id/container_enemies"
         android:layout_width="409dp"
@@ -382,6 +339,71 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/ambassador"
             android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_game_info"
+        android:layout_width="409dp"
+        android:layout_height="97dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="493dp">
+
+        <TextView
+            android:id="@+id/textView_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:gravity="center_horizontal"
+            android:text="User did SOMETHING."
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+        <LinearLayout
+            android:id="@+id/container_game_info_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView_timer"
+                android:layout_width="71dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:text="Your turn: 00:00" />
+
+            <Button
+                android:id="@+id/btnOK"
+                android:layout_width="49dp"
+                android:layout_height="39dp"
+                android:layout_gravity="center"
+                android:text="OK" />
+
+            <LinearLayout
+                android:id="@+id/container_game_coins"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView_player_NAME"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Player Name" />
+
+                <TextView
+                    android:id="@+id/textView_coins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Your coins: X" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 
