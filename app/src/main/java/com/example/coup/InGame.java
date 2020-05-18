@@ -989,7 +989,7 @@ public class InGame extends Activity {
         protected String doInBackground(Void... voids) {
             String msg=null;
 			
-			/**/
+			/***/
 
             try {
                 while (true){
