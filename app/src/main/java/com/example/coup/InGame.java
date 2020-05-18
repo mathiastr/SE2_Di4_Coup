@@ -988,6 +988,8 @@ public class InGame extends Activity {
         @Override
         protected String doInBackground(Void... voids) {
             String msg=null;
+			
+			/**/
 
             try {
                 while (true){
