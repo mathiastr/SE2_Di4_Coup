@@ -1028,6 +1028,8 @@ public class InGame extends Activity {
                 startActivity(i);
             }
 
+            /*remove me*/
+
 
         }
     }
