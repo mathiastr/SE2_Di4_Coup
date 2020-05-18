@@ -65,7 +65,7 @@ public class InGame extends Activity {
 
     Action ChoosenAktion;
     Player attackedPlayer;
-
+    AllActions allActions= new AllActions(game);
     // should return choosen Action and attacked Player
 
     //textviews
@@ -315,17 +315,125 @@ public class InGame extends Activity {
                         coins.setText("Your coins: "+player.getCoins());
                     }
                 });
-
-
-
-
             }
         });
         Exchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCardsToExchange();
-            }});
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("exchange"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                player=me;
+                                showCardsToExchange();
+                            }
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Exchange.setEnabled(false);
+                        textView.setText("You did Exchange");
+                    }
+                });
+            }
+        });
+
+        Assasinate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("assassinate"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                player=me;
+                                choosePlayer();
+                                allActions.assassinate(player,attackedPlayer);
+                                updateCoins();
+                            }
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Assasinate.setEnabled(false);
+                        textView.setText("You did Assassinate");
+                    }
+                });
+            }
+        });
+        Steal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("steal"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                player=me;
+                                choosePlayer();
+                                allActions.steal(player,attackedPlayer);
+                                updateCoins();
+                            }
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Assasinate.setEnabled(false);
+                        textView.setText("You did Steal");
+                    }
+                });
+            }
+        });
+
+        Tax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("tax"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                player=me;
+                                choosePlayer();
+                                allActions.tax(player);
+                                updateCoins();
+                            }
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Assasinate.setEnabled(false);
+                        textView.setText("You did Tax");
+                    }
+                });
+            }
+        });
+
 
 
     }

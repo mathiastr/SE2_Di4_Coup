@@ -160,7 +160,7 @@ public class PlayerThread extends Thread {
                 }
 
                 if(input.startsWith("income")||input.startsWith("coup")||input.startsWith("challange")
-                ||input.startsWith("foreignaid")){
+                ||input.startsWith("foreignaid")||input.startsWith("steal")||input.startsWith("exchange")||input.startsWith("tax")||input.startsWith("assassinate")){
 
                     //pass message to other players
                     for(int i=0;i<avaiable;i++){
@@ -169,10 +169,6 @@ public class PlayerThread extends Thread {
                         writers.get(i).println(input);
                     }
                 }
-
-
-
-
             }
 
 
