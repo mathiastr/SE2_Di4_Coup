@@ -186,7 +186,32 @@ public class PlayerThread extends Thread {
                     }
                 }
 
+                if(input.startsWith("exchange")){
 
+                    for(int i=0;i<avaiable;i++){
+                        if(i==turn)
+                            continue;
+                        writers.get(i).println(input);
+                    }
+
+                    ArrayList<String>cardsToSend= new ArrayList<String>();
+
+                    cardsToSend.add(cards.pop());
+                    cardsToSend.add(cards.pop());
+
+                    for(String cardname: cardsToSend){
+
+                        writers.get(turn).println("card"+" "+cardname);
+                    }
+                    ArraryList<String>cardsToReturn = new ArrayList<String>();
+
+                    cardsToReturn.add(readers.get(turn).readLine());
+                    cardsToReturn.add(readers.get(turn).readLine());
+
+                    for(String cardname: cardsToReturn){
+                        cards.push(cardname);
+                    }
+                    Collections.shuffle(cards);
                 /**
 
                 if(input.startsWith("exchange")) {

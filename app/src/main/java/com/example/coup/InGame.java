@@ -39,7 +39,8 @@ public class InGame extends Activity {
     Game game;
     //private Button next, surrender, challenge;
     //private TextView textView; //Change to TextView Timer
-    ArrayList<Card> cardsToChoose,choosenCard;
+    ArrayList<Card> cardsToChoose,choosenCard,cardsToReturn;
+    ArrayList<String>  cardNamesToReturn;
     Card c1,c2,c3,c4;
     ImageView ivImageC1,ivImageC2,ivImageC3,ivImageC4;
     int count;
@@ -578,16 +579,16 @@ public class InGame extends Activity {
             iv.setImageResource(R.drawable.ambassador);
         }
     }
-    public void showCardsToExchange(){
+    public void showCardsToExchange() {
         TextView tvTextC1 = (TextView) findViewById(R.id.text_playercard1);
         TextView tvTextC2 = (TextView) findViewById(R.id.text_playercard2);
 //        TextView tvTextC3 = (TextView) findViewById(R.id.text_playercard3);
 //        TextView tvTextC4 = (TextView) findViewById(R.id.text_playercard4);
 
-        ivImageC1= (ImageView) findViewById(R.id.card_playercard1);
-        ivImageC2= (ImageView) findViewById(R.id.card_playercard2);
-        ivImageC3= (ImageView) findViewById(R.id.card_playercard3);
-        ivImageC4= (ImageView) findViewById(R.id.card_playercard4);
+        ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
+        ivImageC2 = (ImageView) findViewById(R.id.card_playercard2);
+        ivImageC3 = (ImageView) findViewById(R.id.card_playercard3);
+        ivImageC4 = (ImageView) findViewById(R.id.card_playercard4);
 
         ivImageC3.setVisibility(View.VISIBLE);
         ivImageC4.setVisibility(View.VISIBLE);
@@ -596,170 +597,242 @@ public class InGame extends Activity {
         choosenCard = new ArrayList<>();
 
         c1 = player.getCards().get(0);
-        displayCards(c1.getTypeOfCard(),ivImageC1);
+        displayCards(c1.getTypeOfCard(), ivImageC1);
         cardsToChoose.add(c1);
-        if(player.getCards().size()==2) {
+        if (player.getCards().size() == 2) {
             c2 = player.getCards().get(1);
-            displayCards(c2.getTypeOfCard(),ivImageC2);
+            displayCards(c2.getTypeOfCard(), ivImageC2);
             cardsToChoose.add(c2);
-        }
-        c3=game.dealCard();
-//        cardsToChoose.add(c3);
-        player.addCard(c3);
-        displayCards(c3.getTypeOfCard(),ivImageC3);
-        c4= game.dealCard();
-//        cardsToChoose.add(c3);
-        player.addCard(c4);
-        displayCards(c4.getTypeOfCard(),ivImageC4);
+//        }
+//        c3=game.dealCard();
+////        cardsToChoose.add(c3);
+//        player.addCard(c3);
+//        displayCards(c3.getTypeOfCard(),ivImageC3);
+//        c4= game.dealCard();
+////        cardsToChoose.add(c3);
+//        player.addCard(c4);
+//        displayCards(c4.getTypeOfCard(),ivImageC4);
 
-        Button chooseCards= (Button) findViewById(R.id.btnOK);
-        TextView yourName= (TextView) findViewById(R.id.textView_player_NAME);
-        TextView action= (TextView) findViewById(R.id.textView_action);
+            Button chooseCards = (Button) findViewById(R.id.btnOK);
+            TextView yourName = (TextView) findViewById(R.id.textView_player_NAME);
+            TextView action = (TextView) findViewById(R.id.textView_action);
 
 //        yourName.setVisibility(View.INVISIBLE);
 //        action.setVisibility(View.INVISIBLE);
 //        chooseCards.setVisibility(View.VISIBLE);
-        ivImageC3.setVisibility(View.VISIBLE);
-        ivImageC4.setVisibility(View.VISIBLE);
-        if(player.getCards().size()==4) {
+            ivImageC3.setVisibility(View.VISIBLE);
+            ivImageC4.setVisibility(View.VISIBLE);
+            if (player.getCards().size() == 4) {
 
 
-            count = 0;
-            ivImageC1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count<=2) {
-                        choosenCard.add(c1);
-                        cardsToChoose.remove(c1);
-                        count++;
-                    }
-                }
-            });
-
-            ivImageC2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count<=2) {
-                        choosenCard.add(c2);
-                        cardsToChoose.remove(c2);
-                        count++;
-                    }
-                }
-
-            });
-//                    ivImageC3.setClickable(true);
-            ivImageC3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count<=2) {
-                        choosenCard.add(c3);
-                        cardsToChoose.remove(c3);
-                        count++;
-                    }
-                }
-
-            });
-//                    ivImageC4.setClickable(true);
-            ivImageC4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count<=2) {
-                        choosenCard.add(c4);
-                        cardsToChoose.remove(c4);
-                        count++;
-                    }
-                }
-
-            });
-            chooseCards.setVisibility(View.VISIBLE);
-            chooseCards.setClickable(true);
-            chooseCards.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count==2){
-                        player.setCards(choosenCard);
-                        for(Card c:cardsToChoose){
-                            game.returnCardtoDeck(c);
+                count = 0;
+                ivImageC1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count <= 2) {
+                            choosenCard.add(c1);
+                            cardsToChoose.remove(c1);
+                            count++;
                         }
+                    }
+                });
+
+                ivImageC2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count <= 2) {
+                            choosenCard.add(c2);
+                            cardsToChoose.remove(c2);
+                            count++;
+                        }
+                    }
+
+                });
+//                    ivImageC3.setClickable(true);
+                ivImageC3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count <= 2) {
+                            choosenCard.add(c3);
+                            cardsToChoose.remove(c3);
+                            count++;
+                        }
+                    }
+
+                });
+//                    ivImageC4.setClickable(true);
+                ivImageC4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count <= 2) {
+                            choosenCard.add(c4);
+                            cardsToChoose.remove(c4);
+                            count++;
+                        }
+                    }
+
+                });
+                chooseCards.setVisibility(View.VISIBLE);
+                chooseCards.setClickable(true);
+
+                chooseCards.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cardsToChoose=cardsToReturn;
+                        cardNamesToReturn = new ArrayList<>();
+
+                        for(Card c :cardsToReturn) {
+                            if (c.getTypeOfCard().equals(CardType.ASSASSIN)) {
+                                cardNamesToReturn.add("assassin");
+                            }
+                            if (c.getTypeOfCard().equals(CardType.DUKE)) {
+                                cardNamesToReturn.add("duke");
+                            }
+                            if (c.getTypeOfCard().equals(CardType.CONTESSA)) {
+                                cardNamesToReturn.add("contessa");
+                            }
+                            if (c.getTypeOfCard().equals(CardType.AMBASSADOR)) {
+                                cardNamesToReturn.add("ambassador");
+                            }
+                            if (c.getTypeOfCard().equals(CardType.CAPTAIN)) {
+                                cardNamesToReturn.add("captain");
+                            }
+                        }
+                        for(String cardname: cardNamesToReturn){
+                            connection.sendMessage(cardname);
+                        }
+                        if (count == 2) {
+                        player.setCards(choosenCard);
+//                        for(Card c:cardsToChoose){
+//                            game.returnCardtoDeck(c);
+//                        }
+
+
+                            ivImageC1.setVisibility(View.INVISIBLE);
+                            ivImageC2.setVisibility(View.INVISIBLE);
+                            ivImageC3.setVisibility(View.INVISIBLE);
+                            ivImageC4.setVisibility(View.INVISIBLE);
+                            settingCardImagesAtStartOfGame();
+//                        game.shuffleCards();
+                        }
+                    }
+                });
+            } else if (player.getCards().size() == 1) {
+                ivImageC3.setVisibility(View.VISIBLE);
+                ivImageC4.setVisibility(View.VISIBLE);
+                count = 0;
+                if (count <= 1 && ivImageC1.getVisibility() == View.VISIBLE) {
+                    ivImageC1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            choosenCard.add(c1);
+                            cardsToChoose.remove(c1);
+                            count++;
+                        }
+                    });
+                }
+                if (count <= 1 && ivImageC2.getVisibility() == View.VISIBLE) {
+                    ivImageC2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            choosenCard.add(c2);
+                            cardsToChoose.remove(c2);
+                            count++;
+                        }
+                    });
+                }
+                if (count <= 1) {
+                    ivImageC3.setClickable(true);
+                    ivImageC3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            choosenCard.add(c3);
+                            cardsToChoose.remove(c3);
+                            count++;
+                        }
+                    });
+                }
+                if (count <= 1) {
+                    ivImageC4.setClickable(true);
+                    ivImageC4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            choosenCard.add(c4);
+                            cardsToChoose.remove(c4);
+                            count++;
+                        }
+                    });
+                }
+            }
+            if (count == 1) {
+                chooseCards.setVisibility(View.VISIBLE);
+                chooseCards.setClickable(true);
+                chooseCards.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cardsToChoose=cardsToReturn;
+                        cardNamesToReturn = new ArrayList<>();
+
+                        for(Card c :cardsToReturn) {
+                            if (c.getTypeOfCard().equals(CardType.ASSASSIN)) {
+                                cardNamesToReturn.add("assassin");
+                            }
+                            if (c.getTypeOfCard().equals(CardType.DUKE)) {
+                                cardNamesToReturn.add("duke");
+                            }
+                            if (c.getTypeOfCard().equals(CardType.CONTESSA)) {
+                                cardNamesToReturn.add("contessa");
+                            }
+                            if (c.getTypeOfCard().equals(CardType.AMBASSADOR)) {
+                                cardNamesToReturn.add("ambassador");
+                            }
+                            if (c.getTypeOfCard().equals(CardType.CAPTAIN)) {
+                                cardNamesToReturn.add("captain");
+                            }
+                        }
+                        for(String cardname: cardNamesToReturn){
+                            connection.sendMessage(cardname);
+                        }
+                    player.setCards(choosenCard);
+//                    for(Card c:cardsToChoose){
+//                        game.returnCardtoDeck(c);
+//                    }
                         ivImageC1.setVisibility(View.INVISIBLE);
                         ivImageC2.setVisibility(View.INVISIBLE);
                         ivImageC3.setVisibility(View.INVISIBLE);
                         ivImageC4.setVisibility(View.INVISIBLE);
                         settingCardImagesAtStartOfGame();
-                        game.shuffleCards();
+//                    game.shuffleCards();
+
                     }
-                }
-            });
+                });
+
+            }
+
+
         }
-        else if(player.getCards().size()==1){
-            ivImageC3.setVisibility(View.VISIBLE);
-            ivImageC4.setVisibility(View.VISIBLE);
-            count=0;
-            if(count<=1&&ivImageC1.getVisibility()==View.VISIBLE){
-                ivImageC1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        choosenCard.add(c1);
-                        cardsToChoose.remove(c1);
-                        count++;
-                    }
-                });
-            } if(count<=1&&ivImageC2.getVisibility()==View.VISIBLE){
-                ivImageC2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        choosenCard.add(c2);
-                        cardsToChoose.remove(c2);
-                        count++;
-                    }
-                });
+        cardNamesToReturn = new ArrayList<>();
+
+        for(Card c :cardsToReturn) {
+            if (c.getTypeOfCard().equals(CardType.ASSASSIN)) {
+                cardNamesToReturn.add("assassin");
             }
-            if(count<=1) {
-                ivImageC3.setClickable(true);
-                ivImageC3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        choosenCard.add(c3);
-                        cardsToChoose.remove(c3);
-                        count++;
-                    }
-                });
+            if (c.getTypeOfCard().equals(CardType.DUKE)) {
+                cardNamesToReturn.add("duke");
             }
-            if(count<=1) {
-                ivImageC4.setClickable(true);
-                ivImageC4.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        choosenCard.add(c4);
-                        cardsToChoose.remove(c4);
-                        count++;
-                    }
-                });
+            if (c.getTypeOfCard().equals(CardType.CONTESSA)) {
+                cardNamesToReturn.add("contessa");
+            }
+            if (c.getTypeOfCard().equals(CardType.AMBASSADOR)) {
+                cardNamesToReturn.add("ambassador");
+            }
+            if (c.getTypeOfCard().equals(CardType.CAPTAIN)) {
+                cardNamesToReturn.add("captain");
             }
         }
-        if(count==1){
-            chooseCards.setVisibility(View.VISIBLE);
-            chooseCards.setClickable(true);
-            chooseCards.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    player.setCards(choosenCard);
-                    for(Card c:cardsToChoose){
-                        game.returnCardtoDeck(c);
-                    }
-                    ivImageC1.setVisibility(View.INVISIBLE);
-                    ivImageC2.setVisibility(View.INVISIBLE);
-                    ivImageC3.setVisibility(View.INVISIBLE);
-                    ivImageC4.setVisibility(View.INVISIBLE);
-                    settingCardImagesAtStartOfGame();
-                    game.shuffleCards();
-
-                }
-            });
-        }
-
-
-
+            for(String cardname: cardNamesToReturn){
+                connection.sendMessage(cardname);
+            }
 
     }
 
@@ -993,6 +1066,7 @@ public class InGame extends Activity {
                                 next.setEnabled(true);
                                 Income.setEnabled(true);
                                 Foreign_Aid.setEnabled(true);
+                                Exchange.setEnabled(true);
                                 textView.setText("Your turn");
                                 timer.setVisibility(View.VISIBLE);
                                 countDown.start();
@@ -1021,6 +1095,38 @@ public class InGame extends Activity {
                                 updateCoinsOnForeignAid(split[1]);
                             }
                         });
+
+
+                    }
+
+                    if(msg.startsWith("card")){
+                        cardsToChoose = new ArrayList<>();
+                        ArrayList<String> cardnames = new ArrayList<>();
+                        Log.e("DEBUG", msg);
+                        cardnames.add(split[1]);
+                        msg=connection.getMessage();
+
+                        String[] second = msg.split(" ");
+                        cardnames.add(second[1]);
+
+
+                        ArrayList<Card> list = new ArrayList<>();
+
+                        for(String cardname: cardnames){
+
+                            if(cardname.equals("contessa"))
+                                cardsToChoose.add(new Card(CardType.CONTESSA));
+                            if(cardname.equals("duke"))
+                                cardsToChoose.add(new Card(CardType.DUKE));
+                            if(cardname.equals("captain"))
+                                cardsToChoose.add(new Card(CardType.CAPTAIN));
+                            if(cardname.equals("ambassador"))
+                                cardsToChoose.add(new Card(CardType.AMBASSADOR));
+                            if(cardname.equals("assassin"))
+                                cardsToChoose.add(new Card(CardType.ASSASSIN));
+
+                        }
+
 
 
                     }
