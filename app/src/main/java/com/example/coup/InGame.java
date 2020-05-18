@@ -841,6 +841,43 @@ public class InGame extends Activity {
                         opponents.add(playername);
                     }
 
+
+                    //get associated card names from server
+                    List<String> cardnames = new LinkedList<>();
+
+                    while(msg.startsWith("card")){
+                        Log.e("DEBUG", msg);
+                        split=msg.split(" ");
+                        cardnames.add(split[1]);
+                        msg=connection.getMessage();
+                    }
+
+
+                    //get starting cards
+                    List<Card> cards = new LinkedList<>();
+
+                    for(String cardname: cardnames){
+
+                        if(cardname.equals("contessa"))
+                            cards.add(new Card(CardType.CONTESSA));
+                        if(cardname.equals("duke"))
+                            cards.add(new Card(CardType.DUKE));
+                        if(cardname.equals("captain"))
+                            cards.add(new Card(CardType.CAPTAIN));
+                        if(cardname.equals("ambassador"))
+                            cards.add(new Card(CardType.AMBASSADOR));
+                        if(cardname.equals("assassin"))
+                            cards.add(new Card(CardType.ASSASSIN));
+
+                    }
+
+                    //set starting cards
+                    for(Player p : game.getPlayers())
+                        if(p.getName().equals(name)){
+                            p.setCards(cards);
+                            player=p;
+                        }
+
                     Log.e("DEBUG CONNECTTAST", ""+opponents.size());
 
 
@@ -990,6 +1027,32 @@ public class InGame extends Activity {
 					
 					/**/
 
+                    /**
+                     * player receives cards from server on exchange
+                     if(msg.startsWith("card")){
+
+                     TODO:
+                     get two card from server, add them to cardtochose
+
+
+
+
+                     }
+
+                     */
+
+                    /**
+                     *
+                     if(msg.startsWith("coup")){
+
+                     TODO:
+                     split msg to get playername
+
+                     if playername is equals to this player, the player loses a card
+                     else display playername with message: playername lost an influence
+
+                     }*/
+
 
 
                 }
@@ -1028,7 +1091,7 @@ public class InGame extends Activity {
                 startActivity(i);
             }
 
-            /*remove me*/
+
 
 
         }

@@ -87,6 +87,23 @@ public class PlayerThread extends Thread {
             ///////////
 
 
+            // send different card to every player
+            Stack<String> cards = new Stack<String>();
+            setUpCards(cards);
+
+            Collections.shuffle(cards);
+
+            for(PrintWriter writer: writers){
+
+                writer.println("card"+" "+cards.pop());
+                Collections.shuffle(cards);
+                writer.println("card"+" "+cards.pop());
+
+
+            }
+
+
+
 
             //pick random player to start
 
@@ -159,8 +176,7 @@ public class PlayerThread extends Thread {
 
                 }
 
-                if(input.startsWith("income")||input.startsWith("coup")||input.startsWith("challange")
-                ||input.startsWith("foreignaid")){
+                if(input.startsWith("income")||input.startsWith("foreignaid")){
 
                     //pass message to other players
                     for(int i=0;i<avaiable;i++){
@@ -170,6 +186,42 @@ public class PlayerThread extends Thread {
                     }
                 }
 
+
+                /**
+
+                if(input.startsWith("exchange")) {
+
+                 input looks like: exchange playername
+
+                 TODO:
+
+                 get two cards from stack
+
+                 send two card to player (use writers.get(turn).println(cardname))
+
+                 receive exchanged cards (use readers.get(0).readline())
+
+                 push received cards back to stack
+
+
+
+
+
+                };
+
+
+
+                if(input.startsWith("coup")){
+
+                 input message looks like coup onPlayer
+
+                 TODO:
+
+                 send message to other players (everyone except turn)
+
+                }
+
+                 **/
 
 
 
@@ -195,6 +247,26 @@ public class PlayerThread extends Thread {
 
 
     }
+
+    private void setUpCards(Stack<String> stack){
+        stack.add("contessa");
+        stack.add("contessa");
+        stack.add("contessa");
+        stack.add("duke");
+        stack.add("duke");
+        stack.add("duke");
+        stack.add("ambassador");
+        stack.add("ambassador");
+        stack.add("ambassador");
+        stack.add("captain");
+        stack.add("captain");
+        stack.add("captain");
+        stack.add("assassin");
+        stack.add("assassin");
+        stack.add("assassin");
+    }
+
+
 }
 
 
