@@ -3,6 +3,7 @@ package com.example.coup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -117,8 +118,6 @@ public class InGame extends Activity {
     @Override
 
 
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -168,12 +167,10 @@ public class InGame extends Activity {
         };
 
 
-
         connection = new ServerConnection();
 
         handler=new Handler();
 
-        
 
         Assasinate = (Button)findViewById(R.id.button_assassinate);
         Tax = (Button)findViewById(R.id.button_tax);
@@ -214,13 +211,6 @@ public class InGame extends Activity {
         Income.setOnClickListener(clickListener);
         Foreign_Aid.setOnClickListener(clickListener);
         Coup.setOnClickListener(clickListener);
-
-
-
-
-
-
-
 
 
         ConnectTask connectTask = new ConnectTask();
@@ -282,8 +272,6 @@ public class InGame extends Activity {
                 });
 
 
-
-
             }
         });
 
@@ -318,8 +306,6 @@ public class InGame extends Activity {
                 });
 
 
-
-
             }
         });
         Exchange.setOnClickListener(new View.OnClickListener() {
@@ -328,9 +314,38 @@ public class InGame extends Activity {
                 showCardsToExchange();
             }});
 
+        challenge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                challengeConfirmation();
+            }
+        });
+
 
     }
 
+
+    public void challengeConfirmation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //TODO: Add what happened last turn to text.
+        builder.setMessage("Are you sure you want to challenge the last action?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog challengeDialog = builder.create();
+        challengeDialog.show();
+    }
 
     public void choosePlayer(){
 
@@ -843,7 +858,7 @@ public class InGame extends Activity {
         Tax.setEnabled(false);
         Exchange.setEnabled(false);
         Steal.setEnabled(false);
-        challenge.setEnabled(false);
+        //challenge.setEnabled(false);
         Coup.setEnabled(false);
 
     }
