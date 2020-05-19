@@ -311,15 +311,40 @@ public class InGame extends Activity {
         Exchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCardsToExchange();
-            }});
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("exchange"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                player=me;
+                            }
+                        showCardsToExchange();
+                    }
+                });
 
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Exchange.setEnabled(false);
+                        textView.setText("You did exchange");
+                    }
+                });
+
+
+            }
+        });
         challenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 challengeConfirmation();
             }
         });
+
+
 
 
     }
@@ -595,10 +620,6 @@ public class InGame extends Activity {
         }
     }
     public void showCardsToExchange() {
-        TextView tvTextC1 = (TextView) findViewById(R.id.text_playercard1);
-        TextView tvTextC2 = (TextView) findViewById(R.id.text_playercard2);
-//        TextView tvTextC3 = (TextView) findViewById(R.id.text_playercard3);
-//        TextView tvTextC4 = (TextView) findViewById(R.id.text_playercard4);
 
         ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
         ivImageC2 = (ImageView) findViewById(R.id.card_playercard2);
@@ -629,12 +650,9 @@ public class InGame extends Activity {
 //        displayCards(c4.getTypeOfCard(),ivImageC4);
 
             Button chooseCards = (Button) findViewById(R.id.btnOK);
-            TextView yourName = (TextView) findViewById(R.id.textView_player_NAME);
-            TextView action = (TextView) findViewById(R.id.textView_action);
 
-//        yourName.setVisibility(View.INVISIBLE);
-//        action.setVisibility(View.INVISIBLE);
-//        chooseCards.setVisibility(View.VISIBLE);
+
+
             ivImageC3.setVisibility(View.VISIBLE);
             ivImageC4.setVisibility(View.VISIBLE);
             if (player.getCards().size() == 4) {
@@ -693,26 +711,11 @@ public class InGame extends Activity {
                 chooseCards.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        cardsToChoose=cardsToReturn;
+                        cardsToReturn=cardsToChoose;
                         cardNamesToReturn = new ArrayList<>();
 
-                        for(Card c :cardsToReturn) {
-                            if (c.getTypeOfCard().equals(CardType.ASSASSIN)) {
-                                cardNamesToReturn.add("assassin");
-                            }
-                            if (c.getTypeOfCard().equals(CardType.DUKE)) {
-                                cardNamesToReturn.add("duke");
-                            }
-                            if (c.getTypeOfCard().equals(CardType.CONTESSA)) {
-                                cardNamesToReturn.add("contessa");
-                            }
-                            if (c.getTypeOfCard().equals(CardType.AMBASSADOR)) {
-                                cardNamesToReturn.add("ambassador");
-                            }
-                            if (c.getTypeOfCard().equals(CardType.CAPTAIN)) {
-                                cardNamesToReturn.add("captain");
-                            }
-                        }
+                        cardNamesToReturn=convertCardTypeToStringName(cardsToReturn);
+
                         for(String cardname: cardNamesToReturn){
                             connection.sendMessage(cardname);
                         }
@@ -785,26 +788,11 @@ public class InGame extends Activity {
                 chooseCards.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        cardsToChoose=cardsToReturn;
+                        cardsToReturn=cardsToChoose;
                         cardNamesToReturn = new ArrayList<>();
 
-                        for(Card c :cardsToReturn) {
-                            if (c.getTypeOfCard().equals(CardType.ASSASSIN)) {
-                                cardNamesToReturn.add("assassin");
-                            }
-                            if (c.getTypeOfCard().equals(CardType.DUKE)) {
-                                cardNamesToReturn.add("duke");
-                            }
-                            if (c.getTypeOfCard().equals(CardType.CONTESSA)) {
-                                cardNamesToReturn.add("contessa");
-                            }
-                            if (c.getTypeOfCard().equals(CardType.AMBASSADOR)) {
-                                cardNamesToReturn.add("ambassador");
-                            }
-                            if (c.getTypeOfCard().equals(CardType.CAPTAIN)) {
-                                cardNamesToReturn.add("captain");
-                            }
-                        }
+                        cardNamesToReturn=convertCardTypeToStringName(cardsToReturn);
+
                         for(String cardname: cardNamesToReturn){
                             connection.sendMessage(cardname);
                         }
@@ -826,30 +814,34 @@ public class InGame extends Activity {
 
 
         }
-        cardNamesToReturn = new ArrayList<>();
-
-        for(Card c :cardsToReturn) {
-            if (c.getTypeOfCard().equals(CardType.ASSASSIN)) {
-                cardNamesToReturn.add("assassin");
-            }
-            if (c.getTypeOfCard().equals(CardType.DUKE)) {
-                cardNamesToReturn.add("duke");
-            }
-            if (c.getTypeOfCard().equals(CardType.CONTESSA)) {
-                cardNamesToReturn.add("contessa");
-            }
-            if (c.getTypeOfCard().equals(CardType.AMBASSADOR)) {
-                cardNamesToReturn.add("ambassador");
-            }
-            if (c.getTypeOfCard().equals(CardType.CAPTAIN)) {
-                cardNamesToReturn.add("captain");
-            }
-        }
-            for(String cardname: cardNamesToReturn){
-                connection.sendMessage(cardname);
-            }
+//        cardNamesToReturn = new ArrayList<>();
+//        cardNamesToReturn=convertCardTypeToStringName(cardsToReturn);
+//
+//            for(String cardname: cardNamesToReturn){
+//                connection.sendMessage(cardname);
+//            }
 
     }
+    public ArrayList<String> convertCardTypeToStringName(ArrayList listOfCards){
+        ArrayList<String> convertedList= new ArrayList<>();
+        for(Card c :cardsToReturn) {
+            if (c.getTypeOfCard().equals(CardType.ASSASSIN)) {
+                convertedList.add("assassin");
+            }
+            if (c.getTypeOfCard().equals(CardType.DUKE)) {
+                convertedList.add("duke");
+            }
+            if (c.getTypeOfCard().equals(CardType.CONTESSA)) {
+                convertedList.add("contessa");
+            }
+            if (c.getTypeOfCard().equals(CardType.AMBASSADOR)) {
+                convertedList.add("ambassador");
+            }
+            if (c.getTypeOfCard().equals(CardType.CAPTAIN)) {
+                convertedList.add("captain");
+            }
+        }
+    return convertedList;}
 
     //will be removed later
     private void disableNotImplemented(){
