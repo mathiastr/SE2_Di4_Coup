@@ -266,6 +266,9 @@ public class InGame extends Activity {
                     public void run() {
                         Income.setEnabled(false);
                         Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        Steal.setEnabled(false);
                         textView.setText("You did income");
                         coins.setText("Your coins: "+player.getCoins());
                     }
@@ -300,6 +303,9 @@ public class InGame extends Activity {
                     public void run() {
                         Income.setEnabled(false);
                         Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        Steal.setEnabled(false);
                         textView.setText("You did foreign aid");
                         coins.setText("Your coins: "+player.getCoins());
                     }
@@ -329,7 +335,11 @@ public class InGame extends Activity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        Tax.setEnabled(false);
                         Exchange.setEnabled(false);
+                        Steal.setEnabled(false);
                         textView.setText("You did exchange");
                     }
                 });
@@ -337,6 +347,82 @@ public class InGame extends Activity {
 
             }
         });
+        Tax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("tax"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)) {
+                                me.setCoins(me.getCoins() + 3);
+                                player = me;
+                            }
+
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        Steal.setEnabled(false);
+                        textView.setText("You did tax");
+                        coins.setText("Your coins: "+player.getCoins());
+                    }
+                });
+
+
+            }
+        });
+        Steal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("steal"+" "+name);
+                        //look for me in player list
+                        choosePlayer();
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)) {
+                                me.setCoins(me.getCoins() + 2);
+                                player = me;
+                            }
+                        attackedPlayer.setCoins(attackedPlayer.getCoins()-2);
+
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        textView.setText("You stole from "+attackedPlayer.getName());
+                        coins.setText("Your coins: "+player.getCoins());
+                    }
+                });
+
+
+            }
+        });
+
+
+
+
+
         challenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -548,10 +634,39 @@ public class InGame extends Activity {
 
         }
     }
-    public void updateCoins(){
-        TextView tvPlayerCoins= (TextView) findViewById(R.id.textView_coins);
-        tvPlayerCoins.setText("Your Coins: "+player.getCoins());
+    public void updateCoins(String onPlayer, int coinsAdded){
+        //update coins for enemy 1
+        if(tvOpp1name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()+coinsAdded);
+                    tvOpp1coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
+        //update coins for enemy 2
+        if(tvOpp2name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()+coinsAdded);
+                    tvOpp2coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
+        //update coins for enemy 3
+        if(tvOpp3name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()+coinsAdded);
+                    tvOpp3coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
     }
+
     public void mainPlayerChoosesCardToLose(){
         ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
         ivImageC2 = (ImageView) findViewById(R.id.card_playercard2);
@@ -1074,6 +1189,8 @@ public class InGame extends Activity {
                                 Income.setEnabled(true);
                                 Foreign_Aid.setEnabled(true);
                                 Exchange.setEnabled(true);
+                                Tax.setEnabled(true);
+                                Steal.setEnabled(true);
                                 textView.setText("Your turn");
                                 timer.setVisibility(View.VISIBLE);
                                 countDown.start();
@@ -1092,14 +1209,27 @@ public class InGame extends Activity {
                             }
                         });
                     }
-
-                    if(msg.startsWith("foreignaid")){
+                    if(msg.startsWith("income")){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
-                                textView.setText(split[1]+" used foreign aid");
-                                updateCoinsOnForeignAid(split[1]);
+                                textView.setText(split[1]+" used income");
+                                updateCoinsOnIncome(split[1]);
+                            }
+                        });
+                    }
+
+                    if(msg.startsWith("steal")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                textView.setText(split[1]+" used steal");
+//                                updateCoins();
+                                updateCoins(split[1],2);
+                                updateCoins(attackedPlayer.getName(),-2);
+
                             }
                         });
 
