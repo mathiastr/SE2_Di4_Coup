@@ -65,8 +65,8 @@ public class InGame extends Activity {
 
     Action ChoosenAktion;
     Player attackedPlayer;
+    boolean coupplayed = false;
 
-    // should return choosen Action and attacked Player
 
     //textviews
 
@@ -182,7 +182,7 @@ public class InGame extends Activity {
         Foreign_Aid = (Button)findViewById(R.id.button_foreign_aid);
         Coup = (Button)findViewById(R.id.button_coup);
 
-        View.OnClickListener clickListener = new View.OnClickListener() {
+       /* View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(v == Assasinate){
@@ -215,7 +215,7 @@ public class InGame extends Activity {
         Coup.setOnClickListener(clickListener);
 
 
-
+*/
 
 
 
@@ -326,6 +326,40 @@ public class InGame extends Activity {
             public void onClick(View v) {
                 showCardsToExchange();
             }});
+
+        Coup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doCoup();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("coup"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                me.setCoins(me.getCoins()-7);
+                                player=me;
+
+                            }
+
+                    }
+                });
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        Coup.setEnabled(false);
+                        textView.setText("You did coup");
+                        coins.setText("Your coins: "+player.getCoins());
+                    }
+                });
+
+            }
+        });
 
 
     }
@@ -507,10 +541,47 @@ public class InGame extends Activity {
 
         }
     }
+    //update on coup
+    public void updateCoinsOnCoup(String onPlayer){
+
+        //update coins for enemy 1
+        if(tvOpp1name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()-7);
+                    Log.e("DEBUG INCOME", ""+p.getCoins());
+                    tvOpp1coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
+        //update coins for enemy 2
+        if(tvOpp2name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()-7);
+                    tvOpp2coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
+        //update coins for enemy 3
+        if(tvOpp3name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    p.setCoins(p.getCoins()-7);
+                    tvOpp3coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
+
+    }
     public void updateCoins(){
         TextView tvPlayerCoins= (TextView) findViewById(R.id.textView_coins);
         tvPlayerCoins.setText("Your Coins: "+player.getCoins());
     }
+
     public void mainPlayerChoosesCardToLose(){
         ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
         ivImageC2 = (ImageView) findViewById(R.id.card_playercard2);
@@ -757,6 +828,17 @@ public class InGame extends Activity {
                 }
             });
         }
+
+
+
+
+    }
+
+    public void doCoup(){
+        coupplayed = true;
+        choosePlayer();
+
+
 
 
 
@@ -1041,17 +1123,26 @@ public class InGame extends Activity {
 
                      */
 
-                    /**
-                     *
+
                      if(msg.startsWith("coup")){
+                         final String x = attackedPlayer.getName();
 
-                     TODO:
-                     split msg to get playername
+                         runOnUiThread(new Runnable() {
+                             @Override
+                             public void run() {
 
-                     if playername is equals to this player, the player loses a card
-                     else display playername with message: playername lost an influence
+                                 textView.setText(split[1]+" used coup on "+x);
+                                 updateCoinsOnCoup(split[1]);
+                             }
+                         });
 
-                     }*/
+                 //    TODO:
+                //     split msg to get playername
+
+                  //   if playername is equals to this player, the player loses a card
+                  //   else display playername with message: playername lost an influence
+
+                     }
 
 
 
