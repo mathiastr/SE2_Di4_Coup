@@ -3,6 +3,7 @@ package com.example.coup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,7 +40,8 @@ public class InGame extends Activity {
     Game game;
     //private Button next, surrender, challenge;
     //private TextView textView; //Change to TextView Timer
-    ArrayList<Card> cardsToChoose,choosenCard;
+    ArrayList<Card> cardsToChoose,choosenCard,cardsToReturn;
+    ArrayList<String>  cardNamesToReturn;
     Card c1,c2,c3,c4;
     ImageView ivImageC1,ivImageC2,ivImageC3,ivImageC4;
     int count;
@@ -65,8 +67,8 @@ public class InGame extends Activity {
 
     Action ChoosenAktion;
     Player attackedPlayer;
-    boolean coupplayed = false;
 
+    // should return choosen Action and attacked Player
 
     //textviews
 
@@ -114,8 +116,6 @@ public class InGame extends Activity {
 
 
     @Override
-
-
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,12 +167,10 @@ public class InGame extends Activity {
         };
 
 
-
         connection = new ServerConnection();
 
         handler=new Handler();
 
-        
 
         Assasinate = (Button)findViewById(R.id.button_assassinate);
         Tax = (Button)findViewById(R.id.button_tax);
@@ -182,7 +180,7 @@ public class InGame extends Activity {
         Foreign_Aid = (Button)findViewById(R.id.button_foreign_aid);
         Coup = (Button)findViewById(R.id.button_coup);
 
-       /* View.OnClickListener clickListener = new View.OnClickListener() {
+        View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(v == Assasinate){
@@ -213,13 +211,6 @@ public class InGame extends Activity {
         Income.setOnClickListener(clickListener);
         Foreign_Aid.setOnClickListener(clickListener);
         Coup.setOnClickListener(clickListener);
-
-
-*/
-
-
-
-
 
 
         ConnectTask connectTask = new ConnectTask();
@@ -275,12 +266,13 @@ public class InGame extends Activity {
                     public void run() {
                         Income.setEnabled(false);
                         Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        Steal.setEnabled(false);
                         textView.setText("You did income");
                         coins.setText("Your coins: "+player.getCoins());
                     }
                 });
-
-
 
 
             }
@@ -311,12 +303,13 @@ public class InGame extends Activity {
                     public void run() {
                         Income.setEnabled(false);
                         Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        Steal.setEnabled(false);
                         textView.setText("You did foreign aid");
                         coins.setText("Your coins: "+player.getCoins());
                     }
                 });
-
-
 
 
             }
@@ -324,27 +317,19 @@ public class InGame extends Activity {
         Exchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCardsToExchange();
-            }});
-
-        Coup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doCoup();
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        connection.sendMessage("coup"+" "+name);
+                        connection.sendMessage("exchange"+" "+name);
                         //look for me in player list
                         for(Player me:game.getPlayers())
                             if(me.getName().equals(name)){
-                                me.setCoins(me.getCoins()-7);
                                 player=me;
-
                             }
-
+                        showCardsToExchange();
                     }
                 });
+
                 thread.start();
 
                 handler.post(new Runnable() {
@@ -352,18 +337,126 @@ public class InGame extends Activity {
                     public void run() {
                         Income.setEnabled(false);
                         Foreign_Aid.setEnabled(false);
-                        Coup.setEnabled(false);
-                        textView.setText("You did coup");
+                        Tax.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Steal.setEnabled(false);
+                        textView.setText("You did exchange");
+                    }
+                });
+
+
+            }
+        });
+        Tax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("tax"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)) {
+                                me.setCoins(me.getCoins() + 3);
+                                player = me;
+                            }
+
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        Steal.setEnabled(false);
+                        textView.setText("You did tax");
                         coins.setText("Your coins: "+player.getCoins());
                     }
                 });
+
+
+            }
+        });
+        Steal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("steal"+" "+name);
+                        //look for me in player list
+                        choosePlayer();
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)) {
+                                me.setCoins(me.getCoins() + 2);
+                                player = me;
+                            }
+                        attackedPlayer.setCoins(attackedPlayer.getCoins()-2);
+
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        textView.setText("You stole from "+attackedPlayer.getName());
+                        coins.setText("Your coins: "+player.getCoins());
+                    }
+                });
+
 
             }
         });
 
 
+
+
+
+        challenge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                challengeConfirmation();
+            }
+        });
+
+
+
+
     }
 
+
+    public void challengeConfirmation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //TODO: Add what happened last turn to text.
+        builder.setMessage("Are you sure you want to challenge the last action?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog challengeDialog = builder.create();
+        challengeDialog.show();
+    }
 
     public void choosePlayer(){
 
@@ -541,15 +634,12 @@ public class InGame extends Activity {
 
         }
     }
-    //update on coup
-    public void updateCoinsOnCoup(String onPlayer){
-
+    public void updateCoins(String onPlayer, int coinsAdded){
         //update coins for enemy 1
         if(tvOpp1name.getText().equals(onPlayer)){
             for(Player p: game.getPlayers()){
                 if(p.getName().equals(onPlayer)){
-                    p.setCoins(p.getCoins()-7);
-                    Log.e("DEBUG INCOME", ""+p.getCoins());
+                    p.setCoins(p.getCoins()+coinsAdded);
                     tvOpp1coins.setText(Integer.toString(p.getCoins()));
                 }
             }
@@ -559,7 +649,7 @@ public class InGame extends Activity {
         if(tvOpp2name.getText().equals(onPlayer)){
             for(Player p: game.getPlayers()){
                 if(p.getName().equals(onPlayer)){
-                    p.setCoins(p.getCoins()-7);
+                    p.setCoins(p.getCoins()+coinsAdded);
                     tvOpp2coins.setText(Integer.toString(p.getCoins()));
                 }
             }
@@ -569,17 +659,12 @@ public class InGame extends Activity {
         if(tvOpp3name.getText().equals(onPlayer)){
             for(Player p: game.getPlayers()){
                 if(p.getName().equals(onPlayer)){
-                    p.setCoins(p.getCoins()-7);
+                    p.setCoins(p.getCoins()+coinsAdded);
                     tvOpp3coins.setText(Integer.toString(p.getCoins()));
                 }
             }
 
         }
-
-    }
-    public void updateCoins(){
-        TextView tvPlayerCoins= (TextView) findViewById(R.id.textView_coins);
-        tvPlayerCoins.setText("Your Coins: "+player.getCoins());
     }
 
     public void mainPlayerChoosesCardToLose(){
@@ -649,16 +734,12 @@ public class InGame extends Activity {
             iv.setImageResource(R.drawable.ambassador);
         }
     }
-    public void showCardsToExchange(){
-        TextView tvTextC1 = (TextView) findViewById(R.id.text_playercard1);
-        TextView tvTextC2 = (TextView) findViewById(R.id.text_playercard2);
-//        TextView tvTextC3 = (TextView) findViewById(R.id.text_playercard3);
-//        TextView tvTextC4 = (TextView) findViewById(R.id.text_playercard4);
+    public void showCardsToExchange() {
 
-        ivImageC1= (ImageView) findViewById(R.id.card_playercard1);
-        ivImageC2= (ImageView) findViewById(R.id.card_playercard2);
-        ivImageC3= (ImageView) findViewById(R.id.card_playercard3);
-        ivImageC4= (ImageView) findViewById(R.id.card_playercard4);
+        ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
+        ivImageC2 = (ImageView) findViewById(R.id.card_playercard2);
+        ivImageC3 = (ImageView) findViewById(R.id.card_playercard3);
+        ivImageC4 = (ImageView) findViewById(R.id.card_playercard4);
 
         ivImageC3.setVisibility(View.VISIBLE);
         ivImageC4.setVisibility(View.VISIBLE);
@@ -667,183 +748,215 @@ public class InGame extends Activity {
         choosenCard = new ArrayList<>();
 
         c1 = player.getCards().get(0);
-        displayCards(c1.getTypeOfCard(),ivImageC1);
+        displayCards(c1.getTypeOfCard(), ivImageC1);
         cardsToChoose.add(c1);
-        if(player.getCards().size()==2) {
+        if (player.getCards().size() == 2) {
             c2 = player.getCards().get(1);
-            displayCards(c2.getTypeOfCard(),ivImageC2);
+            displayCards(c2.getTypeOfCard(), ivImageC2);
             cardsToChoose.add(c2);
-        }
-        c3=game.dealCard();
-//        cardsToChoose.add(c3);
-        player.addCard(c3);
-        displayCards(c3.getTypeOfCard(),ivImageC3);
-        c4= game.dealCard();
-//        cardsToChoose.add(c3);
-        player.addCard(c4);
-        displayCards(c4.getTypeOfCard(),ivImageC4);
+//        }
+//        c3=game.dealCard();
+////        cardsToChoose.add(c3);
+//        player.addCard(c3);
+//        displayCards(c3.getTypeOfCard(),ivImageC3);
+//        c4= game.dealCard();
+////        cardsToChoose.add(c3);
+//        player.addCard(c4);
+//        displayCards(c4.getTypeOfCard(),ivImageC4);
 
-        Button chooseCards= (Button) findViewById(R.id.btnOK);
-        TextView yourName= (TextView) findViewById(R.id.textView_player_NAME);
-        TextView action= (TextView) findViewById(R.id.textView_action);
-
-//        yourName.setVisibility(View.INVISIBLE);
-//        action.setVisibility(View.INVISIBLE);
-//        chooseCards.setVisibility(View.VISIBLE);
-        ivImageC3.setVisibility(View.VISIBLE);
-        ivImageC4.setVisibility(View.VISIBLE);
-        if(player.getCards().size()==4) {
+            Button chooseCards = (Button) findViewById(R.id.btnOK);
 
 
-            count = 0;
-            ivImageC1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count<=2) {
-                        choosenCard.add(c1);
-                        cardsToChoose.remove(c1);
-                        count++;
-                    }
-                }
-            });
 
-            ivImageC2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count<=2) {
-                        choosenCard.add(c2);
-                        cardsToChoose.remove(c2);
-                        count++;
-                    }
-                }
+            ivImageC3.setVisibility(View.VISIBLE);
+            ivImageC4.setVisibility(View.VISIBLE);
+            if (player.getCards().size() == 4) {
 
-            });
-//                    ivImageC3.setClickable(true);
-            ivImageC3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count<=2) {
-                        choosenCard.add(c3);
-                        cardsToChoose.remove(c3);
-                        count++;
-                    }
-                }
 
-            });
-//                    ivImageC4.setClickable(true);
-            ivImageC4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count<=2) {
-                        choosenCard.add(c4);
-                        cardsToChoose.remove(c4);
-                        count++;
-                    }
-                }
-
-            });
-            chooseCards.setVisibility(View.VISIBLE);
-            chooseCards.setClickable(true);
-            chooseCards.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(count==2){
-                        player.setCards(choosenCard);
-                        for(Card c:cardsToChoose){
-                            game.returnCardtoDeck(c);
+                count = 0;
+                ivImageC1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count <= 2) {
+                            choosenCard.add(c1);
+                            cardsToChoose.remove(c1);
+                            count++;
                         }
+                    }
+                });
+
+                ivImageC2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count <= 2) {
+                            choosenCard.add(c2);
+                            cardsToChoose.remove(c2);
+                            count++;
+                        }
+                    }
+
+                });
+//                    ivImageC3.setClickable(true);
+                ivImageC3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count <= 2) {
+                            choosenCard.add(c3);
+                            cardsToChoose.remove(c3);
+                            count++;
+                        }
+                    }
+
+                });
+//                    ivImageC4.setClickable(true);
+                ivImageC4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (count <= 2) {
+                            choosenCard.add(c4);
+                            cardsToChoose.remove(c4);
+                            count++;
+                        }
+                    }
+
+                });
+                chooseCards.setVisibility(View.VISIBLE);
+                chooseCards.setClickable(true);
+
+                chooseCards.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cardsToReturn=cardsToChoose;
+                        cardNamesToReturn = new ArrayList<>();
+
+                        cardNamesToReturn=convertCardTypeToStringName(cardsToReturn);
+
+                        for(String cardname: cardNamesToReturn){
+                            connection.sendMessage(cardname);
+                        }
+                        if (count == 2) {
+                        player.setCards(choosenCard);
+//                        for(Card c:cardsToChoose){
+//                            game.returnCardtoDeck(c);
+//                        }
+
+
+                            ivImageC1.setVisibility(View.INVISIBLE);
+                            ivImageC2.setVisibility(View.INVISIBLE);
+                            ivImageC3.setVisibility(View.INVISIBLE);
+                            ivImageC4.setVisibility(View.INVISIBLE);
+                            settingCardImagesAtStartOfGame();
+//                        game.shuffleCards();
+                        }
+                    }
+                });
+            } else if (player.getCards().size() == 1) {
+                ivImageC3.setVisibility(View.VISIBLE);
+                ivImageC4.setVisibility(View.VISIBLE);
+                count = 0;
+                if (count <= 1 && ivImageC1.getVisibility() == View.VISIBLE) {
+                    ivImageC1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            choosenCard.add(c1);
+                            cardsToChoose.remove(c1);
+                            count++;
+                        }
+                    });
+                }
+                if (count <= 1 && ivImageC2.getVisibility() == View.VISIBLE) {
+                    ivImageC2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            choosenCard.add(c2);
+                            cardsToChoose.remove(c2);
+                            count++;
+                        }
+                    });
+                }
+                if (count <= 1) {
+                    ivImageC3.setClickable(true);
+                    ivImageC3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            choosenCard.add(c3);
+                            cardsToChoose.remove(c3);
+                            count++;
+                        }
+                    });
+                }
+                if (count <= 1) {
+                    ivImageC4.setClickable(true);
+                    ivImageC4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            choosenCard.add(c4);
+                            cardsToChoose.remove(c4);
+                            count++;
+                        }
+                    });
+                }
+            }
+            if (count == 1) {
+                chooseCards.setVisibility(View.VISIBLE);
+                chooseCards.setClickable(true);
+                chooseCards.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cardsToReturn=cardsToChoose;
+                        cardNamesToReturn = new ArrayList<>();
+
+                        cardNamesToReturn=convertCardTypeToStringName(cardsToReturn);
+
+                        for(String cardname: cardNamesToReturn){
+                            connection.sendMessage(cardname);
+                        }
+                    player.setCards(choosenCard);
+//                    for(Card c:cardsToChoose){
+//                        game.returnCardtoDeck(c);
+//                    }
                         ivImageC1.setVisibility(View.INVISIBLE);
                         ivImageC2.setVisibility(View.INVISIBLE);
                         ivImageC3.setVisibility(View.INVISIBLE);
                         ivImageC4.setVisibility(View.INVISIBLE);
                         settingCardImagesAtStartOfGame();
-                        game.shuffleCards();
-                    }
-                }
-            });
-        }
-        else if(player.getCards().size()==1){
-            ivImageC3.setVisibility(View.VISIBLE);
-            ivImageC4.setVisibility(View.VISIBLE);
-            count=0;
-            if(count<=1&&ivImageC1.getVisibility()==View.VISIBLE){
-                ivImageC1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        choosenCard.add(c1);
-                        cardsToChoose.remove(c1);
-                        count++;
+//                    game.shuffleCards();
+
                     }
                 });
-            } if(count<=1&&ivImageC2.getVisibility()==View.VISIBLE){
-                ivImageC2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        choosenCard.add(c2);
-                        cardsToChoose.remove(c2);
-                        count++;
-                    }
-                });
+
             }
-            if(count<=1) {
-                ivImageC3.setClickable(true);
-                ivImageC3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        choosenCard.add(c3);
-                        cardsToChoose.remove(c3);
-                        count++;
-                    }
-                });
-            }
-            if(count<=1) {
-                ivImageC4.setClickable(true);
-                ivImageC4.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        choosenCard.add(c4);
-                        cardsToChoose.remove(c4);
-                        count++;
-                    }
-                });
-            }
+
+
         }
-        if(count==1){
-            chooseCards.setVisibility(View.VISIBLE);
-            chooseCards.setClickable(true);
-            chooseCards.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    player.setCards(choosenCard);
-                    for(Card c:cardsToChoose){
-                        game.returnCardtoDeck(c);
-                    }
-                    ivImageC1.setVisibility(View.INVISIBLE);
-                    ivImageC2.setVisibility(View.INVISIBLE);
-                    ivImageC3.setVisibility(View.INVISIBLE);
-                    ivImageC4.setVisibility(View.INVISIBLE);
-                    settingCardImagesAtStartOfGame();
-                    game.shuffleCards();
-
-                }
-            });
-        }
-
-
-
+//        cardNamesToReturn = new ArrayList<>();
+//        cardNamesToReturn=convertCardTypeToStringName(cardsToReturn);
+//
+//            for(String cardname: cardNamesToReturn){
+//                connection.sendMessage(cardname);
+//            }
 
     }
-
-    public void doCoup(){
-        coupplayed = true;
-        choosePlayer();
-
-
-
-
-
-
-    }
+    public ArrayList<String> convertCardTypeToStringName(ArrayList listOfCards){
+        ArrayList<String> convertedList= new ArrayList<>();
+        for(Card c :cardsToReturn) {
+            if (c.getTypeOfCard().equals(CardType.ASSASSIN)) {
+                convertedList.add("assassin");
+            }
+            if (c.getTypeOfCard().equals(CardType.DUKE)) {
+                convertedList.add("duke");
+            }
+            if (c.getTypeOfCard().equals(CardType.CONTESSA)) {
+                convertedList.add("contessa");
+            }
+            if (c.getTypeOfCard().equals(CardType.AMBASSADOR)) {
+                convertedList.add("ambassador");
+            }
+            if (c.getTypeOfCard().equals(CardType.CAPTAIN)) {
+                convertedList.add("captain");
+            }
+        }
+    return convertedList;}
 
     //will be removed later
     private void disableNotImplemented(){
@@ -852,7 +965,7 @@ public class InGame extends Activity {
         Tax.setEnabled(false);
         Exchange.setEnabled(false);
         Steal.setEnabled(false);
-        challenge.setEnabled(false);
+        //challenge.setEnabled(false);
         Coup.setEnabled(false);
 
     }
@@ -1075,6 +1188,9 @@ public class InGame extends Activity {
                                 next.setEnabled(true);
                                 Income.setEnabled(true);
                                 Foreign_Aid.setEnabled(true);
+                                Exchange.setEnabled(true);
+                                Tax.setEnabled(true);
+                                Steal.setEnabled(true);
                                 textView.setText("Your turn");
                                 timer.setVisibility(View.VISIBLE);
                                 countDown.start();
@@ -1093,16 +1209,61 @@ public class InGame extends Activity {
                             }
                         });
                     }
-
-                    if(msg.startsWith("foreignaid")){
+                    if(msg.startsWith("income")){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
-                                textView.setText(split[1]+" used foreign aid");
-                                updateCoinsOnForeignAid(split[1]);
+                                textView.setText(split[1]+" used income");
+                                updateCoinsOnIncome(split[1]);
                             }
                         });
+                    }
+
+                    if(msg.startsWith("steal")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                textView.setText(split[1]+" used steal");
+//                                updateCoins();
+                                updateCoins(split[1],2);
+                                updateCoins(attackedPlayer.getName(),-2);
+
+                            }
+                        });
+
+
+                    }
+
+                    if(msg.startsWith("card")){
+                        cardsToChoose = new ArrayList<>();
+                        ArrayList<String> cardnames = new ArrayList<>();
+                        Log.e("DEBUG", msg);
+                        cardnames.add(split[1]);
+                        msg=connection.getMessage();
+
+                        String[] second = msg.split(" ");
+                        cardnames.add(second[1]);
+
+
+                        ArrayList<Card> list = new ArrayList<>();
+
+                        for(String cardname: cardnames){
+
+                            if(cardname.equals("contessa"))
+                                cardsToChoose.add(new Card(CardType.CONTESSA));
+                            if(cardname.equals("duke"))
+                                cardsToChoose.add(new Card(CardType.DUKE));
+                            if(cardname.equals("captain"))
+                                cardsToChoose.add(new Card(CardType.CAPTAIN));
+                            if(cardname.equals("ambassador"))
+                                cardsToChoose.add(new Card(CardType.AMBASSADOR));
+                            if(cardname.equals("assassin"))
+                                cardsToChoose.add(new Card(CardType.ASSASSIN));
+
+                        }
+
 
 
                     }
@@ -1123,26 +1284,17 @@ public class InGame extends Activity {
 
                      */
 
-
+                    /**
+                     *
                      if(msg.startsWith("coup")){
-                         final String x = attackedPlayer.getName();
 
-                         runOnUiThread(new Runnable() {
-                             @Override
-                             public void run() {
+                     TODO:
+                     split msg to get playername
 
-                                 textView.setText(split[1]+" used coup on "+x);
-                                 updateCoinsOnCoup(split[1]);
-                             }
-                         });
+                     if playername is equals to this player, the player loses a card
+                     else display playername with message: playername lost an influence
 
-                 //    TODO:
-                //     split msg to get playername
-
-                  //   if playername is equals to this player, the player loses a card
-                  //   else display playername with message: playername lost an influence
-
-                     }
+                     }*/
 
 
 

@@ -186,33 +186,59 @@ public class PlayerThread extends Thread {
                     }
                 }
 
+                if(input.startsWith("exchange")){
+                    /**
+                     TODO:
+                     get two cards from stack
+
+                     send two card to player (use writers.get(turn).println(cardname))
+
+                     receive exchanged cards (use readers.get(0).readline())
+
+                     push received cards back to stack
+
+                     **/
+                    for(int i=0;i<avaiable;i++){
+                        if(i==turn)
+                            continue;
+                        writers.get(i).println(input);
+                    }
+
+                    ArrayList<String>cardsToSend= new ArrayList<String>();
+
+                    cardsToSend.add(cards.pop());
+                    cardsToSend.add(cards.pop());
+
+                    for(String cardname: cardsToSend){
+
+                        writers.get(turn).println("card"+" "+cardname);
+                    }
+                    ArraryList<String>cardsToReturn = new ArrayList<String>();
+
+                    cardsToReturn.add(readers.get(turn).readLine());
+                    cardsToReturn.add(readers.get(turn).readLine());
+
+                    for(String cardname: cardsToReturn){
+                        cards.push(cardname);
+                    }
+                    Collections.shuffle(cards);
+                }
+
+                if (input.startsWith("steal")) {
+                    for(int i=0;i<avaiable;i++){
+                        if(i==turn)
+                            continue;
+                        writers.get(i).println(input);
+                    }
+
+                }
+
+
+            }
+
 
                 /**
-
-                if(input.startsWith("exchange")) {
-
-                 input looks like: exchange playername
-
-                 TODO:
-
-                 get two cards from stack
-
-                 send two card to player (use writers.get(turn).println(cardname))
-
-                 receive exchanged cards (use readers.get(0).readline())
-
-                 push received cards back to stack
-
-
-
-
-
-                };
-                 **/
-
-
-
-                if(input.startsWith("coup")){
+                 if(input.startsWith("coup")){
 
                  input message looks like coup onPlayer
 
@@ -220,13 +246,9 @@ public class PlayerThread extends Thread {
 
                  send message to other players (everyone except turn)
 
-                }
+                 }
 
-
-
-
-
-            }
+                 **/
 
 
             System.out.println("Game finished!");
