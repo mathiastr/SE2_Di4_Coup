@@ -1209,13 +1209,13 @@ public class InGame extends Activity {
                             }
                         });
                     }
-                    if(msg.startsWith("income")){
+                    if(msg.startsWith("foreignaid")){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
-                                textView.setText(split[1]+" used income");
-                                updateCoinsOnIncome(split[1]);
+                                textView.setText(split[1]+" used Foreign Aid");
+                                updateCoinsOnForeignAid(split[1]);
                             }
                         });
                     }
