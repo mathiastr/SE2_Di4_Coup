@@ -178,7 +178,6 @@ public class PlayerThread extends Thread {
 
                 if(input.startsWith("income")||input.startsWith("foreignaid")){
 
-                    //pass message to other players
                     for(int i=0;i<avaiable;i++){
                         if(i==turn)
                             continue;
@@ -231,6 +230,20 @@ public class PlayerThread extends Thread {
                         writers.get(i).println(input);
                     }
 
+                }
+                if(input.startsWith("assassinate")){
+                    for(int i=0;i<avaiable;i++){
+                        if(i==turn)
+                            continue;
+                        writers.get(i).println(input);
+                    }
+                }
+                if(input.startsWith("losecard")){
+                    for(int i=0;i<avaiable;i++){
+                        if(i==turn)
+                            continue;
+                        writers.get(i).println(input);
+                    }
                 }
 
 

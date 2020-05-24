@@ -410,7 +410,60 @@ public class InGame extends Activity {
                         Foreign_Aid.setEnabled(false);
                         Exchange.setEnabled(false);
                         Tax.setEnabled(false);
+                        Steal.setEnabled(false);
                         textView.setText("You stole from "+attackedPlayer.getName());
+                        coins.setText("Your coins: "+player.getCoins());
+                    }
+                });
+
+
+            }
+        });
+        Assasinate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("assassinate"+" "+name);
+                        //look for me in player list
+                        choosePlayer();
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)) {
+                                me.setCoins(me.getCoins()-3);
+                                player = me;
+                            }
+
+                    }
+                });
+                Thread thread2 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("losecard"+" "+attackedPlayer.getName());
+                        //look for me in player list
+                        choosePlayer();
+                        for(Player target:game.getPlayers())
+                            if(target.getName().equals(attackedPlayer.getName())) {
+                                player=target;
+
+                                mainPlayerChoosesCardToLose();
+                            }
+
+                    }
+                });
+
+                thread.start();
+                thread2.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        Steal.setEnabled(false);
+                        textView.setText("You assassinated "+attackedPlayer.getName());
                         coins.setText("Your coins: "+player.getCoins());
                     }
                 });
@@ -1209,13 +1262,13 @@ public class InGame extends Activity {
                             }
                         });
                     }
-                    if(msg.startsWith("income")){
+                    if(msg.startsWith("foreignaid")){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
-                                textView.setText(split[1]+" used income");
-                                updateCoinsOnIncome(split[1]);
+                                textView.setText(split[1]+" used Foreign Aid");
+                                updateCoinsOnForeignAid(split[1]);
                             }
                         });
                     }
@@ -1234,6 +1287,26 @@ public class InGame extends Activity {
                         });
 
 
+                    }
+                    if(msg.startsWith("losecard")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                textView.setText(split[1]+ " lost Card");
+                                updateOpponentInfluence(attackedPlayer);
+                            }
+                        });                    }
+                    if(msg.startsWith("assassinate")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                textView.setText(split[1]+" used assassinate against "+attackedPlayer.getName());
+//                                updateCoins();
+                                updateCoins(split[1],-3);
+                            }
+                        });
                     }
 
                     if(msg.startsWith("card")){
