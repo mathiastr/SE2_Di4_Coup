@@ -419,6 +419,45 @@ public class InGame extends Activity {
             }
         });
 
+        Coup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("coup"+" "+name);
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                me.setCoins(me.getCoins()-7);
+                                player=me;
+
+                            }
+                        doCoup();
+
+                    }
+                });
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Income.setEnabled(false);
+                        Foreign_Aid.setEnabled(false);
+                        Exchange.setEnabled(false);
+                        Tax.setEnabled(false);
+                        Steal.setEnabled(false);
+                        Coup.setEnabled(false);
+                        textView.setText("You did coup on "+ attackedPlayer.getName());
+                        coins.setText("Your coins: "+player.getCoins());
+                    }
+                });
+
+            }
+        });
+
+
+
 
 
 
@@ -634,6 +673,7 @@ public class InGame extends Activity {
 
         }
     }
+
     public void updateCoins(String onPlayer, int coinsAdded){
         //update coins for enemy 1
         if(tvOpp1name.getText().equals(onPlayer)){
@@ -666,6 +706,13 @@ public class InGame extends Activity {
 
         }
     }
+
+    public void doCoup(){
+        choosePlayer();
+
+
+    }
+
 
     public void mainPlayerChoosesCardToLose(){
         ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
@@ -1285,16 +1332,26 @@ public class InGame extends Activity {
                      */
 
                     /**
-                     *
+                     */
                      if(msg.startsWith("coup")){
 
-                     TODO:
+                         runOnUiThread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 
+                                 textView.setText(split[1]+" used coup on "+attackedPlayer.getName());
+                                 updateCoins(split[1],-7);
+                             }
+                         });
+
+
+                    /* TODO:
                      split msg to get playername
 
                      if playername is equals to this player, the player loses a card
-                     else display playername with message: playername lost an influence
+                     else display playername with message: playername lost an influence*/
 
-                     }*/
+                     }
 
 
 
