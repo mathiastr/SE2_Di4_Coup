@@ -5,8 +5,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.Image;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.AsyncTask;
@@ -67,6 +72,10 @@ public class InGame extends Activity {
 
     Action ChoosenAktion;
     Player attackedPlayer;
+    private SensorManager s;
+    private float current;
+    private float last;
+    private float shake;
 
     // should return choosen Action and attacked Player
 
@@ -212,6 +221,12 @@ public class InGame extends Activity {
         Foreign_Aid.setOnClickListener(clickListener);
         Coup.setOnClickListener(clickListener);
 
+        current = SensorManager.GRAVITY_EARTH;
+        last = SensorManager.GRAVITY_EARTH;
+        shake = 0.00f;
+
+
+
 
         ConnectTask connectTask = new ConnectTask();
         connectTask.execute();
@@ -241,6 +256,74 @@ public class InGame extends Activity {
                 thread.start();
             }
         });
+
+
+
+        // cheatfunktion: wenn man das Smartphone schüttelt erhält man 3 Coins, nur 1 mal einsetzbar
+        SensorEventListener sel = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(final SensorEvent sensorEvent) {
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("cheat"+" "+name);
+
+                        float x = sensorEvent.values[0];
+                        float y = sensorEvent.values[1];
+                        float z = sensorEvent.values[2];
+
+                        last = current;
+                        current = (float) Math.sqrt((double) (x*x + y*y + z*z));
+                        float delta = current - last;
+                        shake = shake * 0.9f + delta;
+
+                        //look for me in player list
+                        for(Player me:game.getPlayers())
+                            if(me.getName().equals(name)){
+                                player=me;
+                            }
+
+
+
+                        if (shake > 12 && !player.getCheated()) {
+                            //look for me in player list
+                            for(Player me:game.getPlayers())
+                                if(me.getName().equals(name)){
+                                    me.setCoins(me.getCoins()+3);
+                                    me.setCheated(true);
+                                    player=me;
+
+                                }
+
+
+                        }
+
+                    }
+                });
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.setText("You cheated");
+                        coins.setText("Your coins: "+player.getCoins());
+                    }
+                });
+
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {
+
+            }
+        };
+
+        s =(SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        s.registerListener(sel, s.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+
+
+
 
         Income.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1307,6 +1390,18 @@ public class InGame extends Activity {
                                 updateCoins(split[1],-3);
                             }
                         });
+                    }
+
+                    if(msg.startsWith("cheat")){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+//                                updateCoins();
+                                updateCoins(split[1],3);
+                            }
+                        });
+
+
                     }
 
                     if(msg.startsWith("card")){

@@ -12,6 +12,7 @@ public class Player {
     private List<Card> cards;
     private boolean inGame=true;
     private static int playerID= 1;
+    public boolean cheated = false;
 
     private boolean canBlockAssassination=false;
     private boolean canBlockForeignAid=false;
@@ -61,6 +62,12 @@ public class Player {
     public void setCoins(int coins){
         this.coins=coins;
     }
+
+    public boolean getCheated(){return this.cheated;}
+    public void setCheated(boolean cheated){
+        this.cheated = cheated;
+    }
+
 
     //TODO influence sind die Anzahl der Karten
     public int getInfluence() {
