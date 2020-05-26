@@ -11,17 +11,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AfterGame"></activity>
-        <activity android:name=".LobbyScreen" />
-        <activity android:name=".InGame" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Player"/>
+        <activity android:name=".AfterGame" />
+        <activity android:name=".LobbyScreen" />
+        <activity android:name=".InGame" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".Player" />
     </application>
 
 </manifest>
