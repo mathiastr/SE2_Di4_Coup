@@ -49,7 +49,7 @@ public class Server {
                     players.add(socket);
 
 
-                    if(players.size()>=2){
+                    if(players.size()>=4){
                         System.out.println("Staritng Multiplayer Thread");
                         System.out.println(players.isEmpty());
 

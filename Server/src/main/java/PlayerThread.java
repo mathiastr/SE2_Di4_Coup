@@ -1,4 +1,4 @@
-import javax.swing.plaf.basic.BasicScrollPaneUI;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
@@ -7,8 +7,8 @@ public class PlayerThread extends Thread {
 
 
     private List<Socket> players;
-    private Map<String, PrintWriter> to;
-    private Map<BufferedReader, String> from;
+    private Map<String, PrintWriter> toPlayer;
+    private Map<String, BufferedReader> fromPlayer;
     private List<PrintWriter> writers;
     private List<BufferedReader> readers;
 
@@ -42,8 +42,9 @@ public class PlayerThread extends Thread {
             //get size
             avaiable=this.players.size();
 
-            this.to = new HashMap<String, PrintWriter>(avaiable);
-            this.from = new HashMap<BufferedReader, String>(avaiable);
+            this.toPlayer = new HashMap<String, PrintWriter>(avaiable);
+            this.fromPlayer = new HashMap<String, BufferedReader>(avaiable);
+
 
 
 
@@ -73,10 +74,10 @@ public class PlayerThread extends Thread {
             // map player names to sockets
 
             for(int i=0;i<avaiable;i++)
-                to.put(names.get(i), writers.get(i));
+                toPlayer.put(names.get(i), writers.get(i));
 
             for(int i=0;i<avaiable;i++)
-                from.put(readers.get(i), names.get(i));
+                fromPlayer.put(names.get(i), readers.get(i));
 
 
             for(int i=0; i<avaiable;i++){
@@ -128,65 +129,65 @@ public class PlayerThread extends Thread {
             int turn =rand;
 
             //game loop
-            while (running){
+            while (running) {
 
-                System.out.println("Avaiable players: "+avaiable);
+                System.out.println("Avaiable players: " + avaiable);
 
                 String input = readers.get(turn).readLine();
 
                 System.out.println(input);
 
 
-                if(input==null){
-                    System.out.println(players.get(turn).getInetAddress().getHostAddress()+" left the game");
+                if (input == null) {
+                    System.out.println(players.get(turn).getInetAddress().getHostAddress() + " left the game");
                     //players.remove(turn);
                     writers.remove(turn);
                     readers.remove(turn);
 
                     avaiable--;
-                    if(avaiable==1)
+                    if (avaiable == 1)
                         throw new IOException();
 
-                    if(turn>=writers.size())
-                        turn=0;
+                    if (turn >= writers.size())
+                        turn = 0;
 
                 }
 
-                if(input.equals("next")){
+                if (input.equals("next")) {
                     System.out.println("next player");
                     turn++;
-                    if(turn>=writers.size())
-                        turn=0;
+                    if (turn >= writers.size())
+                        turn = 0;
                     writers.get(turn).println("turn");
 
 
                 }
-                if (input.equals("exit")){
+                if (input.equals("exit")) {
                     writers.get(turn).println("lose");
 
                     writers.remove(turn);
                     readers.remove(turn);
 
                     avaiable--;
-                    System.out.println("players avaiable: "+avaiable);
-                    if(avaiable==1){
+                    System.out.println("players avaiable: " + avaiable);
+                    if (avaiable == 1) {
                         writers.get(0).println("win");
                         break;
                     }
 
                 }
 
-                if(input.startsWith("income")||input.startsWith("foreignaid")){
+                if (input.startsWith("income") || input.startsWith("foreignaid" )|| input.startsWith("steal")|| input.startsWith("tax")) {
 
                     //pass message to other players
-                    for(int i=0;i<avaiable;i++){
-                        if(i==turn)
+                    for (int i = 0; i < avaiable; i++) {
+                        if (i == turn)
                             continue;
                         writers.get(i).println(input);
                     }
                 }
 
-                if(input.startsWith("exchange")){
+                if (input.startsWith("exchange")) {
                     /**
                      TODO:
                      get two cards from stack
@@ -196,49 +197,45 @@ public class PlayerThread extends Thread {
                      receive exchanged cards (use readers.get(0).readline())
 
                      push received cards back to stack
-
                      **/
-                    for(int i=0;i<avaiable;i++){
-                        if(i==turn)
+                    for (int i = 0; i < avaiable; i++) {
+                        if (i == turn)
                             continue;
                         writers.get(i).println(input);
                     }
 
-                    ArrayList<String>cardsToSend= new ArrayList<String>();
+                    ArrayList<String> cardsToSend = new ArrayList<String>();
 
                     cardsToSend.add(cards.pop());
                     cardsToSend.add(cards.pop());
 
-                    for(String cardname: cardsToSend){
+                    for (String cardname : cardsToSend) {
 
-                        writers.get(turn).println("card"+" "+cardname);
+                        writers.get(turn).println("card" + " " + cardname);
                     }
-                    ArraryList<String>cardsToReturn = new ArrayList<String>();
+                    List<String> cardsToReturn = new ArrayList<String>();
 
                     cardsToReturn.add(readers.get(turn).readLine());
                     cardsToReturn.add(readers.get(turn).readLine());
 
-                    for(String cardname: cardsToReturn){
+                    for (String cardname : cardsToReturn) {
                         cards.push(cardname);
                     }
                     Collections.shuffle(cards);
-                }
 
-                if (input.startsWith("steal")) {
-                    for(int i=0;i<avaiable;i++){
-                        if(i==turn)
-                            continue;
-                        writers.get(i).println(input);
-                    }
 
                 }
 
 
-            }
+
+
+
+
+
 
 
                 /**
-                 if(input.startsWith("coup")){
+                if(input.startsWith("coup")){
 
                  input message looks like coup onPlayer
 
@@ -246,9 +243,19 @@ public class PlayerThread extends Thread {
 
                  send message to other players (everyone except turn)
 
-                 }
+                 split input (use String[] split =  input.split(" ");)
+
+                 retrieve card from couped player (use String cardToReturn = from.get(split[1]).readline())
+
+                 push card back to stack
+
+                }
 
                  **/
+
+
+
+            }
 
 
             System.out.println("Game finished!");
@@ -259,6 +266,7 @@ public class PlayerThread extends Thread {
         }
         catch (IOException e){
             e.printStackTrace();
+
 
             if(avaiable==1)
                 writers.get(0).println("win");
