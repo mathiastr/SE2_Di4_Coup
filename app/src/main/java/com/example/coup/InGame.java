@@ -41,6 +41,8 @@ public class InGame extends Activity {
     private TextView textView;
     private Button challenge;
 
+    boolean isActionBlocked=false;
+    boolean someoneClickBlockAlready=false;
     Player player;
     Game game;
     //private Button next, surrender, challenge;
@@ -180,7 +182,7 @@ public class InGame extends Activity {
 
         handler=new Handler();
 
-
+        Button btnOK= (Button)findViewById(R.id.btnOK);
         Assasinate = (Button)findViewById(R.id.button_assassinate);
         Tax = (Button)findViewById(R.id.button_tax);
         Steal = (Button)findViewById(R.id.button_steal);
@@ -365,17 +367,24 @@ public class InGame extends Activity {
         Foreign_Aid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
+                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        connection.sendMessage("foreignaid"+" "+name);
+                        try {
+                            connection.sendMessage("foreignaid"+" "+name);
+                            Thread.sleep(5500);
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
                         //look for me in player list
-                        for(Player me:game.getPlayers())
-                            if(me.getName().equals(name)){
-                                me.setCoins(me.getCoins()+2);
-                                player=me;
+                        if(isActionBlocked==false) {
+                            for (Player me : game.getPlayers())
+                                if (me.getName().equals(name)) {
+                                    me.setCoins(me.getCoins() + 2);
+                                    player = me;
 
-                            }
+                                }
+                        }else{connection.sendMessage("next");}
 
                     }
                 });
@@ -390,8 +399,13 @@ public class InGame extends Activity {
                         Exchange.setEnabled(false);
                         Tax.setEnabled(false);
                         Steal.setEnabled(false);
-                        textView.setText("You did foreign aid");
-                        coins.setText("Your coins: "+player.getCoins());
+                        if(isActionBlocked==false) {
+                            textView.setText("You did foreign aid");
+                            coins.setText("Your coins: " + player.getCoins());
+                        }
+                        else{
+                            textView.setText("Yor action is blocked");
+                        }
                     }
                 });
 
@@ -491,6 +505,23 @@ public class InGame extends Activity {
 
 
     }
+    public boolean blockAction(){
+        Button btnOk=(Button) findViewById(R.id.btnOK);
+        btnOk.setVisibility(View.VISIBLE);
+        blockTimer();
+        if (!someoneClickBlockAlready) {
+            btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                connection.sendMessage("block"+name);
+                isActionBlocked = true;
+                someoneClickBlockAlready=true;
+            }
+        });
+        }
+        btnOk.setVisibility(View.INVISIBLE);
+        return isActionBlocked;
+    }
 
 
     public void challengeConfirmation() {
@@ -588,6 +619,18 @@ public class InGame extends Activity {
 
             public void onFinish() {
                 timer.setText("Challenge over.");
+            }
+        }.start();
+    }
+    //block and challenge Timer should be combined in one method.
+    public void blockTimer() {
+        new CountDownTimer(50000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                timer.setText("Block? Time remaining: " + millisUntilFinished/1000);
+            }
+
+            public void onFinish() {
+                timer.setText("Block over.");
             }
         }.start();
     }
@@ -1308,8 +1351,13 @@ public class InGame extends Activity {
                             @Override
                             public void run() {
 
-                                textView.setText(split[1]+" used Foreign Aid");
+                                textView.setText(split[1]+" takes Foreign Aid Action");
+                                if(blockAction()){
+                                    textView.setText("Foreign Aid Blocked");
+                                }else{
+                                    textView.setText(split[1]+" did Foreign Aid successfully");
                                 updateCoinsOnForeignAid(split[1]);
+                                }
                             }
                         });
                     }

@@ -245,6 +245,13 @@ public class PlayerThread extends Thread {
                         writers.get(i).println(input);
                     }
                 }
+                if(input.startsWith("block")){
+                    for(int i=0;i<avaiable;i++){
+                        if(i==turn)
+                            continue;
+                        writers.get(i).println(input);
+                    }
+                }
 
 
             }
