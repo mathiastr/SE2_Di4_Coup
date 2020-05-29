@@ -349,11 +349,7 @@ public class InGame extends Activity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Income.setEnabled(false);
-                        Foreign_Aid.setEnabled(false);
-                        Exchange.setEnabled(false);
-                        Tax.setEnabled(false);
-                        Steal.setEnabled(false);
+                        disableAll();
                         textView.setText("You did income");
                         coins.setText("Your coins: "+player.getCoins());
                     }
@@ -386,11 +382,7 @@ public class InGame extends Activity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Income.setEnabled(false);
-                        Foreign_Aid.setEnabled(false);
-                        Exchange.setEnabled(false);
-                        Tax.setEnabled(false);
-                        Steal.setEnabled(false);
+                        disableAll();
                         textView.setText("You did foreign aid");
                         coins.setText("Your coins: "+player.getCoins());
                     }
@@ -449,11 +441,7 @@ public class InGame extends Activity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Income.setEnabled(false);
-                        Foreign_Aid.setEnabled(false);
-                        Exchange.setEnabled(false);
-                        Tax.setEnabled(false);
-                        Steal.setEnabled(false);
+                        disableAll();
                         textView.setText("You did tax");
                         coins.setText("Your coins: "+player.getCoins());
                     }
@@ -556,11 +544,7 @@ public class InGame extends Activity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Income.setEnabled(false);
-                        Foreign_Aid.setEnabled(false);
-                        Exchange.setEnabled(false);
-                        Tax.setEnabled(false);
-                        Steal.setEnabled(false);
+                        disableAll();
                         textView.setText("You stole from "+attackedPlayer.getName());
                         updateCoins(attackedPlayer.getName(), -2);
                         coins.setText("Your coins: "+player.getCoins());
@@ -586,7 +570,6 @@ public class InGame extends Activity {
         Tax.setEnabled(false);
         Coup.setEnabled(false);
         challenge.setEnabled(false);
-
 
     }
 
@@ -661,10 +644,6 @@ public class InGame extends Activity {
         tvOpp1coins.setText("2");
         tvOpp2coins.setText("2");
         tvOpp3coins.setText("2");
-
-
-
-
 
 
     }
