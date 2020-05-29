@@ -232,11 +232,33 @@ public class PlayerThread extends Thread {
 
                 }
                 if(input.startsWith("assassinate")){
-                    for(int i=0;i<avaiable;i++){
-                        if(i==turn)
+
+                    String[] split = input.split(" ");
+
+                    for (int i = 0; i < avaiable; i++) {
+                        if (i == turn)
                             continue;
                         writers.get(i).println(input);
                     }
+
+                    //retrieve card from attacked player
+
+                    String cardToReturn = fromPlayer.get(split[2]).readLine();
+
+                    if(cardToReturn.startsWith("lastcard")){
+                        String[] last = cardToReturn.split(" ");
+                        cards.push(last[1]);
+
+                        //force player to loose game
+                        toPlayer.get(split[2]).println("lose");
+                    }
+                    else
+                        cards.push(cardToReturn);
+
+                    System.out.println("card: "+cardToReturn+" returned to stack");
+
+
+
                 }
                 if(input.startsWith("losecard")){
                     for(int i=0;i<avaiable;i++){

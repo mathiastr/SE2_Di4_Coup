@@ -50,6 +50,7 @@ public class InGame extends Activity {
     Card c1,c2,c3,c4;
     ImageView ivImageC1,ivImageC2,ivImageC3,ivImageC4;
     int count;
+    boolean leftCardRemoved,rightCardRemoved;
 
     private String name;
     private List<String> opponents;
@@ -410,24 +411,19 @@ public class InGame extends Activity {
                             if(me.getName().equals(name)){
                                 player=me;
                             }
-                        showCardsToExchange();
+
                     }
                 });
 
                 thread.start();
 
-                handler.post(new Runnable() {
+                handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Income.setEnabled(false);
-                        Foreign_Aid.setEnabled(false);
-                        Tax.setEnabled(false);
-                        Exchange.setEnabled(false);
-                        Steal.setEnabled(false);
-                        textView.setText("You did exchange");
-                    }
-                });
 
+                        showCardsToExchange();
+                    }
+                },250);
 
             }
         });
@@ -476,7 +472,13 @@ public class InGame extends Activity {
             }
         });
 
+        Assasinate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                assasinateplayer();
+            }
+        });
 
 
 
@@ -572,6 +574,18 @@ public class InGame extends Activity {
 // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
+
+
+    }
+    public void disableAll(){
+        Assasinate.setEnabled(false);
+        Income.setEnabled(false);
+        Foreign_Aid.setEnabled(false);
+        Exchange.setEnabled(false);
+        Steal.setEnabled(false);
+        Tax.setEnabled(false);
+        Coup.setEnabled(false);
+        challenge.setEnabled(false);
 
 
     }
@@ -764,39 +778,101 @@ public class InGame extends Activity {
         ivImageC2 = (ImageView) findViewById(R.id.card_playercard2);
 
         // Display: "Click on the Card you want to lose."
+
+        textView.setText("Click on the Card you want to lose.");
+
         count =0;
 
+
         if (ivImageC1.isShown() && ivImageC2.isShown()) {
+
             ivImageC1.setOnClickListener(new View.OnClickListener() {
                 @Override
 
                 public void onClick(View v) {
-                    if (count == 0) {
-                        player.getCards().remove(0);
-                        ivImageC1.setVisibility(View.INVISIBLE);
-                        count++;
-                    }
+
+                    leftCardRemoved = true;
+                    looseCard();
                 }
             });
-
 
             ivImageC2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(count==0) {
-                        player.getCards().remove(1);
-                        ivImageC2.setVisibility(View.INVISIBLE);
-                        count++;
-                    }
+                    rightCardRemoved = true;
+                    looseCard();
+
                 }
             });
         }
-        else{
-            player.getCards().remove(0);
+        else
+            returnLastCard();
 
-        }
+
+
     }
 
+    private void looseCard(){
+
+        Card c;
+
+        if(leftCardRemoved){
+            c=player.getCards().get(0);
+            player.getCards().remove(0);
+            ivImageC1.setVisibility(View.INVISIBLE);
+        }
+        else {
+            c=player.getCards().get(1);
+            player.getCards().remove(1);
+            ivImageC2.setVisibility(View.INVISIBLE);
+        }
+
+        textView.setText("You lost an influence");
+
+        final Card cardToReturn = c;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                switch (cardToReturn.getTypeOfCard()){
+                    case DUKE: connection.sendMessage("duke");
+                    case CAPTAIN: connection.sendMessage("captain");
+                    case ASSASSIN: connection.sendMessage("assassin");
+                    case CONTESSA: connection.sendMessage("contessa");
+                    case AMBASSADOR: connection.sendMessage("ambassador");
+                }
+
+            }
+        });
+
+        thread.start();
+
+    }
+
+    private void returnLastCard(){
+
+        final Card cardToReturn = player.getCards().get(0);
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                switch (cardToReturn.getTypeOfCard()){
+                    case DUKE: connection.sendMessage("lastcard duke");
+                    case CAPTAIN: connection.sendMessage("lastcard captain");
+                    case ASSASSIN: connection.sendMessage("lastcard assassin");
+                    case CONTESSA: connection.sendMessage("lastcard contessa");
+                    case AMBASSADOR: connection.sendMessage("lastcard ambassador");
+                }
+
+            }
+        });
+
+        thread.start();
+
+
+    }
 
 
 
@@ -833,200 +909,165 @@ public class InGame extends Activity {
         ivImageC3 = (ImageView) findViewById(R.id.card_playercard3);
         ivImageC4 = (ImageView) findViewById(R.id.card_playercard4);
 
+
+        choosenCard = cardsToChoose;
+
+        displayCards(cardsToChoose.get(1).getTypeOfCard(), ivImageC3);
+        displayCards(cardsToChoose.get(0).getTypeOfCard(), ivImageC4);
+
         ivImageC3.setVisibility(View.VISIBLE);
         ivImageC4.setVisibility(View.VISIBLE);
 
-        cardsToChoose = new ArrayList<>();
-        choosenCard = new ArrayList<>();
+        if(cardsToChoose==null)
+            Log.e("DEBUG", "CARDS NULL");
 
-        c1 = player.getCards().get(0);
-        displayCards(c1.getTypeOfCard(), ivImageC1);
-        cardsToChoose.add(c1);
-        if (player.getCards().size() == 2) {
-            c2 = player.getCards().get(1);
-            displayCards(c2.getTypeOfCard(), ivImageC2);
-            cardsToChoose.add(c2);
-//        }
-//        c3=game.dealCard();
-////        cardsToChoose.add(c3);
-//        player.addCard(c3);
-//        displayCards(c3.getTypeOfCard(),ivImageC3);
-//        c4= game.dealCard();
-////        cardsToChoose.add(c3);
-//        player.addCard(c4);
-//        displayCards(c4.getTypeOfCard(),ivImageC4);
+        Button chooseCards = (Button) findViewById(R.id.btnOK);
+        chooseCards.setVisibility(View.VISIBLE);
 
-            Button chooseCards = (Button) findViewById(R.id.btnOK);
+        ivImageC4.setClickable(true);
+        ivImageC3.setClickable(true);
 
+        if(player.getCards().size()==2){
+            ivImageC4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    List<Card> hand = new ArrayList<>();
+                    hand.add(cardsToChoose.get(0));
+                    hand.add(player.getCards().get(1));
 
-            ivImageC3.setVisibility(View.VISIBLE);
-            ivImageC4.setVisibility(View.VISIBLE);
-            if (player.getCards().size() == 4) {
+                    cardsToChoose.set(0, player.getCards().get(0));
+
+                    player.setCards(hand);
+                    displayCards(player.getCards().get(0).getTypeOfCard(), ivImageC1);
+                    displayCards(cardsToChoose.get(0).getTypeOfCard(), ivImageC4);
 
 
-                count = 0;
-                ivImageC1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (count <= 2) {
-                            choosenCard.add(c1);
-                            cardsToChoose.remove(c1);
-                            count++;
-                        }
-                    }
-                });
+                }
+            });
 
-                ivImageC2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (count <= 2) {
-                            choosenCard.add(c2);
-                            cardsToChoose.remove(c2);
-                            count++;
-                        }
-                    }
+            ivImageC3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                });
-//                    ivImageC3.setClickable(true);
-                ivImageC3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (count <= 2) {
-                            choosenCard.add(c3);
-                            cardsToChoose.remove(c3);
-                            count++;
-                        }
-                    }
+                    List<Card> hand = new ArrayList<>();
+                    hand.add(player.getCards().get(0));
+                    hand.add(cardsToChoose.get(1));
 
-                });
-//                    ivImageC4.setClickable(true);
+
+                    cardsToChoose.set(1, player.getCards().get(1));
+
+                    player.setCards(hand);
+
+                    displayCards(player.getCards().get(1).getTypeOfCard(), ivImageC2);
+                    displayCards(cardsToChoose.get(1).getTypeOfCard(), ivImageC3);
+
+
+                }
+            });
+        }
+        else {
+
+            if(leftCardRemoved){
+
                 ivImageC4.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (count <= 2) {
-                            choosenCard.add(c4);
-                            cardsToChoose.remove(c4);
-                            count++;
-                        }
-                    }
 
-                });
-                chooseCards.setVisibility(View.VISIBLE);
-                chooseCards.setClickable(true);
+                        List<Card> hand = new ArrayList<>();
+                        hand.add(cardsToChoose.get(0));
 
-                chooseCards.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cardsToReturn=cardsToChoose;
-                        cardNamesToReturn = new ArrayList<>();
+                        cardsToChoose.set(0, player.getCards().get(0));
 
-                        cardNamesToReturn=convertCardTypeToStringName(cardsToReturn);
+                        player.setCards(hand);
+                        displayCards(player.getCards().get(0).getTypeOfCard(), ivImageC2);
+                        displayCards(cardsToChoose.get(0).getTypeOfCard(), ivImageC4);
 
-                        for(String cardname: cardNamesToReturn){
-                            connection.sendMessage(cardname);
-                        }
-                        if (count == 2) {
-                        player.setCards(choosenCard);
-//                        for(Card c:cardsToChoose){
-//                            game.returnCardtoDeck(c);
-//                        }
-
-
-                            ivImageC1.setVisibility(View.INVISIBLE);
-                            ivImageC2.setVisibility(View.INVISIBLE);
-                            ivImageC3.setVisibility(View.INVISIBLE);
-                            ivImageC4.setVisibility(View.INVISIBLE);
-                            settingCardImagesAtStartOfGame();
-//                        game.shuffleCards();
-                        }
                     }
                 });
-            } else if (player.getCards().size() == 1) {
-                ivImageC3.setVisibility(View.VISIBLE);
-                ivImageC4.setVisibility(View.VISIBLE);
-                count = 0;
-                if (count <= 1 && ivImageC1.getVisibility() == View.VISIBLE) {
-                    ivImageC1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            choosenCard.add(c1);
-                            cardsToChoose.remove(c1);
-                            count++;
-                        }
-                    });
-                }
-                if (count <= 1 && ivImageC2.getVisibility() == View.VISIBLE) {
-                    ivImageC2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            choosenCard.add(c2);
-                            cardsToChoose.remove(c2);
-                            count++;
-                        }
-                    });
-                }
-                if (count <= 1) {
-                    ivImageC3.setClickable(true);
-                    ivImageC3.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            choosenCard.add(c3);
-                            cardsToChoose.remove(c3);
-                            count++;
-                        }
-                    });
-                }
-                if (count <= 1) {
-                    ivImageC4.setClickable(true);
-                    ivImageC4.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            choosenCard.add(c4);
-                            cardsToChoose.remove(c4);
-                            count++;
-                        }
-                    });
-                }
-            }
-            if (count == 1) {
-                chooseCards.setVisibility(View.VISIBLE);
-                chooseCards.setClickable(true);
-                chooseCards.setOnClickListener(new View.OnClickListener() {
+
+                ivImageC3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        cardsToReturn=cardsToChoose;
-                        cardNamesToReturn = new ArrayList<>();
 
-                        cardNamesToReturn=convertCardTypeToStringName(cardsToReturn);
+                        List<Card> hand = new ArrayList<>();
+                        hand.add(cardsToChoose.get(1));
 
-                        for(String cardname: cardNamesToReturn){
-                            connection.sendMessage(cardname);
-                        }
-                    player.setCards(choosenCard);
-//                    for(Card c:cardsToChoose){
-//                        game.returnCardtoDeck(c);
-//                    }
-                        ivImageC1.setVisibility(View.INVISIBLE);
-                        ivImageC2.setVisibility(View.INVISIBLE);
-                        ivImageC3.setVisibility(View.INVISIBLE);
-                        ivImageC4.setVisibility(View.INVISIBLE);
-                        settingCardImagesAtStartOfGame();
-//                    game.shuffleCards();
+                        cardsToChoose.set(1, player.getCards().get(0));
+
+                        player.setCards(hand);
+                        displayCards(player.getCards().get(0).getTypeOfCard(), ivImageC2);
+                        displayCards(cardsToChoose.get(1).getTypeOfCard(), ivImageC3);
 
                     }
                 });
 
             }
 
+            if(rightCardRemoved){
 
+                ivImageC4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        List<Card> hand = new ArrayList<>();
+                        hand.add(cardsToChoose.get(0));
+
+                        cardsToChoose.set(0, player.getCards().get(0));
+
+                        player.setCards(hand);
+                        displayCards(player.getCards().get(0).getTypeOfCard(), ivImageC1);
+                        displayCards(cardsToChoose.get(0).getTypeOfCard(), ivImageC4);
+
+                    }
+                });
+
+                ivImageC3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        List<Card> hand = new ArrayList<>();
+                        hand.add(cardsToChoose.get(1));
+
+                        cardsToChoose.set(1, player.getCards().get(0));
+
+                        player.setCards(hand);
+                        displayCards(player.getCards().get(0).getTypeOfCard(), ivImageC1);
+                        displayCards(cardsToChoose.get(1).getTypeOfCard(), ivImageC3);
+
+                    }
+                });
+
+            }
         }
-//        cardNamesToReturn = new ArrayList<>();
-//        cardNamesToReturn=convertCardTypeToStringName(cardsToReturn);
-//
-//            for(String cardname: cardNamesToReturn){
-//                connection.sendMessage(cardname);
-//            }
+
+        chooseCards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final List<String> cardsToReturn = convertCardTypeToStringName(cardsToChoose);
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(String cardname:cardsToReturn)
+                            connection.sendMessage(cardname);
+
+                    }
+                });
+                thread.start();
+
+
+                ivImageC3.setVisibility(View.INVISIBLE);
+                ivImageC4.setVisibility(View.INVISIBLE);
+
+                ivImageC4.setClickable(false);
+                ivImageC4.setOnClickListener(null);
+
+//                chooseCards.setVisibility(View.INVISIBLE);
+            }
+        });
+
 
     }
     public ArrayList<String> convertCardTypeToStringName(ArrayList listOfCards){
@@ -1059,6 +1100,51 @@ public class InGame extends Activity {
         //Steal.setEnabled(false);
         challenge.setEnabled(false);
         Coup.setEnabled(false);
+
+    }
+    private void assasinateplayer(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
+        builder.setTitle("Choose Player to assassinate");
+
+// add a list
+        final String[] players = opponents.toArray(new String[opponents.size()]);
+        builder.setItems(players, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                for(Player p: game.getPlayers()) {
+                    if (p.getName().equals(players[which])) {
+                        attackedPlayer = p;
+                    }
+                }
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("assassinate"+" "+name+" "+attackedPlayer.getName());
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        disableAll();
+                        next.setEnabled(true);
+                        textView.setText("You tried to assassinate "+attackedPlayer.getName());
+                    }
+                });
+
+            }
+
+        });
+
+// create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
 
     }
     /****************AsynTask classes********/
@@ -1366,6 +1452,35 @@ public class InGame extends Activity {
 
 
                     }
+                    if(msg.startsWith("exchange")){
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setText(split[1]+" used Exchange");
+                            }
+                        });
+
+                    }
+                    if(msg.startsWith("assassinate")){
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(split[2].equals(name)){
+
+                                    textView.setText(split[1]+" used assassinate on you");
+                                    mainPlayerChoosesCardToLose();
+
+
+                                }
+                                else
+                                    textView.setText(split[1]+" used assassinate on "+split[2]);
+
+                            }
+                        });
+                    }
+
 
                     if(msg.startsWith("card")){
                         cardsToChoose = new ArrayList<>();
