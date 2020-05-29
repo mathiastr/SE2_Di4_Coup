@@ -176,7 +176,7 @@ public class PlayerThread extends Thread {
 
                 }
 
-                if(input.startsWith("income")||input.startsWith("foreignaid")){
+                if (input.startsWith("income") || input.startsWith("foreignaid" )|| input.startsWith("steal")|| input.startsWith("tax")) {
 
                     for(int i=0;i<avaiable;i++){
                         if(i==turn)
