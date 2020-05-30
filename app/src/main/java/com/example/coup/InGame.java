@@ -513,7 +513,7 @@ public class InGame extends Activity {
             btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                connection.sendMessage("block"+name);
+//                connection.sendMessage("block"+name);
                 isActionBlocked = true;
                 someoneClickBlockAlready=true;
             }
@@ -630,6 +630,7 @@ public class InGame extends Activity {
             }
 
             public void onFinish() {
+                disableNotImplemented();
                 timer.setText("Block over.");
             }
         }.start();
