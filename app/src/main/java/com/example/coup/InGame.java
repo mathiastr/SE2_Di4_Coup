@@ -479,6 +479,13 @@ public class InGame extends Activity {
         Coup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                doCoup();
+            }
+        });
+
+/*        Coup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -512,6 +519,8 @@ public class InGame extends Activity {
 
             }
         });
+
+ */
 
 
 
@@ -611,6 +620,13 @@ public class InGame extends Activity {
 // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
+
+
+    }
+
+
+    public void doCoup(){
+        choosePlayer();
 
 
     }
@@ -798,13 +814,6 @@ public class InGame extends Activity {
 
         }
     }
-
-    public void doCoup(){
-        choosePlayer();
-
-
-    }
-
 
     public void mainPlayerChoosesCardToLose(){
         ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
