@@ -45,20 +45,18 @@ public class InGame extends Activity {
     Game game;
     //private Button next, surrender, challenge;
     //private TextView textView; //Change to TextView Timer
-    ArrayList<Card> cardsToChoose,choosenCard,cardsToReturn;
-    ArrayList<String>  cardNamesToReturn;
-    Card c1,c2,c3,c4;
-    ImageView ivImageC1,ivImageC2,ivImageC3,ivImageC4;
+    ArrayList<Card> cardsToChoose, choosenCard, cardsToReturn;
+    ArrayList<String> cardNamesToReturn;
+    Card c1, c2, c3, c4;
+    ImageView ivImageC1, ivImageC2, ivImageC3, ivImageC4;
     int count;
-    boolean leftCardRemoved,rightCardRemoved;
+    boolean leftCardRemoved, rightCardRemoved;
 
     private String name;
     private List<String> opponents;
     private ServerConnection connection;
     private List<String> playernames;
     private Handler handler;
-
-
 
 
     //Action buttons
@@ -124,7 +122,6 @@ public class InGame extends Activity {
     }*/
 
 
-
     @Override
 
 
@@ -179,35 +176,35 @@ public class InGame extends Activity {
 
         connection = new ServerConnection();
 
-        handler=new Handler();
+        handler = new Handler();
 
 
-        Assasinate = (Button)findViewById(R.id.button_assassinate);
-        Tax = (Button)findViewById(R.id.button_tax);
-        Steal = (Button)findViewById(R.id.button_steal);
-        Exchange = (Button)findViewById(R.id.button_exchange);
-        Income = (Button)findViewById(R.id.button_income);
-        Foreign_Aid = (Button)findViewById(R.id.button_foreign_aid);
-        Coup = (Button)findViewById(R.id.button_coup);
+        Assasinate = (Button) findViewById(R.id.button_assassinate);
+        Tax = (Button) findViewById(R.id.button_tax);
+        Steal = (Button) findViewById(R.id.button_steal);
+        Exchange = (Button) findViewById(R.id.button_exchange);
+        Income = (Button) findViewById(R.id.button_income);
+        Foreign_Aid = (Button) findViewById(R.id.button_foreign_aid);
+        Coup = (Button) findViewById(R.id.button_coup);
 
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v == Assasinate){
+                if (v == Assasinate) {
                     ChoosenAktion = Action.ASSASSINATE;
                     choosePlayer();
-                }else if(v == Tax){
+                } else if (v == Tax) {
                     ChoosenAktion = Action.TAX;
-                }else if(v == Steal){
+                } else if (v == Steal) {
                     ChoosenAktion = Action.STEAL;
                     choosePlayer();
-                }else if(v == Exchange){
+                } else if (v == Exchange) {
                     ChoosenAktion = Action.EXCHANGE;
-                }else if(v == Income){
+                } else if (v == Income) {
                     ChoosenAktion = Action.INCOME;
-                }else if(v == Foreign_Aid){
+                } else if (v == Foreign_Aid) {
                     ChoosenAktion = Action.FOREIGNAID;
-                }else if(v == Coup){
+                } else if (v == Coup) {
                     ChoosenAktion = Action.COUP;
                     choosePlayer();
                 }
@@ -225,8 +222,6 @@ public class InGame extends Activity {
         current = SensorManager.GRAVITY_EARTH;
         last = SensorManager.GRAVITY_EARTH;
         shake = 0.00f;
-
-
 
 
         ConnectTask connectTask = new ConnectTask();
@@ -259,72 +254,65 @@ public class InGame extends Activity {
         });
 
 
-
         // cheatfunktion: wenn man das Smartphone schüttelt erhält man 3 Coins, nur 1 mal einsetzbar
         /**
-        SensorEventListener sel = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(final SensorEvent sensorEvent) {
+         SensorEventListener sel = new SensorEventListener() {
+        @Override public void onSensorChanged(final SensorEvent sensorEvent) {
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("cheat"+" "+name);
+        Thread thread = new Thread(new Runnable() {
+        @Override public void run() {
+        connection.sendMessage("cheat"+" "+name);
 
-                        float x = sensorEvent.values[0];
-                        float y = sensorEvent.values[1];
-                        float z = sensorEvent.values[2];
+        float x = sensorEvent.values[0];
+        float y = sensorEvent.values[1];
+        float z = sensorEvent.values[2];
 
-                        last = current;
-                        current = (float) Math.sqrt((double) (x*x + y*y + z*z));
-                        float delta = current - last;
-                        shake = shake * 0.9f + delta;
+        last = current;
+        current = (float) Math.sqrt((double) (x*x + y*y + z*z));
+        float delta = current - last;
+        shake = shake * 0.9f + delta;
 
-                        //look for me in player list
-                        for(Player me:game.getPlayers())
-                            if(me.getName().equals(name)){
-                                player=me;
-                            }
+        //look for me in player list
+        for(Player me:game.getPlayers())
+        if(me.getName().equals(name)){
+        player=me;
+        }
 
 
 
-                        if (shake > 12 && !player.getCheated()) {
-                            //look for me in player list
-                            for(Player me:game.getPlayers())
-                                if(me.getName().equals(name)){
-                                    me.setCoins(me.getCoins()+3);
-                                    me.setCheated(true);
-                                    player=me;
+        if (shake > 12 && !player.getCheated()) {
+        //look for me in player list
+        for(Player me:game.getPlayers())
+        if(me.getName().equals(name)){
+        me.setCoins(me.getCoins()+3);
+        me.setCheated(true);
+        player=me;
 
-                                }
+        }
 
 
-                        }
+        }
 
-                    }
-                });
-                thread.start();
+        }
+        });
+        thread.start();
 
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        textView.setText("You cheated");
-                        coins.setText("Your coins: "+player.getCoins());
-                    }
-                });
+        handler.post(new Runnable() {
+        @Override public void run() {
+        textView.setText("You cheated");
+        coins.setText("Your coins: "+player.getCoins());
+        }
+        });
 
-            }
+        }
 
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {
+        @Override public void onAccuracyChanged(Sensor sensor, int i) {
 
-            }
+        }
         };
 
-        s =(SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        s.registerListener(sel, s.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);*/
-
-
+         s =(SensorManager) getSystemService(Context.SENSOR_SERVICE);
+         s.registerListener(sel, s.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);*/
 
 
         Income.setOnClickListener(new View.OnClickListener() {
@@ -333,12 +321,12 @@ public class InGame extends Activity {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        connection.sendMessage("income"+" "+name);
+                        connection.sendMessage("income" + " " + name);
                         //look for me in player list
-                        for(Player me:game.getPlayers())
-                            if(me.getName().equals(name)){
-                                me.setCoins(me.getCoins()+1);
-                                player=me;
+                        for (Player me : game.getPlayers())
+                            if (me.getName().equals(name)) {
+                                me.setCoins(me.getCoins() + 1);
+                                player = me;
 
                             }
 
@@ -351,7 +339,7 @@ public class InGame extends Activity {
                     public void run() {
                         disableAll();
                         textView.setText("You did income");
-                        coins.setText("Your coins: "+player.getCoins());
+                        coins.setText("Your coins: " + player.getCoins());
                     }
                 });
 
@@ -365,12 +353,12 @@ public class InGame extends Activity {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        connection.sendMessage("foreignaid"+" "+name);
+                        connection.sendMessage("foreignaid" + " " + name);
                         //look for me in player list
-                        for(Player me:game.getPlayers())
-                            if(me.getName().equals(name)){
-                                me.setCoins(me.getCoins()+2);
-                                player=me;
+                        for (Player me : game.getPlayers())
+                            if (me.getName().equals(name)) {
+                                me.setCoins(me.getCoins() + 2);
+                                player = me;
 
                             }
 
@@ -384,7 +372,7 @@ public class InGame extends Activity {
                     public void run() {
                         disableAll();
                         textView.setText("You did foreign aid");
-                        coins.setText("Your coins: "+player.getCoins());
+                        coins.setText("Your coins: " + player.getCoins());
                     }
                 });
 
@@ -397,11 +385,11 @@ public class InGame extends Activity {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        connection.sendMessage("exchange"+" "+name);
+                        connection.sendMessage("exchange" + " " + name);
                         //look for me in player list
-                        for(Player me:game.getPlayers())
-                            if(me.getName().equals(name)){
-                                player=me;
+                        for (Player me : game.getPlayers())
+                            if (me.getName().equals(name)) {
+                                player = me;
                             }
 
                     }
@@ -415,7 +403,7 @@ public class InGame extends Activity {
 
                         showCardsToExchange();
                     }
-                },250);
+                }, 250);
 
             }
         });
@@ -425,10 +413,10 @@ public class InGame extends Activity {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        connection.sendMessage("tax"+" "+name);
+                        connection.sendMessage("tax" + " " + name);
                         //look for me in player list
-                        for(Player me:game.getPlayers())
-                            if(me.getName().equals(name)) {
+                        for (Player me : game.getPlayers())
+                            if (me.getName().equals(name)) {
                                 me.setCoins(me.getCoins() + 3);
                                 player = me;
                             }
@@ -443,7 +431,7 @@ public class InGame extends Activity {
                     public void run() {
                         disableAll();
                         textView.setText("You did tax");
-                        coins.setText("Your coins: "+player.getCoins());
+                        coins.setText("Your coins: " + player.getCoins());
                     }
                 });
 
@@ -468,6 +456,13 @@ public class InGame extends Activity {
             }
         });
 
+        Coup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                doCoup();
+            }
+        });
 
 
         challenge.setOnClickListener(new View.OnClickListener() {
@@ -476,8 +471,6 @@ public class InGame extends Activity {
                 challengeConfirmation();
             }
         });
-
-
 
 
     }
@@ -505,7 +498,7 @@ public class InGame extends Activity {
         challengeDialog.show();
     }
 
-    public void choosePlayer(){
+    public void choosePlayer() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
         builder.setTitle("Choose Player");
@@ -515,7 +508,7 @@ public class InGame extends Activity {
         builder.setItems(players, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                for(Player p: game.getPlayers()) {
+                for (Player p : game.getPlayers()) {
                     if (p.getName().equals(players[which])) {
                         attackedPlayer = p;
                     }
@@ -524,10 +517,10 @@ public class InGame extends Activity {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        connection.sendMessage("steal"+" "+name+" "+attackedPlayer.getName());
+                        connection.sendMessage("steal" + " " + name + " " + attackedPlayer.getName());
                         //look for me in player list
 
-                        for(Player p:game.getPlayers()) {
+                        for (Player p : game.getPlayers()) {
                             if (p.getName().equals(name)) {
                                 p.setCoins(p.getCoins() + 2);
                                 player = p;
@@ -545,9 +538,9 @@ public class InGame extends Activity {
                     @Override
                     public void run() {
                         disableAll();
-                        textView.setText("You stole from "+attackedPlayer.getName());
+                        textView.setText("You stole from " + attackedPlayer.getName());
                         updateCoins(attackedPlayer.getName(), -2);
-                        coins.setText("Your coins: "+player.getCoins());
+                        coins.setText("Your coins: " + player.getCoins());
                     }
                 });
 
@@ -561,7 +554,8 @@ public class InGame extends Activity {
 
 
     }
-    public void disableAll(){
+
+    public void disableAll() {
         Assasinate.setEnabled(false);
         Income.setEnabled(false);
         Foreign_Aid.setEnabled(false);
@@ -574,8 +568,8 @@ public class InGame extends Activity {
     }
 
 
+    /***Methods*********/
 
-/***Methods*********/
 
     public void challengeTimer() {
         new CountDownTimer(10000, 1000) {
@@ -587,6 +581,60 @@ public class InGame extends Activity {
                 timer.setText("Challenge over.");
             }
         }.start();
+    }
+
+
+    private void doCoup() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
+        builder.setTitle("Choose Player for Coup");
+
+// add a list
+        final String[] players = opponents.toArray(new String[opponents.size()]);
+        builder.setItems(players, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                for (Player p : game.getPlayers()) {
+                    if (p.getName().equals(players[which])) {
+                        attackedPlayer = p;
+                    }
+                }
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("coup" + " " + name + " " + attackedPlayer.getName());
+
+                        for (Player me : game.getPlayers())
+                            if (me.getName().equals(name)) {
+                                me.setCoins(me.getCoins() -7);
+                                player = me;
+                            }
+
+                    }
+                });
+
+                thread.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        disableAll();
+                        next.setEnabled(true);
+                        textView.setText("You did coup on " + attackedPlayer.getName());
+                        coins.setText("Your coins: " + player.getCoins());
+                    }
+                });
+
+            }
+
+        });
+
+// create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
     }
 
 
@@ -1344,6 +1392,7 @@ public class InGame extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+
                                 next.setEnabled(true);
                                 Income.setEnabled(true);
                                 Foreign_Aid.setEnabled(true);
@@ -1509,17 +1558,28 @@ public class InGame extends Activity {
 
                      */
 
-                    /**
-                     *
+
+
                      if(msg.startsWith("coup")){
 
-                     TODO:
-                     split msg to get playername
+                         runOnUiThread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 updateCoins(split[1],-7);
+                                 if(split[2].equals(name)){
 
-                     if playername is equals to this player, the player loses a card
-                     else display playername with message: playername lost an influence
+                                     textView.setText(split[1]+" used coup on you");
+                                     mainPlayerChoosesCardToLose();
 
-                     }*/
+
+                                 }
+                                 else
+                                     textView.setText(split[1]+" used coup on "+split[2]);
+
+                             }
+                         });
+
+                     }
 
 
 
