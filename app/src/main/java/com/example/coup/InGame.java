@@ -99,6 +99,11 @@ public class InGame extends Activity {
 
     private CountDownTimer countDown;
 
+    //Challenge variables
+    private boolean cardInHand;
+    private String cardNameToShow;
+
+
 
     /*// should return choosen Action and attacked Player
     public Object[] next(Player CurrentPlayer){
@@ -531,12 +536,98 @@ public class InGame extends Activity {
 
     }
 
+    public void challengeConfirmation() {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //TODO: Add what happened last turn to text.
+        builder.setMessage("You have been challenged! Choose an option")
+                .setCancelable(false)
+                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                connection.sendMessage("show card" + " " + name + " " + cardNameToShow);
+                            }
+                        });
+
+                        thread.start();
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setText("Challenge successful");
+                            }
+                        });
+
+                        dialogInterface.dismiss();
+
+
+                    }
+                })
+
+                .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                connection.sendMessage("loose card" + " " + name);
+                            }
+                        });
+
+                        thread.start();
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mainPlayerChoosesCardToLose();
+                            }
+                        });
+
+                        dialogInterface.dismiss();
+                    }
+                });
+
+        final AlertDialog challengeDialog = builder.create();
+
+        //if player doesn't have the card in hand disable show card
+        challengeDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                if (!cardInHand)
+                    challengeDialog.getButton(challengeDialog.BUTTON_POSITIVE).setEnabled(false);
+                CountDownTimer timer = new CountDownTimer(10000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        challengeDialog.setMessage("Hurry up!: " + millisUntilFinished / 1000);
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                        challengeDialog.getButton(challengeDialog.BUTTON_NEGATIVE).callOnClick();
+
+                    }
+                };
+                timer.start();
+            }
+        });
+
+        challengeDialog.show();
+
+
+    }
+
     public void choosePlayer(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
         builder.setTitle("Choose Player");
 
-// add a list
+        // add a list
         final String[] players = opponents.toArray(new String[opponents.size()]);
         builder.setItems(players, new DialogInterface.OnClickListener() {
             @Override
@@ -581,7 +672,7 @@ public class InGame extends Activity {
 
         });
 
-// create and show the alert dialog
+        // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
 
@@ -1518,8 +1609,10 @@ public class InGame extends Activity {
 
 
                     }
-					
-					/**/
+
+
+
+                    /**/
 
                     /**
                      * player receives cards from server on exchange
