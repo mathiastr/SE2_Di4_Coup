@@ -473,9 +473,10 @@ public class InGame extends Activity {
         challenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                challengeConfirmation();
+                challengePlayer();
             }
         });
+
 
 
 
@@ -483,7 +484,8 @@ public class InGame extends Activity {
     }
 
 
-    public void challengeConfirmation() {
+    public void challengePlayer() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //TODO: Add what happened last turn to text.
         builder.setMessage("Are you sure you want to challenge the last action?")
@@ -492,17 +494,41 @@ public class InGame extends Activity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                connection.sendMessage("challenge" + " " + name);
+                            }
+                        });
+
+                        thread.start();
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                textView.setText("You did challenge");
+
+                            }
+                        });
+
+                        dialogInterface.dismiss();
+
                     }
                 })
 
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
+                        dialogInterface.dismiss();
                     }
                 });
+
         AlertDialog challengeDialog = builder.create();
+
         challengeDialog.show();
+
+
     }
 
     public void choosePlayer(){
