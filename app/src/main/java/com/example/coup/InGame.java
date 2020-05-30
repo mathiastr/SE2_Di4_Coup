@@ -575,7 +575,7 @@ public class InGame extends Activity {
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                connection.sendMessage("loose card" + " " + name);
+                                connection.sendMessage("lose card" + " " + name);
                             }
                         });
 
@@ -1609,6 +1609,74 @@ public class InGame extends Activity {
 
 
                     }
+
+                    if (msg.startsWith("challenge")) {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+
+                                if (split[2].equals(name)) {
+
+                                    //check if player has card in hand
+
+                                    if (split[3].equals("tax")) {
+                                        if (player.hasCard(CardType.DUKE)) {
+                                            cardInHand = true;
+                                            cardNameToShow = "duke";
+                                        }
+                                    }
+                                    if (split[3].equals("steal")) {
+                                        if (player.hasCard(CardType.CAPTAIN)) {
+                                            cardInHand = true;
+                                            cardNameToShow = "captain";
+                                        }
+                                    }
+                                    if (split[3].equals("assassinate")) {
+                                        if (player.hasCard(CardType.ASSASSIN)) {
+                                            cardInHand = true;
+                                            cardNameToShow = "assassin";
+                                        }
+                                    }
+
+                                    challengeConfirmation();
+
+
+                                } else {
+
+                                    textView.setText(split[1] + " challenged " + split[2]);
+
+                                }
+                            }
+                        });
+
+
+                    }
+
+                    if (msg.startsWith("show card")) {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setText(split[2] + " showed card");
+                            }
+                        });
+
+                    }
+
+                    if (msg.startsWith("lose card")) {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setText(split[2] + " lost an influence");
+                            }
+                        });
+
+                    }
+
+
 
 
 
