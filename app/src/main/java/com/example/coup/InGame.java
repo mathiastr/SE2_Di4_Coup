@@ -1393,12 +1393,24 @@ public class InGame extends Activity {
                             @Override
                             public void run() {
 
+                                for (Player me : game.getPlayers()) {
+                                    if (me.getName().equals(name)) {
+                                        player = me;
+                                    }
+                                }
+                                if (player.getCoins()>6){
+                                    Coup.setEnabled(true);
+                                }
+
+                                // wenn man min. 10 coins hat muss man Coup wählen
+                                if (player.getCoins()<10){
+                                    Income.setEnabled(true);
+                                    Foreign_Aid.setEnabled(true);
+                                    Exchange.setEnabled(true);
+                                    Tax.setEnabled(true);
+                                    Steal.setEnabled(true);
+                                }
                                 next.setEnabled(true);
-                                Income.setEnabled(true);
-                                Foreign_Aid.setEnabled(true);
-                                Exchange.setEnabled(true);
-                                Tax.setEnabled(true);
-                                Steal.setEnabled(true);
                                 textView.setText("Your turn");
                                 timer.setVisibility(View.VISIBLE);
                                 countDown.start();
@@ -1557,8 +1569,6 @@ public class InGame extends Activity {
                      }
 
                      */
-
-
 
                      if(msg.startsWith("coup")){
 

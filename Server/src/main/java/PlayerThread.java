@@ -270,24 +270,37 @@ public class PlayerThread extends Thread {
 
 
 
-                /**
+
                 if(input.startsWith("coup")){
 
-                 input message looks like coup onPlayer
 
-                 TODO:
+                    String[] split = input.split(" ");
 
-                 send message to other players (everyone except turn)
+                    for (int i = 0; i < avaiable; i++) {
+                        if (i == turn)
+                            continue;
+                        writers.get(i).println(input);
+                    }
 
-                 split input (use String[] split =  input.split(" ");)
+                    //retrieve card from attacked player
 
-                 retrieve card from couped player (use String cardToReturn = from.get(split[1]).readline())
+                    String cardToReturn = fromPlayer.get(split[2]).readLine();
 
-                 push card back to stack
+                    if(cardToReturn.startsWith("lastcard")){
+                        String[] last = cardToReturn.split(" ");
+                        cards.push(last[1]);
+
+                        //force player to loose game
+                        toPlayer.get(split[2]).println("lose");
+                    }
+                    else
+                        cards.push(cardToReturn);
+
+                    System.out.println("card: "+cardToReturn+" returned to stack");
 
                 }
 
-                 **/
+
 
 
 
