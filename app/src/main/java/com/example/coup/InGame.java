@@ -575,7 +575,7 @@ public class InGame extends Activity {
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                connection.sendMessage("lose card" + " " + name);
+                                connection.sendMessage("losecard" + " " + name);
                             }
                         });
 
@@ -1665,7 +1665,7 @@ public class InGame extends Activity {
 
                     }
 
-                    if (msg.startsWith("lose card")) {
+                    if (msg.startsWith("losecard")) {
 
                         runOnUiThread(new Runnable() {
                             @Override
