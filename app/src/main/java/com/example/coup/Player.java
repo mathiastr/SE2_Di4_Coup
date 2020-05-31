@@ -26,13 +26,27 @@ public class Player {
         cards = new ArrayList<Card>();
     }
 
-    public int hasCard(CardType type){
+    /*public int hasCard(CardType type){
         //return -1 when Player doesnt have that Cardtype
         //return 0 when index of that Card is 0 (first card)
         //return 1 when index of that Card is 1 (second card)
         if(cards.get(0).getTypeOfCard().equals(type)) return 0;
         else if(cards.get(1).getTypeOfCard().equals(type)) return 1;
         else return -1;
+    }*/
+
+    public boolean hasCard(CardType type) {
+
+        if (cards.size() == 2) {
+            if (cards.get(0).getTypeOfCard().equals(type))
+                return true;
+            else if (cards.get(1).getTypeOfCard().equals(type))
+                return true;
+        } else {
+            if (cards.get(0).getTypeOfCard().equals(type))
+                return true;
+        }
+        return false;
     }
 
     public void revealCard(int cardIndex){

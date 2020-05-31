@@ -262,6 +262,72 @@ public class PlayerThread extends Thread {
                     }
                 }
 
+                if(input.startsWith("challenge")){
+
+                    // get last player
+                    int last = turn - 1;
+
+                    if(last<0)
+                        last = readers.size()-1;
+
+
+                    //pass message to other players
+                    for (int i = 0; i < avaiable; i++) {
+                        if (i == turn)
+                            continue;
+                        writers.get(i).println(input+" "+fromPlayerName.get(readers.get(last))+" "+lastAction);
+                    }
+
+
+                    input = readers.get(last).readLine();
+
+                    if (input.startsWith("show card")){
+                        for (int i = 0; i < avaiable; i++) {
+                            if (i == last)
+                                continue;
+                            writers.get(i).println(input);
+                        }
+
+                    }
+                    else {
+
+                        if(input.startsWith("losecard")){
+
+
+
+                            String cardToReturn = readers.get(last).readLine();
+
+                            if(cardToReturn.startsWith("lastcard")){
+                                String[] second = cardToReturn.split(" ");
+                                cards.push(second[1]);
+
+                                //force player to loose game
+                                writers.get(last).println("lose");
+                            }
+                            else
+                                cards.push(cardToReturn);
+
+                            for (int i = 0; i < avaiable; i++) {
+                                if (i == last)
+                                    continue;
+                                writers.get(i).println(input);
+                            }
+
+                            System.out.println("Card: "+cardToReturn+" returned back to stack");
+
+
+                        }
+
+                    }
+
+
+
+
+
+
+
+                }
+
 
 
 
