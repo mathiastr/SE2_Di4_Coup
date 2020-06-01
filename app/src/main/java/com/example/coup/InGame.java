@@ -86,9 +86,9 @@ public class InGame extends Activity {
     private TextView tvOpp2coins;
     private TextView tvOpp3coins;
 
-    private ImageView ivOpp1 = findViewById(R.id.imageView_enemy_one);
-    private ImageView ivOpp2 = findViewById(R.id.imageView_enemy_two);
-    private ImageView ivOpp3 = findViewById(R.id.imageView_enemy_three);
+    private ImageView ivOpp1 ;
+    private ImageView ivOpp2;
+    private ImageView ivOpp3;
 
 
     private CountDownTimer countDown;
@@ -103,6 +103,10 @@ public class InGame extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ingame);
+
+        ivOpp1 = findViewById(R.id.imageView_enemy_one);
+        ivOpp2 = findViewById(R.id.imageView_enemy_two);
+        ivOpp3 = findViewById(R.id.imageView_enemy_three);
 
 
         Bundle b = getIntent().getExtras();
@@ -794,6 +798,7 @@ public class InGame extends Activity {
         }
     }
 
+
     public void removeOpponent(String onPlayer){
 
 
@@ -1421,9 +1426,11 @@ public class InGame extends Activity {
             try {
                 while (true){
                     msg=connection.getMessage();
-                    final String[] split = msg.split(" ");
+
                     if(msg==null||msg.equals("win")||msg.equals("lose"))
                         break;
+
+                    final String[] split = msg.split(" ");
 
                     if(msg.equals("turn")){
                         runOnUiThread(new Runnable() {
@@ -1641,6 +1648,7 @@ public class InGame extends Activity {
                         });
 
                     }
+
 
                     if (msg.startsWith("lostgame")) {
 
