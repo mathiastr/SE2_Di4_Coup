@@ -301,7 +301,8 @@
                 android:layout_width="49dp"
                 android:layout_height="39dp"
                 android:layout_gravity="center"
-                android:text="OK" />
+                android:text="OK"
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:id="@+id/container_game_coins"
@@ -322,7 +323,7 @@
                     android:id="@+id/textView_coins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your coins: X" />
+                    android:text="Your coins: 2" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
