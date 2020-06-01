@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -85,6 +86,10 @@ public class InGame extends Activity {
     private TextView tvOpp2coins;
     private TextView tvOpp3coins;
 
+    private ImageView ivOpp1 = findViewById(R.id.imageView_enemy_one);
+    private ImageView ivOpp2 = findViewById(R.id.imageView_enemy_two);
+    private ImageView ivOpp3 = findViewById(R.id.imageView_enemy_three);
+
 
     private CountDownTimer countDown;
 
@@ -93,34 +98,7 @@ public class InGame extends Activity {
     private String cardNameToShow;
 
 
-
-    /*// should return choosen Action and attacked Player
-    public Object[] next(Player CurrentPlayer){
-
-            Object[] choosenAktion = new Object[2];
-            choosenAktion[0]= ChoosenAktion;
-            choosenAktion[1]=attackedPlayer;
-
-        return  choosenAktion;
-    }
-
-
-
-    //should return Player who clicked challenge and needed CardType
-    public Object[] waitForChallenge(){
-        return null;
-    }
-
-
-    public boolean waitForBlock(List<Player> Playerscanblock){
-
-        return false;
-    }*/
-
-
     @Override
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -150,23 +128,7 @@ public class InGame extends Activity {
 
             public void onFinish() {
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("next");
-                    }
-                });
-
-                thread.start();
-                try {
-                    thread.join();
-                    timer.setText("Turn over.");
-
-                    next.setEnabled(false);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+                disableAll();
 
             }
         };
@@ -420,7 +382,10 @@ public class InGame extends Activity {
             @Override
             public void onClick(View v) {
 
-                assasinateplayer();
+                if(player.getCoins()<2)
+                    textView.setText("You need 2 coins to use assassinate");
+                else
+                    assasinateplayer();
             }
         });
 
@@ -582,7 +547,7 @@ public class InGame extends Activity {
 
     public void stealFromPlayer() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
         builder.setTitle("Choose Player");
 
         // add a list
@@ -596,35 +561,42 @@ public class InGame extends Activity {
                     }
                 }
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("steal" + " " + name + " " + attackedPlayer.getName());
-                        //look for me in player list
+                if(attackedPlayer.getCoins()<2)
+                    textView.setText(attackedPlayer.getName()+" has not enough coin to steal from" );
+                else {
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            connection.sendMessage("steal" + " " + name + " " + attackedPlayer.getName());
+                            //look for me in player list
 
-                        for (Player p : game.getPlayers()) {
-                            if (p.getName().equals(name)) {
-                                p.setCoins(p.getCoins() + 2);
-                                player = p;
+                            for (Player p : game.getPlayers()) {
+                                if (p.getName().equals(name)) {
+                                    p.setCoins(p.getCoins() + 2);
+                                    player = p;
+                                }
+
                             }
 
+
                         }
+                    });
+
+                    thread.start();
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            disableAll();
+                            textView.setText("You stole from " + attackedPlayer.getName());
+                            updateCoins(attackedPlayer.getName(), -2);
+                            coins.setText("Your coins: " + player.getCoins());
+                        }
+                    });
+                }
 
 
-                    }
-                });
 
-                thread.start();
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        disableAll();
-                        textView.setText("You stole from " + attackedPlayer.getName());
-                        updateCoins(attackedPlayer.getName(), -2);
-                        coins.setText("Your coins: " + player.getCoins());
-                    }
-                });
 
             }
 
@@ -660,15 +632,18 @@ public class InGame extends Activity {
             disableAll();
             Coup.setEnabled(true);
         }
+        else{
+            Assasinate.setEnabled(true);
+            Income.setEnabled(true);
+            Foreign_Aid.setEnabled(true);
+            Exchange.setEnabled(true);
+            Steal.setEnabled(true);
+            Tax.setEnabled(true);
 
-        Assasinate.setEnabled(true);
-        Income.setEnabled(true);
-        Foreign_Aid.setEnabled(true);
-        Exchange.setEnabled(true);
-        Steal.setEnabled(true);
-        Tax.setEnabled(true);
+            challenge.setEnabled(true);
+        }
 
-        challenge.setEnabled(true);
+
 
 
     }
@@ -813,6 +788,42 @@ public class InGame extends Activity {
                 if(p.getName().equals(onPlayer)){
                     p.setCoins(p.getCoins()+coinsAdded);
                     tvOpp3coins.setText(Integer.toString(p.getCoins()));
+                }
+            }
+
+        }
+    }
+
+    public void removeOpponent(String onPlayer){
+
+
+
+        //remove enemy 1
+        if(tvOpp1name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    ivOpp1.setBackgroundColor(Color.RED);
+                    tvOpp1coins.setVisibility(View.INVISIBLE);
+                }
+            }
+
+        }
+        //remove enemy 2
+        if(tvOpp2name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    ivOpp2.setBackgroundColor(Color.RED);
+                    tvOpp2coins.setVisibility(View.INVISIBLE);
+                }
+            }
+
+        }
+        //remove enemy 3
+        if(tvOpp3name.getText().equals(onPlayer)){
+            for(Player p: game.getPlayers()){
+                if(p.getName().equals(onPlayer)){
+                    ivOpp3.setBackgroundColor(Color.RED);
+                    tvOpp3coins.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -1189,6 +1200,14 @@ public class InGame extends Activity {
                         disableAll();
                         next.setEnabled(true);
                         textView.setText("You tried to assassinate "+attackedPlayer.getName());
+
+                        for(Player me : game.getPlayers()){
+                            if(me.getName().equals(name)){
+                                me.setCoins(me.getCoins()-2);
+                                player = me;
+                            }
+                        }
+
                     }
                 });
 
@@ -1518,6 +1537,8 @@ public class InGame extends Activity {
                                 else
                                     textView.setText(split[1]+" used assassinate on "+split[2]);
 
+                                updateCoins(split[1], -2);
+
                             }
                         });
                     }
@@ -1616,6 +1637,22 @@ public class InGame extends Activity {
                             @Override
                             public void run() {
                                 textView.setText(split[2] + " lost an influence");
+                            }
+                        });
+
+                    }
+
+                    if (msg.startsWith("lostgame")) {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setText(split[1] + " lost the game");
+                                removeOpponent(split[1]);
+
+                                for(Player enemy:game.getPlayers())
+                                    if(enemy.getName().equals(split[1]))
+                                        game.getPlayers().remove(enemy);
                             }
                         });
 
