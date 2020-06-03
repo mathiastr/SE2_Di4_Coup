@@ -1279,12 +1279,14 @@ public class InGame extends Activity {
 
                     List<Player> players = new LinkedList<>();
 
-                    for(String playername: playernames)
+                    for(String playername: playernames){
                         players.add(new Player(playername));
+                    }
 
 
                     Log.e("DEBUG CONNECTTAST", ""+playernames.size());
                     game = new Game(players);
+
 
 
 
