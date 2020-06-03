@@ -61,22 +61,8 @@ public class TestGame {
         Assert.assertTrue(g.twoinGame());
     }
 
-    @Test
-    public void testtwoinGame2(){
-        p1.setInGame(false);
-        p2.setInGame(false);
-        p3.setInGame(false);
-        g.setPlayers(players);
-        Assert.assertFalse(g.twoinGame());
-    }
 
-    @Test
-    public void testshuffleCards(){
-        List<Card> TestCards = new ArrayList<>();
-        TestCards = g.getCards();
-        g.shuffleCards();
-        Assert.assertNotSame(TestCards, g.getCards());
-    }
+
 
     @Test
     public void testpushCard(){
