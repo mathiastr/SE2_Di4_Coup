@@ -26,14 +26,6 @@ public class Player {
         cards = new ArrayList<Card>();
     }
 
-    /*public int hasCard(CardType type){
-        //return -1 when Player doesnt have that Cardtype
-        //return 0 when index of that Card is 0 (first card)
-        //return 1 when index of that Card is 1 (second card)
-        if(cards.get(0).getTypeOfCard().equals(type)) return 0;
-        else if(cards.get(1).getTypeOfCard().equals(type)) return 1;
-        else return -1;
-    }*/
 
     public boolean hasCard(CardType type) {
 
@@ -90,9 +82,7 @@ public class Player {
 
 
     //lose Influence heißt der Spieler verliert eine Karte
-    //public void loseInfluence(){
-    //    this.influence--;
-    //}
+
 
     public void loseCard(){
         int cardIndex = 0;
@@ -173,130 +163,5 @@ public class Player {
     }
 
 
-    //TODO bitte alles folgende Löschen, wenn du es nicht brauchst @Mathias
-/*
-    //Regelt das Layout jedes Spielers für die einzelnen Aktionen
-    TextView tvTimer;
-    boolean timerOn;
-    Button btnChallenge;
-    boolean challengeClicked;
-
-    Button btnChooseAmbassador;
-    Button btnChooseCaptain;
-    int choosenType;
-
-    Button btnShow;
-    Button btnLoose;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.test_player_layout);
-
-        tvTimer = findViewById(R.id.tvTimer);
-        btnChallenge = findViewById(R.id.btnChallenge);
-        btnChallenge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                challengeClicked = true;
-                timerOn = false;
-            }
-        });
-
-        btnChooseAmbassador = findViewById(R.id.btnChooseAmb);
-        btnChooseCaptain = findViewById(R.id.btnChooseCap);
-        btnChooseAmbassador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choosenType = 1;
-            }
-        });
-        btnChooseCaptain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choosenType = 2;
-            }
-        });
-
-        btnShow = findViewById(R.id.btnShow);
-        btnLoose = findViewById(R.id.btnLoose);
-        btnShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choosenType = 1;
-            }
-        });
-        btnLoose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choosenType = 2;
-            }
-        });
-    }
-
-    public void startTimer(int sec, Action a){
-        timerOn = true;
-        long currentTime;
-        long endTime = System.currentTimeMillis() + (sec*1000);
-        do{
-            currentTime = System.currentTimeMillis();
-            tvTimer.setText(((endTime-currentTime)/1000) + "sec");
-        } while(currentTime < endTime && timerOn);
-        if(currentTime>=endTime) a.isClickedChallenge = -1;
-    }
-
-    public void stopTimer(){
-        timerOn = false;
-    }
-
-    public void challenge(Action a){
-        btnChallenge.setVisibility(View.VISIBLE);
-        challengeClicked = false;
-        while(!challengeClicked && timerOn){
-
-        }
-        if(challengeClicked){
-            a.whoClickedChallenge = this;
-            a.isClickedChallenge = 1;
-        }
-        btnChallenge.setVisibility(View.INVISIBLE);
-    }
-
-    public CardType chooseAmOrCa(){
-        btnChooseAmbassador.setVisibility(View.VISIBLE);
-        btnChooseCaptain.setVisibility(View.VISIBLE);
-        choosenType = 0;
-        while(choosenType==0){
-
-        }
-        btnChooseAmbassador.setVisibility(View.INVISIBLE);
-        btnChooseCaptain.setVisibility(View.INVISIBLE);
-        if(choosenType==1){
-            return CardType.AMBASSADOR;
-        }
-        else return CardType.CAPTAIN;
-    }
-
-    public boolean showOrLoose(int card, Player p){
-        btnShow.setVisibility(View.VISIBLE);
-        btnLoose.setVisibility(View.VISIBLE);
-        choosenType = 0;
-        while(choosenType==0){
-
-        }
-        btnShow.setVisibility(View.INVISIBLE);
-        btnLoose.setVisibility(View.INVISIBLE);
-
-        if(choosenType==1){
-            getCards().get(card).revealCard();
-            p.loseCard();
-            return false;
-        }
-        else {
-            loseCard();
-            return true;
-        }
-    }
-
- */
+   
 }
