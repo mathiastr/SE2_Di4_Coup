@@ -115,6 +115,10 @@ public class InGame extends Activity implements SensorEventListener {
         Accelerometer = s.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         s.registerListener(this, Accelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
+        current = SensorManager.GRAVITY_EARTH;
+        last = SensorManager.GRAVITY_EARTH;
+        shake = 0.00f;
+
         ivOpp1 = findViewById(R.id.imageView_enemy_one);
         ivOpp2 = findViewById(R.id.imageView_enemy_two);
         ivOpp3 = findViewById(R.id.imageView_enemy_three);
