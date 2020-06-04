@@ -4,9 +4,13 @@ package com.example.coup;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +28,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class InGame extends Activity {
+public class InGame extends Activity implements SensorEventListener {
 
 
     private Button next;
@@ -64,9 +68,12 @@ public class InGame extends Activity {
     Action ChoosenAktion;
     Player attackedPlayer;
     private SensorManager s;
+    private Sensor Accelerometer;
     private float current;
     private float last;
     private float shake;
+
+
 
     // should return choosen Action and attacked Player
 
@@ -103,6 +110,14 @@ public class InGame extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ingame);
+
+        s = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Accelerometer = s.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        s.registerListener(this, Accelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+
+        current = SensorManager.GRAVITY_EARTH;
+        last = SensorManager.GRAVITY_EARTH;
+        shake = 0.00f;
 
         ivOpp1 = findViewById(R.id.imageView_enemy_one);
         ivOpp2 = findViewById(R.id.imageView_enemy_two);
@@ -153,10 +168,6 @@ public class InGame extends Activity {
 
 
 
-        current = SensorManager.GRAVITY_EARTH;
-        last = SensorManager.GRAVITY_EARTH;
-        shake = 0.00f;
-
 
         ConnectTask connectTask = new ConnectTask();
         connectTask.execute();
@@ -186,67 +197,6 @@ public class InGame extends Activity {
                 thread.start();
             }
         });
-
-
-        // cheatfunktion: wenn man das Smartphone schüttelt erhält man 3 Coins, nur 1 mal einsetzbar
-        /**
-         SensorEventListener sel = new SensorEventListener() {
-        @Override public void onSensorChanged(final SensorEvent sensorEvent) {
-
-        Thread thread = new Thread(new Runnable() {
-        @Override public void run() {
-        connection.sendMessage("cheat"+" "+name);
-
-        float x = sensorEvent.values[0];
-        float y = sensorEvent.values[1];
-        float z = sensorEvent.values[2];
-
-        last = current;
-        current = (float) Math.sqrt((double) (x*x + y*y + z*z));
-        float delta = current - last;
-        shake = shake * 0.9f + delta;
-
-        //look for me in player list
-        for(Player me:game.getPlayers())
-        if(me.getName().equals(name)){
-        player=me;
-        }
-
-
-
-        if (shake > 12 && !player.getCheated()) {
-        //look for me in player list
-        for(Player me:game.getPlayers())
-        if(me.getName().equals(name)){
-        me.setCoins(me.getCoins()+3);
-        me.setCheated(true);
-        player=me;
-
-        }
-
-
-        }
-
-        }
-        });
-        thread.start();
-
-        handler.post(new Runnable() {
-        @Override public void run() {
-        textView.setText("You cheated");
-        coins.setText("Your coins: "+player.getCoins());
-        }
-        });
-
-        }
-
-        @Override public void onAccuracyChanged(Sensor sensor, int i) {
-
-        }
-        };
-
-         s =(SensorManager) getSystemService(Context.SENSOR_SERVICE);
-         s.registerListener(sel, s.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);*/
 
 
         Income.setOnClickListener(new View.OnClickListener() {
@@ -409,6 +359,65 @@ public class InGame extends Activity {
             }
         });
 
+
+    }
+
+
+    // cheatfunktion: wenn man das Smartphone schüttelt erhält man 3 Coins, nur 1 mal einsetzbar
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        Sensor mySensor = event.sensor;
+
+        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            last = current;
+            current = (float) Math.sqrt((double) (x*x + y*y + z*z));
+            float delta = current - last;
+            shake = shake * 0.9f + delta;
+
+
+            if (shake > 15 && !player.getCheated()) {
+
+
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            connection.sendMessage("cheat" + " " + name);
+
+                            for (Player me : game.getPlayers())
+                                if (me.getName().equals(name)) {
+                                    me.setCoins(me.getCoins() +3);
+                                    me.setCheated(true);
+                                    player = me;
+                                }
+
+                        }
+                    });
+
+                    thread.start();
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView.setText("You cheated");
+                            coins.setText("Your coins: " + player.getCoins());
+                        }
+                    });
+
+
+
+            }
+
+        }
+    }
+
+
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
 
@@ -613,7 +622,7 @@ public class InGame extends Activity {
 
     }
 
-    public void disableAll() {
+    public void disableAll(){
         Assasinate.setEnabled(false);
         Income.setEnabled(false);
         Foreign_Aid.setEnabled(false);
@@ -1227,6 +1236,7 @@ public class InGame extends Activity {
 
 
     }
+
     /****************AsynTask classes********/
 
     //Connect to Server and finally enable Action-Buttons
