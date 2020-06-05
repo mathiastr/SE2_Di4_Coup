@@ -31,80 +31,22 @@ import java.util.List;
 public class InGame extends Activity implements SensorEventListener {
 
 
-    private Button next;
-    private TextView timer; //Change to TextView Timer
-    private TextView textView;
-    private Button challenge;
-
-    Player player;
+    Player player,attackedPlayer;
     Game game;
-    //private Button next, surrender, challenge;
-    //private TextView textView; //Change to TextView Timer
-    ArrayList<Card> cardsToChoose, choosenCard, cardsToReturn;
-    ArrayList<String> cardNamesToReturn;
-    Card c1, c2, c3, c4;
-    ImageView ivImageC1, ivImageC2, ivImageC3, ivImageC4;
+    ArrayList<Card> cardsToChoose, choosenCard;
+    ImageView ivImageC1, ivImageC2, ivImageC3, ivImageC4,ivOpp1,ivOpp2,ivOpp3;
     int count;
-    boolean leftCardRemoved, rightCardRemoved;
-
-    private String name;
-    private List<String> opponents;
+    boolean leftCardRemoved, rightCardRemoved,cardInHand,challengeAccepted;
+    private String name,cardNameToShow;
+    private List<String> opponents,playernames;
     private ServerConnection connection;
-    private List<String> playernames;
     private Handler handler;
-
-
-    //Action buttons
-    private Button Assasinate;
-    private Button Tax;
-    private Button Steal;
-    private Button Exchange;
-    private Button Income;
-    private Button Foreign_Aid;
-    private Button Coup;
-    private Button chooseCards;
-
-
-    Action ChoosenAktion;
-    Player attackedPlayer;
+    private Button Assasinate,Tax,Steal,Exchange,Income,Foreign_Aid,Coup,chooseCards,next,challenge;
     private SensorManager s;
     private Sensor Accelerometer;
-    private float current;
-    private float last;
-    private float shake;
-
-
-
-    // should return choosen Action and attacked Player
-
-    //textviews
-
-    private TextView coins;
-
-    private TextView tvOpp1name;
-    private TextView tvOpp2name;
-    private TextView tvOpp3name;
-
-    private TextView tvOpp1cards;
-    private TextView tvOpp2cards;
-    private TextView tvOpp3cards;
-
-    private TextView tvOpp1coins;
-    private TextView tvOpp2coins;
-    private TextView tvOpp3coins;
-
-    private ImageView ivOpp1 ;
-    private ImageView ivOpp2;
-    private ImageView ivOpp3;
-
-
-    private CountDownTimer countDown;
-
-    //Challenge variables
-    private boolean cardInHand;
-    private String cardNameToShow;
-    private boolean challengeAccepted;
-    private CountDownTimer challengeTimer;
+    private float current,last,shake;
+    private TextView coins,tvOpp1name,tvOpp2name,tvOpp3name,tvOpp1coins,tvOpp2coins,tvOpp3coins,timer,textView;
+    private CountDownTimer countDown,challengeTimer;
 
 
     @Override
@@ -630,21 +572,16 @@ public class InGame extends Activity implements SensorEventListener {
                         public void run() {
                             connection.sendMessage("steal" + " " + name + " " + attackedPlayer.getName());
                             //look for me in player list
-
                             for (Player p : game.getPlayers()) {
                                 if (p.getName().equals(name)) {
                                     p.setCoins(p.getCoins() + 2);
                                     player = p;
                                 }
-
                             }
-
-
                         }
                     });
 
                     thread.start();
-
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -655,19 +592,12 @@ public class InGame extends Activity implements SensorEventListener {
                         }
                     });
                 }
-
-
-
-
             }
-
         });
 
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
-
-
     }
 
     public void disableAll(){
@@ -679,8 +609,6 @@ public class InGame extends Activity implements SensorEventListener {
         Tax.setEnabled(false);
         Coup.setEnabled(false);
         challenge.setEnabled(false);
-
-
     }
 
     public void enableAll() {
@@ -703,12 +631,7 @@ public class InGame extends Activity implements SensorEventListener {
 
             challenge.setEnabled(true);
         }
-
-
-
-
     }
-
 
     private void doCoup() {
 
@@ -764,43 +687,15 @@ public class InGame extends Activity implements SensorEventListener {
     }
 
 
-
-    public void updateOpponentInfluence(Player player){
-        TextView numOfCards=null;
-
-        TextView tvOpp1name=(TextView) findViewById(R.id.textView_name_enemy_one);
-        TextView tvOpp2name=(TextView) findViewById(R.id.textView_name_enemy_two);
-        TextView tvOpp3name=(TextView) findViewById(R.id.textView_name_enemy_three);
-
-        TextView tvOpp1cards=(TextView) findViewById(R.id.textView_enemy_one_influence);
-        TextView tvOpp2cards=(TextView) findViewById(R.id.textView_name_enemy_two);
-        TextView tvOpp3cards=(TextView) findViewById(R.id.textView_name_enemy_three);
-
-        if(player.getName().equals(tvOpp1name)){
-            numOfCards=tvOpp1cards;
-        }
-        else if(player.getName().equals(tvOpp2name)){
-            numOfCards=tvOpp2cards;
-        }
-        else if(player.getName().equals(tvOpp3name)){
-            numOfCards=tvOpp3cards;
-        }
-        numOfCards.setText(player.getCards().size()-1);
-    }
     //initialize opponent textviews
     public void initializeOpponents(List<String> opponents) {
         tvOpp1name=(TextView) findViewById(R.id.textView_name_enemy_one);
         tvOpp2name=(TextView) findViewById(R.id.textView_name_enemy_two);
         tvOpp3name=(TextView) findViewById(R.id.textView_name_enemy_three);
 
-//        tvOpp1cards=(TextView) findViewById(R.id.opponentNumOfCards1);
-//        tvOpp2cards=(TextView) findViewById(R.id.opponentNumOfCards2);
-//        tvOpp3cards=(TextView) findViewById(R.id.opponentNumOfCards3);
-
         tvOpp1coins = findViewById(R.id.textView_enemy_one_coins);
         tvOpp2coins = findViewById(R.id.textView_enemy_two_coins);
         tvOpp3coins = findViewById(R.id.textView_enemy_three_coins);
-
 
         Log.e("DEBUG: ",opponents.get(0));
 
@@ -810,10 +705,6 @@ public class InGame extends Activity implements SensorEventListener {
         tvOpp2name.setText(opponents.get(1));
         tvOpp3name.setText(opponents.get(2));
         }
-
-        //tvOpp1cards.setText("2");
-        //tvOpp2cards.setText("2");
-        //tvOpp3cards.setText("2");
 
         tvOpp1coins.setText("2");
         tvOpp2coins.setText("2");
@@ -857,8 +748,6 @@ public class InGame extends Activity implements SensorEventListener {
 
 
     public void removeOpponent(String onPlayer){
-
-
 
         //remove enemy 1
         if(tvOpp1name.getText().equals(onPlayer)){
@@ -964,24 +853,13 @@ public class InGame extends Activity implements SensorEventListener {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-
-                    switch (cardToReturn.getTypeOfCard()){
-                        case DUKE: connection.sendMessage("duke");
-                        case CAPTAIN: connection.sendMessage("captain");
-                        case ASSASSIN: connection.sendMessage("assassin");
-                        case CONTESSA: connection.sendMessage("contessa");
-                        case AMBASSADOR: connection.sendMessage("ambassador");
-                    }
-
+                    sendCardNameAsMessage(cardToReturn);
                 }
             });
 
             thread.start();
         }
         else returnLastCard();
-
-
-
     }
 
     private void returnLastCard(){
@@ -992,13 +870,7 @@ public class InGame extends Activity implements SensorEventListener {
             @Override
             public void run() {
 
-                switch (cardToReturn.getTypeOfCard()){
-                    case DUKE: connection.sendMessage("lastcard duke");
-                    case CAPTAIN: connection.sendMessage("lastcard captain");
-                    case ASSASSIN: connection.sendMessage("lastcard assassin");
-                    case CONTESSA: connection.sendMessage("lastcard contessa");
-                    case AMBASSADOR: connection.sendMessage("lastcard ambassador");
-                }
+                sendCardNameAsMessage(cardToReturn);
 
             }
         });
@@ -1008,8 +880,15 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-
-
+    private void sendCardNameAsMessage(Card cardToReturn) {
+        switch (cardToReturn.getTypeOfCard()){
+            case DUKE: connection.sendMessage("duke");
+            case CAPTAIN: connection.sendMessage("captain");
+            case ASSASSIN: connection.sendMessage("assassin");
+            case CONTESSA: connection.sendMessage("contessa");
+            case AMBASSADOR: connection.sendMessage("ambassador");
+        }
+    }
 
 
     public void settingCardImagesAtStartOfGame() {
@@ -1045,7 +924,6 @@ public class InGame extends Activity implements SensorEventListener {
         ivImageC3 = (ImageView) findViewById(R.id.card_playercard3);
         ivImageC4 = (ImageView) findViewById(R.id.card_playercard4);
 
-
         choosenCard = cardsToChoose;
 
         displayCards(cardsToChoose.get(1).getTypeOfCard(), ivImageC3);
@@ -1057,9 +935,7 @@ public class InGame extends Activity implements SensorEventListener {
         if(cardsToChoose==null)
             Log.e("DEBUG", "CARDS NULL");
 
-
         chooseCards.setVisibility(View.VISIBLE);
-
         ivImageC4.setClickable(true);
         ivImageC3.setClickable(true);
 
@@ -1067,18 +943,13 @@ public class InGame extends Activity implements SensorEventListener {
             ivImageC4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     List<Card> hand = new ArrayList<>();
                     hand.add(cardsToChoose.get(0));
                     hand.add(player.getCards().get(1));
-
                     cardsToChoose.set(0, player.getCards().get(0));
-
                     player.setCards(hand);
                     displayCards(player.getCards().get(0).getTypeOfCard(), ivImageC1);
                     displayCards(cardsToChoose.get(0).getTypeOfCard(), ivImageC4);
-
-
                 }
             });
 
@@ -1090,15 +961,12 @@ public class InGame extends Activity implements SensorEventListener {
                     hand.add(player.getCards().get(0));
                     hand.add(cardsToChoose.get(1));
 
-
                     cardsToChoose.set(1, player.getCards().get(1));
 
                     player.setCards(hand);
 
                     displayCards(player.getCards().get(1).getTypeOfCard(), ivImageC2);
                     displayCards(cardsToChoose.get(1).getTypeOfCard(), ivImageC3);
-
-
                 }
             });
         }
@@ -1804,15 +1672,7 @@ public class InGame extends Activity implements SensorEventListener {
                 startActivity(i);
             }
 
-
-
-
         }
     }
-
-
-
-
-
 
 }
