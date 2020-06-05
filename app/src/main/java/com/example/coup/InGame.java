@@ -103,6 +103,8 @@ public class InGame extends Activity implements SensorEventListener {
     //Challenge variables
     private boolean cardInHand;
     private String cardNameToShow;
+    private boolean challengeAccepted;
+    private CountDownTimer challengeTimer;
 
 
     @Override
@@ -355,7 +357,15 @@ public class InGame extends Activity implements SensorEventListener {
         challenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                challengePlayer();
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connection.sendMessage("challenge");
+                    }
+                });
+
+                thread.start();
             }
         });
 
@@ -422,45 +432,71 @@ public class InGame extends Activity implements SensorEventListener {
     }
 
 
-    public void challengePlayer() {
+    public void challengePlayer(final String lastPlayer, final String lastAction) {
+
+        boolean challengable = lastAction.equals("assassinate") || lastAction.equals("tax")
+                || lastAction.equals("steal") || lastAction.equals("exchange") || lastAction.equals("bfa");
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //TODO: Add what happened last turn to text.
-        builder.setMessage("Are you sure you want to challenge the last action?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                connection.sendMessage("challenge" + " " + name);
-                            }
-                        });
+        if (challengable) {
 
-                        thread.start();
+            builder.setMessage("Are you sure you want to challenge " + lastAction + " on " + lastPlayer + " ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    connection.sendMessage("challenge" + " " + name + " " + lastPlayer + " " + lastAction);
+                                }
+                            });
 
-                                textView.setText("You did challenge");
+                            thread.start();
 
-                            }
-                        });
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
 
-                        dialogInterface.dismiss();
+                                    textView.setText("You did challenge");
 
-                    }
-                })
+                                }
+                            });
 
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                            dialogInterface.dismiss();
+
+                        }
+                    })
+
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+        } else {
+
+            builder.setMessage("You can not challenge " + lastAction + " on " + lastPlayer)
+                    .setCancelable(false)
+                    .setNegativeButton("abort", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    connection.sendMessage("stop");
+                                }
+                            });
+                            thread.start();
+                            dialog.cancel();
+                        }
+                    });
+
+        }
 
         AlertDialog challengeDialog = builder.create();
 
@@ -472,7 +508,7 @@ public class InGame extends Activity implements SensorEventListener {
     public void challengeConfirmation() {
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //TODO: Add what happened last turn to text.
         builder.setMessage("You have been challenged! Choose an option")
                 .setCancelable(false)
@@ -480,14 +516,14 @@ public class InGame extends Activity implements SensorEventListener {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Thread thread = new Thread(new Runnable() {
+                        new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                connection.sendMessage("show card" + " " + name + " " + cardNameToShow);
+                                connection.sendMessage("show card" + " " + cardNameToShow);
                             }
-                        });
+                        }).start();
 
-                        thread.start();
+
 
                         handler.post(new Runnable() {
                             @Override
@@ -496,6 +532,7 @@ public class InGame extends Activity implements SensorEventListener {
                             }
                         });
 
+                        challengeAccepted = true;
                         cardInHand=false;
                         dialogInterface.dismiss();
 
@@ -510,6 +547,8 @@ public class InGame extends Activity implements SensorEventListener {
                             @Override
                             public void run() {
 
+                                connection.sendMessage("loose card" + " " + name);
+
                             }
                         });
 
@@ -518,7 +557,7 @@ public class InGame extends Activity implements SensorEventListener {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                //mainPlayerChoosesCardToLose();
+                                mainPlayerChoosesCardToLose();
 
                             }
                         });
@@ -527,34 +566,43 @@ public class InGame extends Activity implements SensorEventListener {
                     }
                 });
 
+
         final AlertDialog challengeDialog = builder.create();
 
-        //if player doesn't have the card in hand disable show card
+        final boolean l = challengeAccepted;
+
+        challengeAccepted = false;
+
+        Log.e("DEBUG CARDINHAND", "" + cardInHand);
+
+
         challengeDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onShow(final DialogInterface dialog) {
+            public void onShow(DialogInterface dialog) {
+                if (!cardInHand)
+                    challengeDialog.getButton(challengeDialog.BUTTON_POSITIVE).setEnabled(false);
 
-                challengeDialog.getButton(challengeDialog.BUTTON_POSITIVE).setEnabled(false);
-
-                CountDownTimer timer = new CountDownTimer(10000, 1000) {
+                challengeTimer = new CountDownTimer(10000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        challengeDialog.setMessage("Hurry up!: " + millisUntilFinished / 1000);
+                        challengeDialog.setMessage("Hurry up :" + millisUntilFinished / 1000);
                     }
 
                     @Override
                     public void onFinish() {
 
-                        challengeDialog.getButton(challengeDialog.BUTTON_NEGATIVE).callOnClick();
+                        if (!l)
+                            challengeDialog.getButton(DialogInterface.BUTTON_NEGATIVE).callOnClick();
+
 
                     }
                 };
-                timer.start();
+
+                challengeTimer.start();
             }
         });
 
         challengeDialog.show();
-
 
     }
 
@@ -1595,7 +1643,18 @@ public class InGame extends Activity implements SensorEventListener {
 
                     }
 
+                    if (msg.startsWith("lastaction")) {
+                        Log.e("DEBUG LASTACTION", msg);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                challengePlayer(split[1], split[2]);
+                            }
+                        });
+                    }
+
                     if (msg.startsWith("challenge")) {
+                        Log.e("DEBUG CHALLENGE", msg);
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -1606,6 +1665,7 @@ public class InGame extends Activity implements SensorEventListener {
 
                                     //check if player has card in hand
 
+                                    Log.e("DEBUG ACTION", split[3]);
                                     if (split[3].equals("tax")) {
                                         if (player.hasCard(CardType.DUKE)) {
                                             cardInHand = true;
@@ -1624,6 +1684,13 @@ public class InGame extends Activity implements SensorEventListener {
                                             cardNameToShow = "assassin";
                                         }
                                     }
+                                    if (split[3].equals("exchange")) {
+                                        if (player.hasCard(CardType.AMBASSADOR)) {
+                                            cardInHand = true;
+                                            cardNameToShow = "ambassador";
+                                        }
+                                    }
+
 
                                     challengeConfirmation();
 
