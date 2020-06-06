@@ -20,11 +20,11 @@ public class Player {
 
 
 
-    public Player(String name){
-        this.name=name;
-        playerID++;
-        cards = new ArrayList<Card>();
+    public Player(){
+
     }
+
+    public void setName(String name){this.name=name;}
 
 
     public boolean hasCard(CardType type) {

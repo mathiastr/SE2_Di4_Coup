@@ -1266,14 +1266,14 @@ public class InGame extends Activity implements SensorEventListener {
                     List<Player> players = new LinkedList<>();
 
                     for(String playername: playernames){
-                        players.add(new Player(playername));
+                        Player p = new Player();
+                        p.setName(playername);
+                        players.add(p);
                     }
 
 
                     Log.e("DEBUG CONNECTTAST", ""+playernames.size());
                     game = new Game(players);
-
-
 
 
                     for(String playername: playernames){
