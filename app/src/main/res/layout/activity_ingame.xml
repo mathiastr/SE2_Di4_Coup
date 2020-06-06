@@ -418,6 +418,12 @@
             android:layout_height="44dp"
             android:layout_marginBottom="0dp"
             android:text="FA" />
+
+        <Button
+            android:id="@+id/button_blockforeignaid"
+            android:layout_width="50dp"
+            android:layout_height="44dp"
+            android:text="BFA" />
     </LinearLayout>
 
 
