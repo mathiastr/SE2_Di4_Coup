@@ -20,10 +20,10 @@ public class TestActions {
     @Before
     public void before(){
         players=new ArrayList<>();
-        p1= new Player("P1");
-        p2= new Player("P2");
-        p3= new Player("P3");
-        p4= new Player("P4");
+        p1= new Player();
+        p2= new Player();
+        p3= new Player();
+        p4= new Player();
 
         players.add(p1);
         players.add(p2);

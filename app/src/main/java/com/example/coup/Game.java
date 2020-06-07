@@ -13,6 +13,7 @@ public class Game {
     Action lastAction;
     Player playerDoingLastAction;
 
+    public Game(){}
 
 
     public Game(List<Player> players){
