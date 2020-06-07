@@ -48,6 +48,8 @@ public class InGame extends Activity implements SensorEventListener {
     private float current,last,shake;
     private TextView coins,tvOpp1name,tvOpp2name,tvOpp3name,tvOpp1coins,tvOpp2coins,tvOpp3coins,timer,textView;
     private CountDownTimer countDown,challengeTimer;
+    private List<TextView> enemyTv, coinsTv;
+
 
 
     @Override
@@ -638,75 +640,40 @@ public class InGame extends Activity implements SensorEventListener {
         tvOpp2coins.setText("2");
         tvOpp3coins.setText("2");
 
+        enemyTv = new LinkedList<>();
+        enemyTv.add(tvOpp1name);
+        enemyTv.add(tvOpp2name);
+        enemyTv.add(tvOpp3name);
+
+        coinsTv = new LinkedList<>();
+        coinsTv.add(tvOpp1coins);
+        coinsTv.add(tvOpp2coins);
+        coinsTv.add(tvOpp3coins);
+
 
     }
 
     public void updateCoins(String onPlayer, int coinsAdded){
-        //update coins for enemy 1
-        if(tvOpp1name.getText().equals(onPlayer)){
-            for(Player p: game.getPlayers()){
-                if(p.getName().equals(onPlayer)){
-                    p.setCoins(p.getCoins()+coinsAdded);
-                    tvOpp1coins.setText(Integer.toString(p.getCoins()));
-                }
-            }
 
-        }
-        //update coins for enemy 2
-        if(tvOpp2name.getText().equals(onPlayer)){
-            for(Player p: game.getPlayers()){
-                if(p.getName().equals(onPlayer)){
-                    p.setCoins(p.getCoins()+coinsAdded);
-                    tvOpp2coins.setText(Integer.toString(p.getCoins()));
-                }
+        for(int i=0; i<enemyTv.size();i++){
+            if(enemyTv.get(i).getText().equals(onPlayer)){
+                Player p = game.updatePlayerCoins(onPlayer, coinsAdded);
+                coinsTv.get(i).setText(Integer.toString(p.getCoins()));
             }
-
         }
-        //update coins for enemy 3
-        if(tvOpp3name.getText().equals(onPlayer)){
-            for(Player p: game.getPlayers()){
-                if(p.getName().equals(onPlayer)){
-                    p.setCoins(p.getCoins()+coinsAdded);
-                    tvOpp3coins.setText(Integer.toString(p.getCoins()));
-                }
-            }
 
-        }
     }
 
 
     public void removeOpponent(String onPlayer){
 
-        //remove enemy 1
-        if(tvOpp1name.getText().equals(onPlayer)){
-            for(Player p: game.getPlayers()){
-                if(p.getName().equals(onPlayer)){
-                    ivOpp1.setBackgroundColor(Color.RED);
-                    tvOpp1coins.setVisibility(View.INVISIBLE);
-                }
+        for(int i=0; i<enemyTv.size();i++){
+            if(enemyTv.get(i).getText().equals(onPlayer)){
+                coinsTv.get(i).setText(null);
             }
-
         }
-        //remove enemy 2
-        if(tvOpp2name.getText().equals(onPlayer)){
-            for(Player p: game.getPlayers()){
-                if(p.getName().equals(onPlayer)){
-                    ivOpp2.setBackgroundColor(Color.RED);
-                    tvOpp2coins.setVisibility(View.INVISIBLE);
-                }
-            }
 
-        }
-        //remove enemy 3
-        if(tvOpp3name.getText().equals(onPlayer)){
-            for(Player p: game.getPlayers()){
-                if(p.getName().equals(onPlayer)){
-                    ivOpp3.setBackgroundColor(Color.RED);
-                    tvOpp3coins.setVisibility(View.INVISIBLE);
-                }
-            }
 
-        }
     }
 
     public void mainPlayerChoosesCardToLose(){
