@@ -156,12 +156,7 @@ public class InGame extends Activity implements SensorEventListener {
                     public void run() {
                         connection.sendMessage("income" + " " + name);
                         //look for me in player list
-                        for (Player me : game.getPlayers())
-                            if (me.getName().equals(name)) {
-                                me.setCoins(me.getCoins() + 1);
-                                player = me;
-
-                            }
+                        player=game.updatePlayerCoins(name, 1);
 
                     }
                 });
@@ -188,12 +183,7 @@ public class InGame extends Activity implements SensorEventListener {
                     public void run() {
                         connection.sendMessage("foreignaid" + " " + name);
                         //look for me in player list
-                        for (Player me : game.getPlayers())
-                            if (me.getName().equals(name)) {
-                                me.setCoins(me.getCoins() + 2);
-                                player = me;
-
-                            }
+                        player=game.updatePlayerCoins(name, 2);
 
                     }
                 });
@@ -220,10 +210,7 @@ public class InGame extends Activity implements SensorEventListener {
                     public void run() {
                         connection.sendMessage("exchange" + " " + name);
                         //look for me in player list
-                        for (Player me : game.getPlayers())
-                            if (me.getName().equals(name)) {
-                                player = me;
-                            }
+                        player= game.getPlayerByName(name);
 
                     }
                 });
@@ -248,11 +235,7 @@ public class InGame extends Activity implements SensorEventListener {
                     public void run() {
                         connection.sendMessage("tax" + " " + name);
                         //look for me in player list
-                        for (Player me : game.getPlayers())
-                            if (me.getName().equals(name)) {
-                                me.setCoins(me.getCoins() + 3);
-                                player = me;
-                            }
+                        player = game.updatePlayerCoins(name, 3);
 
                     }
                 });
@@ -335,11 +318,7 @@ public class InGame extends Activity implements SensorEventListener {
         builder.setItems(players, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                for (Player p : game.getPlayers()) {
-                    if (p.getName().equals(players[which])) {
-                        attackedPlayer = p;
-                    }
-                }
+                attackedPlayer = game.getPlayerByName(players[which]);
 
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -620,11 +599,7 @@ public class InGame extends Activity implements SensorEventListener {
         builder.setItems(players, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                for (Player p : game.getPlayers()) {
-                    if (p.getName().equals(players[which])) {
-                        attackedPlayer = p;
-                    }
-                }
+                attackedPlayer = game.getPlayerByName(players[which]);
 
                 if(attackedPlayer.getCoins()<2)
                     textView.setText(attackedPlayer.getName()+" has not enough coin to steal from" );
@@ -699,22 +674,14 @@ public class InGame extends Activity implements SensorEventListener {
         builder.setItems(players, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                for (Player p : game.getPlayers()) {
-                    if (p.getName().equals(players[which])) {
-                        attackedPlayer = p;
-                    }
-                }
+                attackedPlayer = game.getPlayerByName(players[which]);
 
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         connection.sendMessage("coup" + " " + name + " " + attackedPlayer.getName());
 
-                        for (Player me : game.getPlayers())
-                            if (me.getName().equals(name)) {
-                                me.setCoins(me.getCoins() -7);
-                                player = me;
-                            }
+                        player = game.updatePlayerCoins(name, -7);
 
                     }
                 });
@@ -1168,11 +1135,7 @@ public class InGame extends Activity implements SensorEventListener {
         builder.setItems(players, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                for(Player p: game.getPlayers()) {
-                    if (p.getName().equals(players[which])) {
-                        attackedPlayer = p;
-                    }
-                }
+                attackedPlayer = game.getPlayerByName(players[which]);
 
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -1471,10 +1434,19 @@ public class InGame extends Activity implements SensorEventListener {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(split[2].equals(name))
+                                if(split[2].equals(name)){
                                     textView.setText(split[1]+" blocked your "+split[3]);
-                                else
+                                    if(split[3].equals("assassinate"))
+                                        player=game.updatePlayerCoins(name, -3);
+                                    coins.setText("Your coins: "+player.getCoins());
+                                    disableAll();
+                                }
+                                else{
                                     textView.setText(split[1]+" blocked "+split[2]+"'s "+split[3]);
+                                    if(split[3].equals("assassinate"))
+                                        updateCoins(split[2], -3);
+
+                                }
                             }
                         });
                     }
@@ -1499,13 +1471,8 @@ public class InGame extends Activity implements SensorEventListener {
                                 //stealing player
                                 if(split[1].equals(name)){
 
-                                    for (Player p : game.getPlayers()) {
-                                        if (p.getName().equals(name)) {
-                                            p.setCoins(p.getCoins() + 2);
-                                            player = p;
-                                        }
+                                    player=game.updatePlayerCoins(name, 2);
 
-                                    }
                                     disableAll();
                                     textView.setText("You stole from " + attackedPlayer.getName());
                                     updateCoins(attackedPlayer.getName(), -2);
@@ -1529,11 +1496,8 @@ public class InGame extends Activity implements SensorEventListener {
 
                                             textView.setText(split[1]+" used steal on you");
                                             updateCoins(split[1],2);
-                                            for(Player me:game.getPlayers())
-                                                if(me.getName().equals(name)){
-                                                    me.setCoins(me.getCoins()-2);
-                                                    player=me;
-                                                }
+
+                                            player= game.updatePlayerCoins(name, -2);
 
                                             coins.setText("Your coins: "+player.getCoins());
 
@@ -1586,12 +1550,9 @@ public class InGame extends Activity implements SensorEventListener {
                                     next.setEnabled(true);
                                     textView.setText("You used assassinate on"+attackedPlayer.getName());
 
-                                    for(Player me : game.getPlayers()){
-                                        if(me.getName().equals(name)){
-                                            me.setCoins(me.getCoins()-3);
-                                            player = me;
-                                        }
-                                    }
+                                    player=game.updatePlayerCoins(name, -3);
+
+                                    Log.e("DEBUG ASSASINATE", ""+player.getCoins());
 
                                     coins.setText("Your coins: "+player.getCoins());
 
@@ -1753,9 +1714,7 @@ public class InGame extends Activity implements SensorEventListener {
                                 textView.setText(split[1] + " lost the game");
                                 removeOpponent(split[1]);
 
-                                for(Player enemy:game.getPlayers())
-                                    if(enemy.getName().equals(split[1]))
-                                        game.getPlayers().remove(enemy);
+                                game.removePlayer(split[1]);
                             }
                         });
 

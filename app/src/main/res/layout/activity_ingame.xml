@@ -178,7 +178,7 @@
     <LinearLayout
         android:id="@+id/container_cards"
         android:layout_width="411dp"
-        android:layout_height="227dp"
+        android:layout_height="220dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -200,7 +200,7 @@
         <LinearLayout
             android:id="@+id/container_card1"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             android:orientation="vertical">
 
             <ImageView
@@ -210,19 +210,12 @@
                 android:layout_gravity="center"
                 android:src="@drawable/contessa" />
 
-            <TextView
-                android:id="@+id/text_playercard1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="CardName"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/container_card2"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             android:orientation="vertical">
 
             <ImageView
@@ -234,13 +227,6 @@
                 android:layout_margin="0dp"
                 android:src="@drawable/ambassador" />
 
-            <TextView
-                android:id="@+id/text_playercard2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="CardName"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
 
         <ImageView
@@ -278,7 +264,8 @@
             android:layout_marginRight="0dp"
             android:gravity="center_horizontal"
             android:text="User did SOMETHING."
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="24sp" />
 
         <LinearLayout
             android:id="@+id/container_game_info_bottom"

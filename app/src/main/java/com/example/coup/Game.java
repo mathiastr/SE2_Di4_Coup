@@ -46,6 +46,37 @@ public class Game {
 //        play();
     }
 
+    public Player updatePlayerCoins(String name, int coins){
+
+        for(Player p: this.players){
+            if(p.getName().equals(name)){
+                p.setCoins(p.getCoins()+coins);
+                return p;
+            }
+        }
+
+        return null;
+
+    }
+
+    public Player getPlayerByName(String name){
+
+        for(Player p: this.players){
+            if(p.getName().equals(name)){
+                return p;
+            }
+        }
+
+        return null;
+
+    }
+
+    public void removePlayer(String name){
+
+        this.players.remove(getPlayerByName(name));
+
+    }
+
 
 
    /* private void play(){
