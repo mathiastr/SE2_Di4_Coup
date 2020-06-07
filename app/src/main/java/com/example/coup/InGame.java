@@ -123,13 +123,7 @@ public class InGame extends Activity implements SensorEventListener {
             @Override
             public void onClick(View v) {
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("next");
-                    }
-                });
-                thread.start();
+                sendToServer("next");
 
                 handler.post(new Runnable() {
                     @Override
@@ -151,20 +145,12 @@ public class InGame extends Activity implements SensorEventListener {
         Income.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("income" + " " + name);
-                        //look for me in player list
-                        player=game.updatePlayerCoins(name, 1);
-
-                    }
-                });
-                thread.start();
+                sendToServer("income" + " " + name);
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        player=game.updatePlayerCoins(name, 1);
                         disableAll();
                         textView.setText("You did income");
                         coins.setText("Your coins: " + player.getCoins());
@@ -178,21 +164,12 @@ public class InGame extends Activity implements SensorEventListener {
         Foreign_Aid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("foreignaid" + " " + name);
-                        //look for me in player list
-                        player=game.updatePlayerCoins(name, 2);
-
-                    }
-                });
-
-                thread.start();
+                sendToServer("foreignaid" + " " + name);
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        player=game.updatePlayerCoins(name, 2);
                         disableAll();
                         textView.setText("You did foreign aid");
                         coins.setText("Your coins: " + player.getCoins());
@@ -205,17 +182,9 @@ public class InGame extends Activity implements SensorEventListener {
         Exchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("exchange" + " " + name);
-                        //look for me in player list
-                        player= game.getPlayerByName(name);
+                sendToServer("exchange" + " " + name);
 
-                    }
-                });
-
-                thread.start();
+                player= game.getPlayerByName(name);
 
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -230,21 +199,12 @@ public class InGame extends Activity implements SensorEventListener {
         Tax.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("tax" + " " + name);
-                        //look for me in player list
-                        player = game.updatePlayerCoins(name, 3);
-
-                    }
-                });
-
-                thread.start();
+                sendToServer("tax" + " " + name);
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        player = game.updatePlayerCoins(name, 3);
                         disableAll();
                         textView.setText("You did tax");
                         coins.setText("Your coins: " + player.getCoins());
@@ -288,14 +248,7 @@ public class InGame extends Activity implements SensorEventListener {
             @Override
             public void onClick(View view) {
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("challenge");
-                    }
-                });
-
-                thread.start();
+                sendToServer("challenge");
             }
         });
 
@@ -320,14 +273,7 @@ public class InGame extends Activity implements SensorEventListener {
             public void onClick(DialogInterface dialogInterface, int which) {
                 attackedPlayer = game.getPlayerByName(players[which]);
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("bfa" + " " + name + " " + attackedPlayer.getName());
-                    }
-                });
-
-                thread.start();
+                sendToServer("bfa" + " " + name + " " + attackedPlayer.getName());
 
                 handler.post(new Runnable() {
                     @Override
@@ -414,7 +360,7 @@ public class InGame extends Activity implements SensorEventListener {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //TODO: Add what happened last turn to text.
+        //TODO: Add w hat happened last turn to text.
 
         if (challengable) {
 
@@ -424,14 +370,8 @@ public class InGame extends Activity implements SensorEventListener {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    connection.sendMessage("challenge" + " " + name + " " + lastPlayer + " " + lastAction);
-                                }
-                            });
 
-                            thread.start();
+                            sendToServer("challenge" + " " + name + " " + lastPlayer + " " + lastAction);
 
                             handler.post(new Runnable() {
                                 @Override
@@ -461,13 +401,7 @@ public class InGame extends Activity implements SensorEventListener {
                     .setNegativeButton("abort", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    connection.sendMessage("stop");
-                                }
-                            });
-                            thread.start();
+                            sendToServer("stop");
                             dialog.cancel();
                         }
                     });
@@ -494,13 +428,8 @@ public class InGame extends Activity implements SensorEventListener {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                connection.sendMessage("show card" + " "+ name+ " " + cardNameToShow);
-                            }
-                        }).start();
 
+                        sendToServer("show card" + " "+ name+ " " + cardNameToShow);
 
 
                         handler.post(new Runnable() {
@@ -522,16 +451,7 @@ public class InGame extends Activity implements SensorEventListener {
                 .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                connection.sendMessage("loose card" + " " + name);
-
-                            }
-                        });
-
-                        thread.start();
+                        sendToServer("loose card" + " " + name);
 
                         handler.post(new Runnable() {
                             @Override
@@ -604,14 +524,8 @@ public class InGame extends Activity implements SensorEventListener {
                 if(attackedPlayer.getCoins()<2)
                     textView.setText(attackedPlayer.getName()+" has not enough coin to steal from" );
                 else {
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            connection.sendMessage("steal" + " " + name + " " + attackedPlayer.getName());
-                        }
-                    });
 
-                    thread.start();
+                    sendToServer("steal" + " " + name + " " + attackedPlayer.getName());
 
                 }
 
@@ -676,22 +590,13 @@ public class InGame extends Activity implements SensorEventListener {
             public void onClick(DialogInterface dialogInterface, int which) {
                 attackedPlayer = game.getPlayerByName(players[which]);
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("coup" + " " + name + " " + attackedPlayer.getName());
-
-                        player = game.updatePlayerCoins(name, -7);
-
-                    }
-                });
-
-                thread.start();
+                sendToServer("coup" + " " + name + " " + attackedPlayer.getName());
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         disableAll();
+                        player = game.updatePlayerCoins(name, -7);
                         next.setEnabled(true);
                         textView.setText("You did coup on " + attackedPlayer.getName());
                         coins.setText("Your coins: " + player.getCoins());
@@ -873,14 +778,7 @@ public class InGame extends Activity implements SensorEventListener {
 
             final Card cardToReturn = c;
 
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    connection.sendMessage(getCardNameAsString(cardToReturn));
-                }
-            });
-
-            thread.start();
+            sendToServer(getCardNameAsString(cardToReturn));
         }
         else returnLastCard();
     }
@@ -889,16 +787,7 @@ public class InGame extends Activity implements SensorEventListener {
 
         final Card cardToReturn = player.getCards().get(0);
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                connection.sendMessage("lastcard"+" "+getCardNameAsString(cardToReturn));
-
-            }
-        });
-
-        thread.start();
+        sendToServer("lastcard"+" "+getCardNameAsString(cardToReturn));
 
 
     }
@@ -1137,14 +1026,7 @@ public class InGame extends Activity implements SensorEventListener {
             public void onClick(DialogInterface dialogInterface, int which) {
                 attackedPlayer = game.getPlayerByName(players[which]);
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        connection.sendMessage("assassinate"+" "+name+" "+attackedPlayer.getName());
-                    }
-                });
-
-                thread.start();
+                sendToServer("assassinate"+" "+name+" "+attackedPlayer.getName());
 
             }
 
@@ -1158,13 +1040,7 @@ public class InGame extends Activity implements SensorEventListener {
 
     private void blockAction(final String attacker, final String action){
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                connection.sendMessage("block");
-            }
-        });
-        thread.start();
+        sendToServer("block");
 
         handler.post(new Runnable() {
             @Override
@@ -1174,6 +1050,17 @@ public class InGame extends Activity implements SensorEventListener {
                 else textView.setText("You blocked "+attacker+ " assassinating you");
             }
         });
+    }
+
+    private void sendToServer(final String message){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                connection.sendMessage(message);
+            }
+        }).start();
+
     }
 
     /****************AsynTask classes********/
