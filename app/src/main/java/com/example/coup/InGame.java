@@ -37,7 +37,7 @@ public class InGame extends Activity implements SensorEventListener {
     ArrayList<Card> cardsToChoose, choosenCard;
     ImageView ivImageC1, ivImageC2, ivImageC3, ivImageC4,ivOpp1,ivOpp2,ivOpp3;
     int count;
-    private boolean leftCardRemoved, rightCardRemoved,cardInHand,challengeAccepted, challengeDenied, foreignAidBlocked;
+    private boolean leftCardRemoved, rightCardRemoved,cardInHand,challengeAccepted, challengeDenied, foreignAidBlocked, turn;
     private String name,cardNameToShow;
     private List<String> opponents,playernames;
     protected ServerConnection connection;
@@ -139,6 +139,7 @@ public class InGame extends Activity implements SensorEventListener {
 
                         next.setEnabled(false);
                         foreignAidBlocked=false;
+                        turn=false;
                         countDown.cancel();
                         timer.setText("");
                     }
@@ -246,7 +247,7 @@ public class InGame extends Activity implements SensorEventListener {
         Coup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                next.setEnabled(false);
                 selectPlayer("coup");
             }
         });
@@ -256,6 +257,7 @@ public class InGame extends Activity implements SensorEventListener {
             @Override
             public void onClick(View view) {
 
+                next.setEnabled(false);
                 sendToServer("challenge");
             }
         });
@@ -675,7 +677,7 @@ public class InGame extends Activity implements SensorEventListener {
                     ivOpp2.setImageResource(R.drawable.enemy_two_dead);
                 }
                 if(i==2){
-                    ivOpp3.setImageResource(R.drawable.enemy_three_passive);
+                    ivOpp3.setImageResource(R.drawable.enemy_three_dead);
                 }
                 notInGame[i]=true;
 
@@ -790,6 +792,8 @@ public class InGame extends Activity implements SensorEventListener {
 
 
             sendToServer(getCardNameAsString(cardToReturn));
+
+            sendToServer("loose card"+name);
         }
         else returnLastCard();
     }
@@ -1029,6 +1033,15 @@ public class InGame extends Activity implements SensorEventListener {
 
         sendToServer("assassinate"+" "+name+" "+attackedPlayer.getName());
 
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                disableAll();
+                next.setEnabled(false);
+                textView.setText("Assassinating "+attackedPlayer.getName());
+            }
+        });
+
     }
 
     private void blockAction(final String attacker, final String action){
@@ -1209,6 +1222,7 @@ public class InGame extends Activity implements SensorEventListener {
                     enableAll();
                     next.setEnabled(true);
                     textView.setText("Your turn");
+                    turn = true;
                     timer.setVisibility(View.VISIBLE);
                     countDown.start();
 
@@ -1274,6 +1288,7 @@ public class InGame extends Activity implements SensorEventListener {
                                 timer.setVisibility(View.VISIBLE);
                                 countDown.start();
                                 updateOpponentOnTurn(name);
+                                turn=true;
 
                             }
                         });
@@ -1333,6 +1348,7 @@ public class InGame extends Activity implements SensorEventListener {
                                     if(split[3].equals("assassinate"))
                                         player=game.updatePlayerCoins(name, -3);
                                     coins.setText(COINS+player.getCoins());
+                                    next.setEnabled(true);
                                     disableAll();
                                 }
                                 else{
@@ -1579,6 +1595,8 @@ public class InGame extends Activity implements SensorEventListener {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(turn)
+                                    next.setEnabled(true);
                                 textView.setText(split[2] + " showed card " + split[3]);
                             }
                         });
@@ -1590,6 +1608,11 @@ public class InGame extends Activity implements SensorEventListener {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(turn){
+                                    next.setEnabled(true);
+                                   // next.setBackgroundColor(Color.GREEN);
+                                }
+
                                 textView.setText(split[2] + " lost an influence");
                             }
                         });
@@ -1602,8 +1625,11 @@ public class InGame extends Activity implements SensorEventListener {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(turn)
+                                    next.setEnabled(true);
                                 textView.setText(split[1] + " lost the game");
                                 removeOpponent(split[1]);
+                                opponents.remove(split[1]);
 
                                 game.removePlayer(split[1]);
                             }
