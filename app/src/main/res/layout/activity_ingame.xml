@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/table_background">
 
 
     <LinearLayout
         android:id="@+id/container_enemies"
         android:layout_width="wrap_content"
         android:layout_height="121dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/container_cards"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,16 +21,18 @@
 
         <LinearLayout
             android:id="@+id/container_enemy1"
-            android:layout_width="132dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:divider="?attr/dividerVertical"
             android:orientation="horizontal"
             tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/imageView_enemy_one"
-                android:layout_width="63dp"
+                android:layout_width="70dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/userbeta" />
+                android:layout_marginLeft="5dp"
+                app:srcCompat="@drawable/enemy_one_active" />
 
             <LinearLayout
                 android:id="@+id/container_enemy1_info"
@@ -43,40 +47,50 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:text="2" />
+                    android:text="2"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/CinzelRegular" />
 
                 <TextView
                     android:id="@+id/textView_name_enemy_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User" />
+                    android:text="User"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/CinzelRegular" />
 
                 <TextView
                     android:id="@+id/textView1_enemy_one_coins_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Coins:" />
+                    android:text="Coins:"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/CinzelRegular" />
 
                 <TextView
                     android:id="@+id/textView_enemy_one_coins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="X" />
+                    android:text="X"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/CinzelRegular" />
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/container_enemy2"
-            android:layout_width="138dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="15dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imageView_enemy_two"
-                android:layout_width="63dp"
+                android:layout_width="70dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/userbeta" />
+                app:srcCompat="@drawable/enemy_two_active" />
 
             <LinearLayout
                 android:id="@+id/container_enemy2_info"
@@ -90,25 +104,33 @@
                     android:id="@+id/textView_enemy_two_influence"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2" />
+                    android:fontFamily="@font/CinzelRegular"
+                    android:text="2"
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/textView_name_enemy_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User" />
+                    android:fontFamily="@font/CinzelRegular"
+                    android:text="User"
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/textView1_enemy_two_coins_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Coins:" />
+                    android:fontFamily="@font/CinzelRegular"
+                    android:text="Coins:"
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/textView_enemy_two_coins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="X" />
+                    android:fontFamily="@font/CinzelRegular"
+                    android:text="X"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
 
         </LinearLayout>
@@ -121,9 +143,9 @@
 
             <ImageView
                 android:id="@+id/imageView_enemy_three"
-                android:layout_width="63dp"
+                android:layout_width="70dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/userbeta" />
+                app:srcCompat="@drawable/enemy_three_active" />
 
             <LinearLayout
                 android:id="@+id/container_enemy3_info"
@@ -137,25 +159,33 @@
                     android:id="@+id/textView_enemy_three_influence"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2" />
+                    android:text="2"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/CinzelRegular" />
 
                 <TextView
                     android:id="@+id/textView_name_enemy_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User" />
+                    android:text="User"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/CinzelRegular" />
 
                 <TextView
                     android:id="@+id/textView1_enemy_three_coins_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Coins:" />
+                    android:text="Coins:"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/CinzelRegular" />
 
                 <TextView
                     android:id="@+id/textView_enemy_three_coins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="X" />
+                    android:text="X"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/CinzelRegular" />
 
             </LinearLayout>
         </LinearLayout>
@@ -166,12 +196,10 @@
         android:id="@+id/textView_timer_enemy_three"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="372dp"
-        android:layout_marginBottom="178dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="78dp"
         android:text="00:00"
-        app:layout_constraintBottom_toTopOf="@+id/container_cards"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/container_enemies" />
 
@@ -262,10 +290,12 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginEnd="0dp"
             android:layout_marginRight="0dp"
+            android:fontFamily="@font/CinzelBold"
             android:gravity="center_horizontal"
             android:text="User did SOMETHING."
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="24sp" />
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:id="@+id/container_game_info_bottom"
@@ -281,7 +311,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginRight="20dp"
-                android:text="Your turn: 00:00" />
+                android:text="Your turn: 00:00"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/CinzelRegular" />
 
             <Button
                 android:id="@+id/btnOK"
@@ -291,27 +323,15 @@
                 android:text="OK"
                 android:visibility="invisible" />
 
-            <LinearLayout
-                android:id="@+id/container_game_coins"
+            <TextView
+                android:id="@+id/textView_coins"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:fontFamily="@font/CinzelRegular"
+                android:text="Your coins: 2"
+                android:textColor="#FFFFFF" />
 
-                <TextView
-                    android:id="@+id/textView_player_NAME"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="Player Name" />
-
-                <TextView
-                    android:id="@+id/textView_coins"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Your coins: 2" />
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
