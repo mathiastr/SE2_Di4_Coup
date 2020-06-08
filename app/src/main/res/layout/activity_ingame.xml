@@ -49,7 +49,7 @@
                     android:layout_marginTop="0dp"
                     android:text="2"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/CinzelRegular" />
+                    android:fontFamily="@font/cinzelregular" />
 
                 <TextView
                     android:id="@+id/textView_name_enemy_one"
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:text="User"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/CinzelRegular" />
+                    android:fontFamily="@font/cinzelregular" />
 
                 <TextView
                     android:id="@+id/textView1_enemy_one_coins_description"
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:text="Coins:"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/CinzelRegular" />
+                    android:fontFamily="@font/cinzelregular" />
 
                 <TextView
                     android:id="@+id/textView_enemy_one_coins"
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:text="X"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/CinzelRegular" />
+                    android:fontFamily="@font/cinzelregular" />
             </LinearLayout>
 
         </LinearLayout>
@@ -104,7 +104,7 @@
                     android:id="@+id/textView_enemy_two_influence"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/CinzelRegular"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="2"
                     android:textColor="#FFFFFF" />
 
@@ -112,7 +112,7 @@
                     android:id="@+id/textView_name_enemy_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/CinzelRegular"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="User"
                     android:textColor="#FFFFFF" />
 
@@ -120,7 +120,7 @@
                     android:id="@+id/textView1_enemy_two_coins_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/CinzelRegular"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="Coins:"
                     android:textColor="#FFFFFF" />
 
@@ -128,7 +128,7 @@
                     android:id="@+id/textView_enemy_two_coins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/CinzelRegular"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="X"
                     android:textColor="#FFFFFF" />
             </LinearLayout>
@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:text="2"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/CinzelRegular" />
+                    android:fontFamily="@font/cinzelregular" />
 
                 <TextView
                     android:id="@+id/textView_name_enemy_three"
@@ -169,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:text="User"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/CinzelRegular" />
+                    android:fontFamily="@font/cinzelregular" />
 
                 <TextView
                     android:id="@+id/textView1_enemy_three_coins_description"
@@ -177,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:text="Coins:"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/CinzelRegular" />
+                    android:fontFamily="@font/cinzelregular" />
 
                 <TextView
                     android:id="@+id/textView_enemy_three_coins"
@@ -185,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:text="X"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/CinzelRegular" />
+                    android:fontFamily="@font/cinzelregular" />
 
             </LinearLayout>
         </LinearLayout>
@@ -290,7 +290,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginEnd="0dp"
             android:layout_marginRight="0dp"
-            android:fontFamily="@font/CinzelBold"
+            android:fontFamily="@font/cinzelbold"
             android:gravity="center_horizontal"
             android:text="User did SOMETHING."
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -313,7 +313,7 @@
                 android:layout_marginRight="20dp"
                 android:text="Your turn: 00:00"
                 android:textColor="#FFFFFF"
-                android:fontFamily="@font/CinzelRegular" />
+                android:fontFamily="@font/cinzelregular" />
 
             <Button
                 android:id="@+id/btnOK"
@@ -328,7 +328,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="25dp"
-                android:fontFamily="@font/CinzelRegular"
+                android:fontFamily="@font/cinzelregular"
                 android:text="Your coins: 2"
                 android:textColor="#FFFFFF" />
 

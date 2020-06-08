@@ -49,8 +49,9 @@ public class InGame extends Activity implements SensorEventListener {
     private TextView coins,tvOpp1name,tvOpp2name,tvOpp3name,tvOpp1coins,tvOpp2coins,tvOpp3coins,timer,textView;
     private CountDownTimer countDown,challengeTimer;
     private List<TextView> enemyTv, coinsTv;
+    private List<ImageView> enemyIv;
     private String COINS = "Your coins: ";
-
+    private boolean[] notInGame = new boolean[3];
 
 
     @Override
@@ -70,6 +71,10 @@ public class InGame extends Activity implements SensorEventListener {
         ivOpp1 = findViewById(R.id.imageView_enemy_one);
         ivOpp2 = findViewById(R.id.imageView_enemy_two);
         ivOpp3 = findViewById(R.id.imageView_enemy_three);
+
+        ivOpp1.setImageResource(R.drawable.enemy_one_passive);
+        ivOpp2.setImageResource(R.drawable.enemy_two_passive);
+        ivOpp3.setImageResource(R.drawable.enemy_three_passive);
 
 
         Bundle b = getIntent().getExtras();
@@ -120,7 +125,7 @@ public class InGame extends Activity implements SensorEventListener {
 
 
         ConnectTask connectTask = new ConnectTask();
-        // connectTask.execute();
+        connectTask.execute();
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -614,6 +619,8 @@ public class InGame extends Activity implements SensorEventListener {
         tvOpp2coins = findViewById(R.id.textView_enemy_two_coins);
         tvOpp3coins = findViewById(R.id.textView_enemy_three_coins);
 
+
+
         Log.e("DEBUG: ",opponents.get(0));
 
         tvOpp1name.setText(opponents.get(0));
@@ -637,6 +644,11 @@ public class InGame extends Activity implements SensorEventListener {
         coinsTv.add(tvOpp2coins);
         coinsTv.add(tvOpp3coins);
 
+        enemyIv = new LinkedList<>();
+        enemyIv.add(ivOpp1);
+        enemyIv.add(ivOpp2);
+        enemyIv.add(ivOpp3);
+
 
     }
 
@@ -656,12 +668,56 @@ public class InGame extends Activity implements SensorEventListener {
 
         for(int i=0; i<enemyTv.size();i++){
             if(enemyTv.get(i).getText().equals(onPlayer)){
-                coinsTv.get(i).setText(null);
+                if(i==0){
+                    ivOpp1.setImageResource(R.drawable.enemy_one_dead);
+                }
+                if(i==1){
+                    ivOpp2.setImageResource(R.drawable.enemy_two_dead);
+                }
+                if(i==2){
+                    ivOpp3.setImageResource(R.drawable.enemy_three_passive);
+                }
+                notInGame[i]=true;
+
             }
         }
 
 
     }
+    public void updateOpponentOnTurn(String onPlayer){
+
+        for(int i=0; i<enemyTv.size();i++){
+            if(enemyTv.get(i).getText().equals(onPlayer)){
+
+                if(i==0)
+                    ivOpp1.setImageResource(R.drawable.enemy_one_active);
+
+                if(i==1)
+                    ivOpp2.setImageResource(R.drawable.enemy_two_active);
+
+                if(i==2)
+                    ivOpp3.setImageResource(R.drawable.enemy_three_active);
+            }
+            else
+                if(!notInGame[i]){
+                    if(i==0)
+                        ivOpp1.setImageResource(R.drawable.enemy_one_passive);
+
+                    if(i==1)
+                        ivOpp2.setImageResource(R.drawable.enemy_two_passive);
+
+                    if(i==2)
+                        ivOpp3.setImageResource(R.drawable.enemy_three_passive);
+
+
+                }
+
+        }
+
+
+    }
+
+
 
     public void mainPlayerChoosesCardToLose(){
         ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
@@ -1138,7 +1194,7 @@ public class InGame extends Activity implements SensorEventListener {
 
             //Enable/Disable functions for player on turn/wait
 
-            if(res.equals("turn")||res.equals("wait")){
+            if(res.equals("turn")||res.startsWith("wait")){
                 Toast.makeText(InGame.this,"Connected",Toast.LENGTH_SHORT).show();
 
                 next.setVisibility(View.VISIBLE);
@@ -1147,6 +1203,7 @@ public class InGame extends Activity implements SensorEventListener {
 
                 initializeOpponents(opponents);
 
+                String[] split = res.split(" ");
 
                 if(res.equals("turn")){
                     enableAll();
@@ -1158,6 +1215,7 @@ public class InGame extends Activity implements SensorEventListener {
                 }
                 else{
                     disableAll();
+                    updateOpponentOnTurn(split[1]);
                     timer.setVisibility(View.INVISIBLE);
 
                 }
@@ -1215,6 +1273,7 @@ public class InGame extends Activity implements SensorEventListener {
                                 textView.setText("Your turn");
                                 timer.setVisibility(View.VISIBLE);
                                 countDown.start();
+                                updateOpponentOnTurn(name);
 
                             }
                         });
@@ -1226,6 +1285,7 @@ public class InGame extends Activity implements SensorEventListener {
                             @Override
                             public void run() {
                                 textView.setText(split[1]+"'s turn");
+                                updateOpponentOnTurn(split[1]);
                             }
                         });
 
