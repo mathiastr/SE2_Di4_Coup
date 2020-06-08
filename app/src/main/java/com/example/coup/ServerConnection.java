@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerConnection {
+public class  ServerConnection {
 
     /**Handles connection between Server and Client*/
 
