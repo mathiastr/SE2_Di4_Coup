@@ -1,6 +1,5 @@
 package com.example.coup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Organisiert die Übersicht der einzelnen Spieler und deren Verfügbare Aktionen
@@ -11,7 +10,6 @@ public class Player {
     public  int influence=2;
     private List<Card> cards;
     private boolean inGame=true;
-    private static int playerID= 1;
     public boolean cheated = false;
 
     private boolean canBlockAssassination=false;
