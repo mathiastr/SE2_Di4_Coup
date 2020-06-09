@@ -2,16 +2,12 @@ package com.example.coup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import org.w3c.dom.Text;
+
 
 
 public class MainActivity extends Activity {
@@ -23,18 +19,14 @@ public class MainActivity extends Activity {
 
     Game game;
 
-    private Button ButtonToLobby;
-    private Button QuitButton;
-    private AlertDialog QuitDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ButtonToLobby = (Button) findViewById(R.id.button_play);
-        QuitButton = (Button) findViewById(R.id.button_quit);
+        Button ButtonToLobby = (Button) findViewById(R.id.button_play);
+        Button QuitButton = (Button) findViewById(R.id.button_quit);
 
         ButtonToLobby.setOnClickListener(new View.OnClickListener() {
             @Override

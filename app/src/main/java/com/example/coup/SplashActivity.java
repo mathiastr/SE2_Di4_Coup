@@ -11,8 +11,6 @@ import android.widget.LinearLayout;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private ImageView logo;
-    private LinearLayout credit;
     private static int splashTimeOut = 5000;
 
     @Override
@@ -20,8 +18,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        logo = (ImageView) findViewById(R.id.imageView_uni_logo);
-        credit = (LinearLayout) findViewById(R.id.layout_credits);
+       ImageView logo = (ImageView) findViewById(R.id.imageView_uni_logo);
+       LinearLayout credit = (LinearLayout) findViewById(R.id.layout_credits);
 
 
         new Handler().postDelayed(new Runnable() {
