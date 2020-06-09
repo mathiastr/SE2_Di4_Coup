@@ -4,44 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/main_menu_background">
 
-    <Button
-        android:id="@+id/button_play"
-        android:layout_width="109dp"
-        android:layout_height="59dp"
-        android:text="Play"
-        app:layout_constraintBottom_toTopOf="@+id/button_quit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLogo" />
-
-    <Button
-        android:id="@+id/button_quit"
-        android:layout_width="108dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="152dp"
-        android:layout_marginEnd="151dp"
-        android:layout_marginBottom="232dp"
-        android:text="Quit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_play" />
-
-    <TextView
-        android:id="@+id/textViewLogo"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="151dp"
-        android:layout_marginTop="124dp"
-        android:layout_marginEnd="156dp"
-        android:layout_marginBottom="100dp"
-        android:text="Coup"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        app:layout_constraintBottom_toTopOf="@+id/button_play"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="436dp"
+            android:layout_marginBottom="-70dp"
+            android:src="@drawable/main_menu_logo" />
+
+        <Button
+            android:id="@+id/button_play"
+            android:layout_width="160dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/play_button" />
+
+        <Button
+            android:id="@+id/button_about"
+            android:layout_width="160dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/about_button" />
+
+        <Button
+            android:id="@+id/button_quit"
+            android:layout_width="160dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/quit_button" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
