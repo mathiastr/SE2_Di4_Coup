@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/table_background">
+    android:background="#FFFFFF"
+    android:backgroundTint="#000000">
 
 
     <LinearLayout
@@ -47,33 +48,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="2"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/textView_name_enemy_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="User"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/textView1_enemy_one_coins_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="Coins:"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/textView_enemy_one_coins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="X"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
 
         </LinearLayout>
@@ -159,33 +160,33 @@
                     android:id="@+id/textView_enemy_three_influence"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="2"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/textView_name_enemy_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="User"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/textView1_enemy_three_coins_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="Coins:"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
+                    android:textColor="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/textView_enemy_three_coins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/cinzelregular"
                     android:text="X"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
         </LinearLayout>
@@ -273,9 +274,8 @@
 
     <LinearLayout
         android:id="@+id/container_game_info"
-        android:layout_width="409dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="19dp"
+        android:layout_width="411dp"
+        android:layout_height="68dp"
         android:layout_marginBottom="13dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/container_special_actions"
@@ -309,17 +309,15 @@
                 android:id="@+id/textView_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="0dp"
+                android:fontFamily="@font/cinzelregular"
                 android:text="Your turn: 00:00"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/cinzelregular" />
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/btnOK"
                 android:layout_width="49dp"
                 android:layout_height="39dp"
-                android:layout_gravity="center"
                 android:text="OK"
                 android:visibility="invisible" />
 
@@ -327,7 +325,8 @@
                 android:id="@+id/textView_coins"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="25dp"
+                android:layout_margin="0"
+                android:layout_marginLeft="20dp"
                 android:fontFamily="@font/cinzelregular"
                 android:text="Your coins: 2"
                 android:textColor="#FFFFFF" />
@@ -335,12 +334,12 @@
         </LinearLayout>
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/container_special_actions"
         android:layout_width="348dp"
         android:layout_height="51dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="13dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="7dp"
         android:gravity="center"
@@ -373,6 +372,90 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="623dp"
+        android:foregroundGravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/container_actions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/container_special_actions">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="Assassinate"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="Tax"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="Steal"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="Exchange"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="Income"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="Foreign Aid"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="Block FA"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/container_actions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -391,46 +474,52 @@
 
         <Button
             android:id="@+id/button_assassinate"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="A" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/assassinate_button" />
 
         <Button
             android:id="@+id/button_tax"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="T" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/tax_button" />
 
         <Button
             android:id="@+id/button_steal"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="S" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/steal_button" />
 
         <Button
             android:id="@+id/button_exchange"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="E" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/exchange_button" />
 
         <Button
             android:id="@+id/button_income"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="I" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/income_button" />
 
         <Button
             android:id="@+id/button_foreign_aid"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="0dp"
-            android:text="FA" />
+            android:background="@drawable/foreign_button" />
 
         <Button
             android:id="@+id/button_blockforeignaid"
-            android:layout_width="50dp"
-            android:layout_height="44dp"
-            android:text="BFA" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/foreign_button" />
     </LinearLayout>
 
 
