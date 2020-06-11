@@ -32,15 +32,17 @@
 
             <Button
                 android:id="@+id/button_aftergame_mainmenu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Main Menu" />
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/mainmenu_button" />
 
             <Button
                 android:id="@+id/button_aftergame_quit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quit" />
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/quit_button_red" />
 
         </LinearLayout>
 

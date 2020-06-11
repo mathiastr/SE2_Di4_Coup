@@ -445,6 +445,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/top_actions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -537,6 +538,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/bottom_actions"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal"
@@ -649,7 +651,7 @@
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@drawable/foreign_button" />
+                            android:background="@drawable/blockfa_button" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
