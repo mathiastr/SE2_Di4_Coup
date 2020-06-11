@@ -173,8 +173,8 @@ public class InGame extends Activity implements SensorEventListener {
 
 
 
-        ConnectTask connectTask = new ConnectTask();
-        connectTask.execute();
+        /*ConnectTask connectTask = new ConnectTask();
+        connectTask.execute();*/
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
