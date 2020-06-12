@@ -1,8 +1,9 @@
 # SE2_Di4_Coup
-Software Engineering II Project - Making an Android Game
-Group 4
+Software Engineering II Project - Making an Android Game - Group 4	
 
-GAME DESCRIPTION:
+
+### Game Description
+
 In Coup, you want to be the last player with influence in the game, with influence being represented by face-down character cards in your playing area.
 
 Each player starts the game with two coins and two influence – i.e., two face-down character cards; the fifteen card deck consists of three copies of five different characters, each with a unique set of powers:
@@ -25,6 +26,21 @@ If you do have the character in question and choose to reveal it, the opponent l
 
 The last player to still have influence – that is, a face-down character – wins the game!
 
-A new & optional character called the Inquisitor has been added (currently, the only English edition with the Inquisitor included is the Kickstarter Version from Indie Boards & Cards. Copies in stores may not be the Kickstarter versions and may only be the base game). The Inquisitor character cards may be used to replace the Ambassador cards.
 
-    Inquisitor: Draw one character card from the Court deck and choose whether or not to exchange it with one of your face-down characters. OR Force an opponent to show you one of their character cards (their choice which). If you wish it, you may then force them to draw a new card from the Court deck. They then shuffle the old card into the Court deck. Block someone from stealing coins from you.
+### Installing
+Guide needed.
+
+### Authors
+
+* **Robert Vukoja** -  - [vukojarob96](https://github.com/vukojarob96)
+* **Amar Karabegovic** -  - [Ario98](https://github.com/Ario98)
+* **Mathias Tragut** -  - [mathiastr](https://github.com/mathiastr)
+* **Mesa Islamovic** -  - [mesaisl](https://github.com/mesaisl)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+### Acknowledgments
+
+* Thank You **Rikki Tahta** for design this cool game. 
+
+
