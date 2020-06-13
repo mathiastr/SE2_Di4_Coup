@@ -321,7 +321,7 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-    private void selectPlayer(final String action){
+    protected void selectPlayer(final String action){
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
         builder.setTitle("Choose Player");
@@ -1215,7 +1215,7 @@ public class InGame extends Activity implements SensorEventListener {
 
             }
             catch (IOException e){
-                e.printStackTrace();
+               // e.printStackTrace();
                 msg=null;
 
 
