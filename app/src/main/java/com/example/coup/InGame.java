@@ -33,8 +33,8 @@ public class InGame extends Activity implements SensorEventListener {
     Player player;
     Player attackedPlayer;
     Game game;
-    ArrayList<Card> cardsToChoose;
-    ArrayList<Card> choosenCard;
+    List<Card> cardsToChoose;
+    List<Card> choosenCard;
     ImageView ivImageC1;
     ImageView ivImageC2;
     ImageView ivImageC3;
@@ -173,8 +173,8 @@ public class InGame extends Activity implements SensorEventListener {
 
 
 
-        /*ConnectTask connectTask = new ConnectTask();
-        connectTask.execute();*/
+        ConnectTask connectTask = new ConnectTask();
+        connectTask.execute();
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1327,6 +1327,8 @@ public class InGame extends Activity implements SensorEventListener {
                 while (true){
                     msg=connection.getMessage();
 
+                    Log.e("MESSAGE", msg);
+
                     if(msg==null||msg.equals("win")||msg.equals("lose"))
                         break;
 
@@ -1556,7 +1558,7 @@ public class InGame extends Activity implements SensorEventListener {
 
 
 
-                       cardsToChoose= (ArrayList<Card>) convertStringNameToCardType(cardnames);
+                       cardsToChoose= convertStringNameToCardType(cardnames);
 
 
 
