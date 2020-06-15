@@ -99,8 +99,153 @@ public class TestInGame {
 
     }
 
+    @Test
+    public void testCoupOnMainPlayer(){
 
-   
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.CAPTAIN));
+
+        inGame.initializeOpponents(enemies);
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+
+        inGame.player=p;
+
+        String msg = "coup player2 player1";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("Couped: Choose a card to lose", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testCoupOnOtherPlayer(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.CAPTAIN));
+
+        inGame.initializeOpponents(enemies);
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+
+        inGame.player=p;
+
+        String msg = "coup player2 player3";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 used coup on player3", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testCoupButton(){
+
+        Player p = new Player();
+        p.setName("player2");
+
+        inGame.attackedPlayer=p;
+
+
+        inGame.coupButton.performClick();
+
+        inGame.doAction("coup");
+
+        Assert.assertEquals("You did coup on player2", inGame.textView.getText().toString());
+
+    }
+
+
+    @Test
+    public void looseLeftCard(){
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.DUKE));
+
+        inGame.player.setCards(cards);
+
+        inGame.settingCardImagesAtStartOfGame();
+
+        inGame.mainPlayerChoosesCardToLose("coup");
+
+        inGame.ivImageC1.callOnClick();
+
+        Assert.assertEquals(true, inGame.leftCardRemoved);
+
+    }
+
+    @Test
+    public void looseRightCard(){
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.DUKE));
+
+        inGame.player.setCards(cards);
+
+        inGame.settingCardImagesAtStartOfGame();
+
+        inGame.mainPlayerChoosesCardToLose("assassinate");
+
+        inGame.ivImageC2.callOnClick();
+
+        Assert.assertEquals(true, inGame.rightCardRemoved);
+
+
+
+    }
+
+    @Test
+    public void looseLastCard(){
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.DUKE));
+
+        inGame.player.setCards(cards);
+
+        inGame.settingCardImagesAtStartOfGame();
+
+        inGame.returnLastCard();
+
+        Assert.assertEquals(CardType.AMBASSADOR, inGame.player.getCards().get(0).getTypeOfCard());
+
+
+
+    }
+
+
+
+
 
 
 
