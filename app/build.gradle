@@ -19,8 +19,17 @@ android {
         lintOptions{
             abortOnError true
         }
+        debug{
+            testCoverageEnabled true
+        }
     }
     testOptions {
+        unitTests.all{
+            jacoco{
+                includeNoLocationClasses true
+            }
+        }
+
         unitTests {
 
             includeAndroidResources = true
