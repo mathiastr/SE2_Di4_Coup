@@ -4,433 +4,659 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/table_background">
+    android:background="@drawable/ingame_background"
+    >
 
 
     <LinearLayout
-        android:id="@+id/container_enemies"
-        android:layout_width="wrap_content"
-        android:layout_height="121dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/container_cards"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <LinearLayout
-            android:id="@+id/container_enemy1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="?attr/dividerVertical"
-            android:orientation="horizontal"
-            tools:visibility="visible">
-
-            <ImageView
-                android:id="@+id/imageView_enemy_one"
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                app:srcCompat="@drawable/enemy_one_active" />
-
-            <LinearLayout
-                android:id="@+id/container_enemy1_info"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView_enemy_one_influence"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:text="2"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
-
-                <TextView
-                    android:id="@+id/textView_name_enemy_one"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="User"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
-
-                <TextView
-                    android:id="@+id/textView1_enemy_one_coins_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Coins:"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
-
-                <TextView
-                    android:id="@+id/textView_enemy_one_coins"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="X"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_enemy2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="15dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageView_enemy_two"
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/enemy_two_active" />
-
-            <LinearLayout
-                android:id="@+id/container_enemy2_info"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView_enemy_two_influence"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/cinzelregular"
-                    android:text="2"
-                    android:textColor="#FFFFFF" />
-
-                <TextView
-                    android:id="@+id/textView_name_enemy_two"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/cinzelregular"
-                    android:text="User"
-                    android:textColor="#FFFFFF" />
-
-                <TextView
-                    android:id="@+id/textView1_enemy_two_coins_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/cinzelregular"
-                    android:text="Coins:"
-                    android:textColor="#FFFFFF" />
-
-                <TextView
-                    android:id="@+id/textView_enemy_two_coins"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/cinzelregular"
-                    android:text="X"
-                    android:textColor="#FFFFFF" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_enemy3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageView_enemy_three"
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/enemy_three_active" />
-
-            <LinearLayout
-                android:id="@+id/container_enemy3_info"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView_enemy_three_influence"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
-
-                <TextView
-                    android:id="@+id/textView_name_enemy_three"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="User"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
-
-                <TextView
-                    android:id="@+id/textView1_enemy_three_coins_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Coins:"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
-
-                <TextView
-                    android:id="@+id/textView_enemy_three_coins"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="X"
-                    android:textColor="#FFFFFF"
-                    android:fontFamily="@font/cinzelregular" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView_timer_enemy_three"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="78dp"
-        android:text="00:00"
-        android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_enemies" />
-
-    <LinearLayout
-        android:id="@+id/container_cards"
-        android:layout_width="411dp"
-        android:layout_height="220dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/card_playercard4"
-            android:layout_width="77dp"
-            android:layout_height="77dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="10dp"
-
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/ambassador"
-            android:visibility="invisible" />
-
-        <LinearLayout
-            android:id="@+id/container_card1"
-            android:layout_width="100dp"
-            android:layout_height="200dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/card_playercard1"
-                android:layout_width="119dp"
-                android:layout_height="169dp"
-                android:layout_gravity="center"
-                android:src="@drawable/contessa" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container_card2"
-            android:layout_width="100dp"
-            android:layout_height="200dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/card_playercard2"
-                android:layout_width="119dp"
-                android:layout_height="169dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-
-                android:layout_margin="0dp"
-                android:src="@drawable/ambassador" />
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/card_playercard3"
-            android:layout_width="77dp"
-            android:layout_height="77dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="10dp"
-
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/ambassador"
-            android:visibility="invisible" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/container_game_info"
-        android:layout_width="409dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginBottom="13dp"
+        android:id="@+id/container_everything"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/container_special_actions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_cards">
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="84dp">
 
-        <TextView
-            android:id="@+id/textView_action"
+        <LinearLayout
+            android:id="@+id/container_enemies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:fontFamily="@font/cinzelbold"
-            android:gravity="center_horizontal"
-            android:text="User did SOMETHING."
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
-
-        <LinearLayout
-            android:id="@+id/container_game_info_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="40dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView_timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginRight="20dp"
-                android:text="Your turn: 00:00"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/cinzelregular" />
+            <LinearLayout
+                android:id="@+id/container_enemy1"
+                android:layout_width="130dp"
+                android:layout_height="140dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/enemy_table"
+                android:divider="?attr/dividerVertical"
+                android:orientation="vertical"
+                tools:visibility="visible">
 
-            <Button
-                android:id="@+id/btnOK"
-                android:layout_width="49dp"
-                android:layout_height="39dp"
-                android:layout_gravity="center"
-                android:text="OK"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="83dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView_enemy_one"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="11sp"
+                        android:layout_marginTop="10sp"
+                        app:srcCompat="@drawable/enemy_one_active" />
+
+                    <TextView
+                        android:id="@+id/textView_enemy_one_influence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
+                        android:fontFamily="@font/cinzelbold"
+                        android:text="2"
+                        android:textColor="#FFEB3B"
+                        android:textSize="50sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_enemy1_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="4sp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView_name_enemy_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/cinzelbold"
+                        android:text="User"
+                        android:textColor="#FFFFFF" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView1_enemy_one_coins_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/cinzelregular"
+                            android:text="Coins:"
+                            android:textColor="#FFFFFF" />
+
+                        <TextView
+                            android:id="@+id/textView_enemy_one_coins"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5sp"
+                            android:fontFamily="@font/cinzelregular"
+                            android:text="X"
+                            android:textColor="#FFFFFF" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_enemy2"
+                android:layout_width="130dp"
+                android:layout_height="140dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/enemy_table"
+                android:divider="?attr/dividerVertical"
+                android:orientation="vertical"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="83dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView_enemy_two"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="11sp"
+                        android:layout_marginTop="10sp"
+                        app:srcCompat="@drawable/enemy_two_active" />
+
+                    <TextView
+                        android:id="@+id/textView_enemy_two_influence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
+                        android:fontFamily="@font/cinzelbold"
+                        android:text="2"
+                        android:textColor="#FFEB3B"
+                        android:textSize="50sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_enemy2_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView_name_enemy_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/cinzelbold"
+                        android:text="User"
+                        android:textColor="#FFFFFF" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView1_enemy_two_coins_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/cinzelregular"
+                            android:text="Coins:"
+                            android:textColor="#FFFFFF" />
+
+                        <TextView
+                            android:id="@+id/textView_enemy_two_coins"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5sp"
+                            android:fontFamily="@font/cinzelregular"
+                            android:text="X"
+                            android:textColor="#FFFFFF" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_enemy3"
+                android:layout_width="130dp"
+                android:layout_height="140dp"
+                android:background="@drawable/enemy_table"
+                android:divider="?attr/dividerVertical"
+                android:orientation="vertical"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="83dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView_enemy_three"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="11sp"
+                        android:layout_marginTop="10sp"
+                        app:srcCompat="@drawable/enemy_three_active" />
+
+                    <TextView
+                        android:id="@+id/textView_enemy_three_influence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
+                        android:fontFamily="@font/cinzelbold"
+                        android:text="2"
+                        android:textColor="#FFEB3B"
+                        android:textSize="50sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_enemy3_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView_name_enemy_three"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/cinzelbold"
+                        android:text="User"
+                        android:textColor="#FFFFFF" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView1_enemy_three_coins_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/cinzelregular"
+                            android:text="Coins:"
+                            android:textColor="#FFFFFF" />
+
+                        <TextView
+                            android:id="@+id/textView_enemy_three_coins"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5sp"
+                            android:fontFamily="@font/cinzelregular"
+                            android:text="X"
+                            android:textColor="#FFFFFF" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/container_cards"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/card_playercard4"
+                android:layout_width="77dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="7dp"
+                android:src="@drawable/ambassador"
                 android:visibility="invisible" />
 
-            <TextView
-                android:id="@+id/textView_coins"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="25dp"
-                android:fontFamily="@font/cinzelregular"
-                android:text="Your coins: 2"
-                android:textColor="#FFFFFF" />
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:foregroundGravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/card_playercard1"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/contessa" />
+
+                <ImageView
+                    android:id="@+id/card_playercard2"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ambassador" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/card_playercard3"
+                android:layout_width="77dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="7dp"
+                android:src="@drawable/ambassador"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_game_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/container_special_actions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_cards">
+
+            <LinearLayout
+                android:id="@+id/container_game_info_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:foregroundGravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/cinzelregular"
+                    android:text="Your turn: 00:00"
+                    android:textColor="#FFFFFF" />
+
+                <Button
+                    android:id="@+id/btnOK"
+                    android:layout_width="75dp"
+                    android:layout_height="39dp"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:foregroundGravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="OK"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/textView_coins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="0dp"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/cinzelregular"
+                    android:gravity="center_vertical"
+                    android:text="Your coins: 2"
+                    android:textColor="#FFFFFF" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView_action"
+                android:layout_width="400dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:fontFamily="@font/cinzelbold"
+                android:foregroundGravity="center_vertical|center_horizontal"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="User did SOMETHING."
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
         </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/container_special_actions"
-        android:layout_width="348dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="7dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/container_actions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_game_info">
 
-        <Button
-            android:id="@+id/button_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:id="@+id/container_special_actions"
+            android:layout_width="379dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="7dp"
+            android:gravity="center|left"
+            android:orientation="horizontal"
             android:padding="0dp"
-            android:text="Next"
-            android:visibility="visible" />
+            app:layout_constraintBottom_toTopOf="@+id/container_action_names"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_game_info">
 
-        <Button
-            android:id="@+id/button_challenge"
-            android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/button_next"
+                android:layout_width="95dp"
+                android:layout_height="35dp"
+                android:layout_gravity="left|center_vertical"
+                android:background="@drawable/next_button"
+                android:gravity="left"
+                android:padding="0dp"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/button_challenge"
+                android:layout_width="95dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/challenge_button" />
+
+            <Button
+                android:id="@+id/button_coup"
+                android:layout_width="95dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/coup_button" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/container_actions"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Challenge" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_action_names">
 
-        <Button
-            android:id="@+id/button_coup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Coup" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/container_actions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="32dp"
-        android:dividerPadding="0dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_special_actions">
+                <LinearLayout
+                    android:id="@+id/top_actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button_assassinate"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="A" />
+                    <LinearLayout
+                        android:id="@+id/layout_assassinate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="30dp"
+                        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button_tax"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="T" />
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/cinzelbold"
+                            android:text="Assassinate"
+                            android:textColor="#FFFFFF"
+                            android:textSize="8sp" />
+                        " />
 
-        <Button
-            android:id="@+id/button_steal"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="S" />
+                        <Button
+                            android:id="@+id/button_assassinate"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/assassinate_button" />
+                    </LinearLayout>
 
-        <Button
-            android:id="@+id/button_exchange"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="E" />
+                    <LinearLayout
+                        android:id="@+id/layout_tax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button_income"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:text="I" />
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/cinzelbold"
+                            android:text="Tax"
+                            android:textColor="#FFFFFF"
+                            android:textSize="9sp" />
 
-        <Button
-            android:id="@+id/button_foreign_aid"
-            android:layout_width="49dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="0dp"
-            android:text="FA" />
+                        <Button
+                            android:id="@+id/button_tax"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/tax_button" />
+                    </LinearLayout>
 
-        <Button
-            android:id="@+id/button_blockforeignaid"
-            android:layout_width="50dp"
-            android:layout_height="44dp"
-            android:text="BFA" />
+                    <LinearLayout
+                        android:id="@+id/layout_steal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/cinzelbold"
+                            android:text="Steal"
+                            android:textColor="#FFFFFF"
+                            android:textSize="9sp" />
+
+                        <Button
+                            android:id="@+id/button_steal"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/steal_button" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bottom_actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/layout_exchange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/cinzelbold"
+                            android:text="Exchange"
+                            android:textColor="#FFFFFF"
+                            android:textSize="8sp" />
+
+                        <Button
+                            android:id="@+id/button_exchange"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/exchange_button" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_income"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/cinzelbold"
+                            android:text="Income"
+                            android:textColor="#FFFFFF"
+                            android:textSize="8sp" />
+
+                        <Button
+                            android:id="@+id/button_income"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/income_button" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_fa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/cinzelbold"
+                            android:text="Foreign Aid"
+                            android:textColor="#FFFFFF"
+                            android:textSize="8sp" />
+
+                        <Button
+                            android:id="@+id/button_foreign_aid"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/foreign_button" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_bfa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="1dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="3dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/cinzelbold"
+                            android:text="Block FA"
+                            android:textColor="#FFFFFF"
+                            android:textSize="8sp" />
+
+                        <Button
+                            android:id="@+id/button_blockforeignaid"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/blockfa_button" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 

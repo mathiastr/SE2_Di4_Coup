@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -33,8 +34,8 @@ public class InGame extends Activity implements SensorEventListener {
     Player player;
     Player attackedPlayer;
     Game game;
-    ArrayList<Card> cardsToChoose;
-    ArrayList<Card> choosenCard;
+    List<Card> cardsToChoose;
+    List<Card> choosenCard;
     ImageView ivImageC1;
     ImageView ivImageC2;
     ImageView ivImageC3;
@@ -81,6 +82,9 @@ public class InGame extends Activity implements SensorEventListener {
     private TextView tvOpp1coins;
     private TextView tvOpp2coins;
     private TextView tvOpp3coins;
+    private TextView tvOpp1Inf;
+    private TextView tvOpp2Inf;
+    private TextView tvOpp3Inf;
     private TextView timer;
     private TextView textView;
     private CountDownTimer countDown;
@@ -101,6 +105,7 @@ public class InGame extends Activity implements SensorEventListener {
     private String dukeTxt="duke";
     private String debugTXT="DEBUG";
     private boolean[] notInGame = new boolean[3];
+    private List<TextView> enemyInfluence;
 
 
     @Override
@@ -124,6 +129,12 @@ public class InGame extends Activity implements SensorEventListener {
         ivOpp1.setImageResource(R.drawable.enemy_one_passive);
         ivOpp2.setImageResource(R.drawable.enemy_two_passive);
         ivOpp3.setImageResource(R.drawable.enemy_three_passive);
+
+        tvOpp1Inf = findViewById(R.id.textView_enemy_one_influence);
+        tvOpp2Inf = findViewById(R.id.textView_enemy_two_influence);
+        tvOpp3Inf = findViewById(R.id.textView_enemy_three_influence);
+
+
 
 
         Bundle b = getIntent().getExtras();
@@ -186,7 +197,7 @@ public class InGame extends Activity implements SensorEventListener {
                     @Override
                     public void run() {
 
-                        next.setEnabled(false);
+                        disableNext();
                         foreignAidBlocked=false;
                         turn=false;
                         countDown.cancel();
@@ -296,7 +307,7 @@ public class InGame extends Activity implements SensorEventListener {
         coupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                next.setEnabled(false);
+                disableNext();
                 selectPlayer("coup");
             }
         });
@@ -306,7 +317,7 @@ public class InGame extends Activity implements SensorEventListener {
             @Override
             public void onClick(View view) {
 
-                next.setEnabled(false);
+                disableNext();
                 sendToServer(challengeTxt);
             }
         });
@@ -483,6 +494,7 @@ public class InGame extends Activity implements SensorEventListener {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             sendToServer("stop");
+                            enableNext();
                             dialog.cancel();
                         }
                     });
@@ -612,25 +624,46 @@ public class InGame extends Activity implements SensorEventListener {
         coupButton.setEnabled(false);
         challenge.setEnabled(false);
         blockForeignAidButton.setEnabled(false);
+
+        assassinateButton.setBackgroundResource(R.drawable.assassinate_button_passive);
+        incomeButton.setBackgroundResource(R.drawable.income_button_passive);
+        foreignAidButton.setBackgroundResource(R.drawable.foreign_button_passive);
+        exchangeButton.setBackgroundResource(R.drawable.exchange_button_passive);
+        stealButton.setBackgroundResource(R.drawable.steal_button_passive);
+        taxButton.setBackgroundResource(R.drawable.tax_button_passive);
+        coupButton.setBackgroundResource(R.drawable.coup_button_passive);
+        challenge.setBackgroundResource(R.drawable.challenge_button_passive);
+        blockForeignAidButton.setBackgroundResource(R.drawable.blockfa_button_passive);
+
     }
 
     public void enableAll() {
 
-        if(player.getCoins()<7)
+        if(player.getCoins()<7){
             coupButton.setEnabled(false);
-        else coupButton.setEnabled(true);
+            coupButton.setBackgroundResource(R.drawable.coup_button_passive);
+        }
+        else {
+            coupButton.setEnabled(true);
+            coupButton.setBackgroundResource(R.drawable.coup_button);
+        }
 
         if(player.getCoins()>=10){
             disableAll();
             coupButton.setEnabled(true);
+            coupButton.setBackgroundResource(R.drawable.coup_button);
         }
         else{
             assassinateButton.setEnabled(true);
             incomeButton.setEnabled(true);
-            if(foreignAidBlocked)
+            if(foreignAidBlocked){
                 foreignAidButton.setEnabled(false);
-            else
+                foreignAidButton.setBackgroundResource(R.drawable.foreign_button_passive);
+            }
+            else{
                 foreignAidButton.setEnabled(true);
+                foreignAidButton.setBackgroundResource(R.drawable.foreign_button);
+            }
             exchangeButton.setEnabled(true);
             stealButton.setEnabled(true);
             taxButton.setEnabled(true);
@@ -638,7 +671,26 @@ public class InGame extends Activity implements SensorEventListener {
             blockForeignAidButton.setEnabled(true);
 
             challenge.setEnabled(true);
+
+
+            assassinateButton.setBackgroundResource(R.drawable.assassinate_button);
+            incomeButton.setBackgroundResource(R.drawable.income_button);
+            exchangeButton.setBackgroundResource(R.drawable.exchange_button);
+            stealButton.setBackgroundResource(R.drawable.steal_button);
+            taxButton.setBackgroundResource(R.drawable.tax_button);
+            challenge.setBackgroundResource(R.drawable.challenge_button);
+            blockForeignAidButton.setBackgroundResource(R.drawable.blockfa_button);
+
         }
+    }
+
+    protected void enableNext(){
+        next.setEnabled(true);
+        next.setBackgroundResource(R.drawable.next_button);
+    }
+    protected void disableNext(){
+        next.setEnabled(false);
+        next.setBackgroundResource(R.drawable.next_button_passive);
     }
 
     private void doCoup() {
@@ -650,7 +702,6 @@ public class InGame extends Activity implements SensorEventListener {
             public void run() {
                 disableAll();
                 player = game.updatePlayerCoins(name, -7);
-                next.setEnabled(true);
                 textView.setText("You did coup on " + attackedPlayer.getName());
                 coins.setText("Your coins: " + player.getCoins());
             }
@@ -695,10 +746,10 @@ public class InGame extends Activity implements SensorEventListener {
         coinsTv.add(tvOpp2coins);
         coinsTv.add(tvOpp3coins);
 
-        enemyIv = new LinkedList<>();
-        enemyIv.add(ivOpp1);
-        enemyIv.add(ivOpp2);
-        enemyIv.add(ivOpp3);
+        enemyInfluence = new LinkedList<>();
+        enemyInfluence.add(tvOpp1Inf);
+        enemyInfluence.add(tvOpp2Inf);
+        enemyInfluence.add(tvOpp3Inf);
 
 
     }
@@ -721,12 +772,18 @@ public class InGame extends Activity implements SensorEventListener {
             if(enemyTv.get(i).getText().equals(onPlayer)){
                 if(i==0){
                     ivOpp1.setImageResource(R.drawable.enemy_one_dead);
+                    tvOpp1Inf.setText(Integer.toString(0));
+                    tvOpp1Inf.setTextColor(Color.RED);
                 }
                 if(i==1){
                     ivOpp2.setImageResource(R.drawable.enemy_two_dead);
+                    tvOpp2Inf.setText(Integer.toString(0));
+                    tvOpp2Inf.setTextColor(Color.RED);
                 }
                 if(i==2){
                     ivOpp3.setImageResource(R.drawable.enemy_three_dead);
+                    tvOpp3Inf.setText(Integer.toString(0));
+                    tvOpp3Inf.setTextColor(Color.RED);
                 }
                 notInGame[i]=true;
 
@@ -765,6 +822,16 @@ public class InGame extends Activity implements SensorEventListener {
 
         }
 
+
+    }
+
+    protected void decreaseInfluence(String onPlayer){
+
+        for(int i=0; i<enemyTv.size();i++){
+            if(enemyTv.get(i).getText().equals(onPlayer)){
+                enemyInfluence.get(i).setText(Integer.toString(1));
+            }
+        }
 
     }
 
@@ -842,7 +909,7 @@ public class InGame extends Activity implements SensorEventListener {
 
             sendToServer(getCardNameAsString(cardToReturn));
 
-            sendToServer(looseCardTxt+name);
+
         }
         else returnLastCard();
     }
@@ -896,7 +963,7 @@ public class InGame extends Activity implements SensorEventListener {
 
         disableAll();
 
-        next.setEnabled(false);
+        disableNext();
 
         ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
         ivImageC2 = (ImageView) findViewById(R.id.card_playercard2);
@@ -1049,7 +1116,7 @@ public class InGame extends Activity implements SensorEventListener {
 
 
                 chooseCards.setVisibility(View.INVISIBLE);
-                next.setEnabled(true);
+                enableNext();
 
             }
         });
@@ -1086,7 +1153,7 @@ public class InGame extends Activity implements SensorEventListener {
             @Override
             public void run() {
                 disableAll();
-                next.setEnabled(false);
+                disableNext();
                 textView.setText("Assassinating "+attackedPlayer.getName());
             }
         });
@@ -1118,6 +1185,291 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
+    protected void handleMessage(String msg, String[] split){
+
+        if(msg.startsWith("turn")){
+            enableAll();
+            enableNext();
+            textView.setText("Your turn");
+            timer.setVisibility(View.VISIBLE);
+            countDown.start();
+            updateOpponentOnTurn(name);
+            turn=true;
+
+        }
+        if(msg.startsWith("income")){
+            textView.setText(split[1]+" used income");
+            updateCoins(split[1], 1);
+
+        }
+        if(msg.startsWith("tax")){
+
+        }
+        if(msg.startsWith("foreignaid")){
+            textView.setText(split[1]+" used Foreign Aid");
+            updateCoins(split[1], 2);
+
+        }
+        if(msg.startsWith("steal")){
+
+        }
+        if(msg.startsWith("nextplayer")){
+            textView.setText(split[1]+"'s turn");
+            updateOpponentOnTurn(split[1]);
+
+        }
+
+        if(msg.startsWith("tax")){
+
+            textView.setText(split[1]+" used tax");
+            updateCoins(split[1], 3);
+
+        }
+
+        if(msg.startsWith("block")){
+            Log.e("DEBUG BLOCK",msg);
+            if(split[2].equals(name)){
+                textView.setText(split[1]+" blocked your "+split[3]);
+                if(split[3].equals(assassinateTxt))
+                    player=game.updatePlayerCoins(name, -3);
+                coins.setText(coinsTxt +player.getCoins());
+                enableNext();
+                disableAll();
+            }
+            else{
+                textView.setText(split[1]+" blocked "+split[2]+"'s "+split[3]);
+                if(split[3].equals(assassinateTxt))
+                    updateCoins(split[2], -3);
+
+            }
+
+        }
+
+        if(msg.startsWith("bfa")){
+
+                    if(split[2].equals(name)){
+                        textView.setText(split[1]+" blocked foreign aid on you");
+                        foreignAidBlocked = true;
+                    }else textView.setText(split[1]+" bocked foreign aid on "+split[2]);
+
+        }
+        if(msg.startsWith(stealTxt)){
+
+                    //stealing player
+                    if(split[1].equals(name)){
+
+                        player=game.updatePlayerCoins(name, 2);
+
+                        disableAll();
+                        textView.setText("You stole from " + attackedPlayer.getName());
+                        updateCoins(attackedPlayer.getName(), -2);
+                        coins.setText(coinsTxt + player.getCoins());
+
+                    }
+                    else //stolen player
+                        if(split[2].equals(name)) {
+
+                            if(player.hasCard(CardType.CAPTAIN)){
+                                blockAction(split[1], stealTxt);
+                            }
+                            else{
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        connection.sendMessage("fail");
+                                    }
+                                });
+                                thread.start();
+
+                                textView.setText(split[1]+" used steal on you");
+                                updateCoins(split[1],2);
+
+                                player= game.updatePlayerCoins(name, -2);
+
+                                coins.setText(coinsTxt +player.getCoins());
+
+                            }
+
+                        }
+                        else{
+                            textView.setText(split[1]+" used steal on "+split[2]);
+                            updateCoins(split[1],2);
+                            updateCoins(split[2],-2);
+
+                        }
+
+        }
+
+        if(msg.startsWith("cheat")){
+
+//
+                    updateCoins(split[1],3);
+
+
+
+        }
+        if(msg.startsWith(exchangeTxt)){
+
+
+                    textView.setText(split[1]+" used Exchange");
+
+
+        }
+        if(msg.startsWith(assassinateTxt)){
+
+
+                    if(split[1].equals(name)){
+                        disableAll();
+                        enableNext();
+                        textView.setText("You used assassinate on"+attackedPlayer.getName());
+
+                        player=game.updatePlayerCoins(name, -3);
+
+                        Log.e("DEBUG ASSASINATE", ""+player.getCoins());
+
+                        coins.setText(coinsTxt +player.getCoins());
+
+                        decreaseInfluence(split[2]);
+
+                    }
+                    else
+                    if(split[2].equals(name)){
+
+                        if(player.hasCard(CardType.CONTESSA))
+                            blockAction(split[1], assassinateTxt);
+                        else{
+
+                            textView.setText(split[1]+" used assassinate on you");
+                            mainPlayerChoosesCardToLose();
+
+                        }
+
+                        updateCoins(split[1], -3);
+
+                    }
+                    else{
+                        textView.setText(split[1]+" used assassinate on "+split[2]);
+                        updateCoins(split[1], -3);
+                    }
+
+        }
+
+        if (msg.startsWith("lastaction")) {
+            Log.e("DEBUG LASTACTION", msg);
+
+                    challengePlayer(split[1], split[2]);
+
+        }
+
+        if (msg.startsWith(challengeTxt)) {
+            Log.e("DEBUG CHALLENGE", msg);
+
+
+            if (split[2].equals(name)) {
+
+                //check if player has card in hand
+
+                Log.e("DEBUG ACTION", split[3]);
+                if (split[3].equals("tax")) {
+                    if (player.hasCard(CardType.DUKE)) {
+                        cardInHand = true;
+                        cardNameToShow = dukeTxt;
+                    }
+                }
+                if (split[3].equals("bfa")) {
+                    if (player.hasCard(CardType.DUKE)) {
+                        cardInHand = true;
+                        cardNameToShow = dukeTxt;
+                    }
+                }
+                if (split[3].equals(stealTxt)) {
+                    if (player.hasCard(CardType.CAPTAIN)) {
+                        cardInHand = true;
+                        cardNameToShow = captainTxt;
+                    }
+                }
+                if (split[3].equals(assassinateTxt)) {
+                    if (player.hasCard(CardType.ASSASSIN)) {
+                        cardInHand = true;
+                        cardNameToShow = assassinTxt;
+                    }
+                }
+                if (split[3].equals(exchangeTxt)) {
+                    if (player.hasCard(CardType.AMBASSADOR)) {
+                        cardInHand = true;
+                        cardNameToShow = ambassadorTxt;
+                    }
+                }
+
+
+                challengeConfirmation();
+
+
+            } else {
+
+                textView.setText(split[1] + " challenged " + split[2]);
+
+            }
+
+
+        }
+
+        if (msg.startsWith("show card")) {
+
+
+                    if(turn)
+                        enableNext();
+                    textView.setText(split[2] + " has card " + split[3]);
+
+
+        }
+
+        if (msg.startsWith(looseCardTxt)) {
+
+
+                    if(turn){
+                        enableNext();
+                        // next.setBackgroundColor(Color.GREEN);
+                    }
+
+                    textView.setText(split[2] + " lost an influence");
+
+                    decreaseInfluence(split[2]);
+
+        }
+
+
+        if (msg.startsWith("lostgame")) {
+
+
+                    if(turn)
+                        enableNext();
+                    textView.setText(split[1] + " lost the game");
+                    removeOpponent(split[1]);
+                    opponents.remove(split[1]);
+
+                    game.removePlayer(split[1]);
+
+
+        }
+
+        if(msg.startsWith("coup")){
+
+
+                    updateCoins(split[1],-7);
+                    if(split[2].equals(name)){
+
+                        textView.setText(split[1]+" used coup on you");
+                        mainPlayerChoosesCardToLose();
+
+
+                    }
+                    else
+                        textView.setText(split[1]+" used coup on "+split[2]);
+        }
+
+    }
+
     /****************AsynTask classes********/
 
     //Connect to Server and finally enable Action-Buttons
@@ -1131,7 +1483,7 @@ public class InGame extends Activity implements SensorEventListener {
         protected void onPreExecute(){
             progressDialog = ProgressDialog.show(InGame.this, "Starting game", "searching for players");
 
-            next.setEnabled(false);
+            disableNext();
             textView.setVisibility(View.INVISIBLE);
             opponents = new LinkedList<>();
 
@@ -1221,9 +1573,6 @@ public class InGame extends Activity implements SensorEventListener {
 
             }
 
-
-
-
             return msg;
 
         }
@@ -1245,6 +1594,7 @@ public class InGame extends Activity implements SensorEventListener {
                 Toast.makeText(InGame.this,"Connected",Toast.LENGTH_SHORT).show();
 
                 next.setVisibility(View.VISIBLE);
+
                 textView.setVisibility(View.VISIBLE);
 
 
@@ -1254,7 +1604,7 @@ public class InGame extends Activity implements SensorEventListener {
 
                 if(res.equals("turn")){
                     enableAll();
-                    next.setEnabled(true);
+                    enableNext();
                     textView.setText("Your turn");
                     turn = true;
                     timer.setVisibility(View.VISIBLE);
@@ -1263,6 +1613,7 @@ public class InGame extends Activity implements SensorEventListener {
                 }
                 else{
                     disableAll();
+                    disableNext();
                     updateOpponentOnTurn(split[1]);
                     timer.setVisibility(View.INVISIBLE);
 
@@ -1327,222 +1678,14 @@ public class InGame extends Activity implements SensorEventListener {
                 while (true){
                     msg=connection.getMessage();
 
+                    Log.e("MESSAGE", msg);
+
                     if(msg==null||msg.equals("win")||msg.equals("lose"))
                         break;
 
                     final String[] split = msg.split(" ");
 
-                    if(msg.equals("turn")){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                enableAll();
-                                next.setEnabled(true);
-                                textView.setText("Your turn");
-                                timer.setVisibility(View.VISIBLE);
-                                countDown.start();
-                                updateOpponentOnTurn(name);
-                                turn=true;
-
-                            }
-                        });
-                    }
-
-                    if(msg.startsWith("nextplayer")){
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                textView.setText(split[1]+"'s turn");
-                                updateOpponentOnTurn(split[1]);
-                            }
-                        });
-
-                    }
-
-                    if(msg.startsWith("income")){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                textView.setText(split[1]+" used income");
-                                updateCoins(split[1], 1);
-                            }
-                        });
-                    }
-                    if(msg.startsWith("foreignaid")){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                textView.setText(split[1]+" used Foreign Aid");
-                                updateCoins(split[1], 2);
-                            }
-                        });
-                    }
-
-                    if(msg.startsWith("tax")){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                textView.setText(split[1]+" used tax");
-                                updateCoins(split[1], 3);
-                            }
-                        });
-                    }
-
-                    if(msg.startsWith("block")){
-                        Log.e("DEBUG BLOCK",msg);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(split[2].equals(name)){
-                                    textView.setText(split[1]+" blocked your "+split[3]);
-                                    if(split[3].equals(assassinateTxt))
-                                        player=game.updatePlayerCoins(name, -3);
-                                    coins.setText(coinsTxt +player.getCoins());
-                                    next.setEnabled(true);
-                                    disableAll();
-                                }
-                                else{
-                                    textView.setText(split[1]+" blocked "+split[2]+"'s "+split[3]);
-                                    if(split[3].equals(assassinateTxt))
-                                        updateCoins(split[2], -3);
-
-                                }
-                            }
-                        });
-                    }
-
-                    if(msg.startsWith("bfa")){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(split[2].equals(name)){
-                                    textView.setText(split[1]+" blocked foreign aid on you");
-                                    foreignAidBlocked = true;
-                                }else textView.setText(split[1]+" bocked foreign aid on "+split[2]);
-                            }
-                        });
-                    }
-
-
-                    if(msg.startsWith(stealTxt)){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //stealing player
-                                if(split[1].equals(name)){
-
-                                    player=game.updatePlayerCoins(name, 2);
-
-                                    disableAll();
-                                    textView.setText("You stole from " + attackedPlayer.getName());
-                                    updateCoins(attackedPlayer.getName(), -2);
-                                    coins.setText(coinsTxt + player.getCoins());
-
-                                }
-                                else //stolen player
-                                    if(split[2].equals(name)) {
-
-                                        if(player.hasCard(CardType.CAPTAIN)){
-                                            blockAction(split[1], stealTxt);
-                                        }
-                                        else{
-                                            Thread thread = new Thread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    connection.sendMessage("fail");
-                                                }
-                                            });
-                                            thread.start();
-
-                                            textView.setText(split[1]+" used steal on you");
-                                            updateCoins(split[1],2);
-
-                                            player= game.updatePlayerCoins(name, -2);
-
-                                            coins.setText(coinsTxt +player.getCoins());
-
-                                        }
-
-                                    }
-                                    else{
-                                        textView.setText(split[1]+" used steal on "+split[2]);
-                                        updateCoins(split[1],2);
-                                        updateCoins(split[2],-2);
-
-                                    }
-
-                            }
-                        });
-
-                    }
-
-                    if(msg.startsWith("cheat")){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-//                                updateCoins();
-                                updateCoins(split[1],3);
-                            }
-                        });
-
-
-                    }
-                    if(msg.startsWith(exchangeTxt)){
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                textView.setText(split[1]+" used Exchange");
-                            }
-                        });
-
-                    }
-                    if(msg.startsWith(assassinateTxt)){
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                if(split[1].equals(name)){
-                                    disableAll();
-                                    next.setEnabled(true);
-                                    textView.setText("You used assassinate on"+attackedPlayer.getName());
-
-                                    player=game.updatePlayerCoins(name, -3);
-
-                                    Log.e("DEBUG ASSASINATE", ""+player.getCoins());
-
-                                    coins.setText(coinsTxt +player.getCoins());
-
-                                }
-                                else
-                                if(split[2].equals(name)){
-
-                                    if(player.hasCard(CardType.CONTESSA))
-                                        blockAction(split[1], assassinateTxt);
-                                    else{
-
-                                        textView.setText(split[1]+" used assassinate on you");
-                                        mainPlayerChoosesCardToLose();
-
-                                    }
-
-                                    updateCoins(split[1], -3);
-
-                                }
-                                else{
-                                    textView.setText(split[1]+" used assassinate on "+split[2]);
-                                    updateCoins(split[1], -3);
-                                }
-
-                            }
-                        });
-                    }
-
+                    final String message=msg;
 
                     if(msg.startsWith("card")){
                         cardsToChoose = new ArrayList<>();
@@ -1556,150 +1699,15 @@ public class InGame extends Activity implements SensorEventListener {
 
 
 
-                       cardsToChoose= (ArrayList<Card>) convertStringNameToCardType(cardnames);
+                        cardsToChoose= convertStringNameToCardType(cardnames);
 
-
-
-                    }
-
-                    if (msg.startsWith("lastaction")) {
-                        Log.e("DEBUG LASTACTION", msg);
+                    }else
                         runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                challengePlayer(split[1], split[2]);
-                            }
-                        });
-                    }
-
-                    if (msg.startsWith(challengeTxt)) {
-                        Log.e("DEBUG CHALLENGE", msg);
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-
-                                if (split[2].equals(name)) {
-
-                                    //check if player has card in hand
-
-                                    Log.e("DEBUG ACTION", split[3]);
-                                    if (split[3].equals("tax")) {
-                                        if (player.hasCard(CardType.DUKE)) {
-                                            cardInHand = true;
-                                            cardNameToShow = dukeTxt;
-                                        }
-                                    }
-                                    if (split[3].equals("bfa")) {
-                                        if (player.hasCard(CardType.DUKE)) {
-                                            cardInHand = true;
-                                            cardNameToShow = dukeTxt;
-                                        }
-                                    }
-                                    if (split[3].equals(stealTxt)) {
-                                        if (player.hasCard(CardType.CAPTAIN)) {
-                                            cardInHand = true;
-                                            cardNameToShow = captainTxt;
-                                        }
-                                    }
-                                    if (split[3].equals(assassinateTxt)) {
-                                        if (player.hasCard(CardType.ASSASSIN)) {
-                                            cardInHand = true;
-                                            cardNameToShow = assassinTxt;
-                                        }
-                                    }
-                                    if (split[3].equals(exchangeTxt)) {
-                                        if (player.hasCard(CardType.AMBASSADOR)) {
-                                            cardInHand = true;
-                                            cardNameToShow = ambassadorTxt;
-                                        }
-                                    }
-
-
-                                    challengeConfirmation();
-
-
-                                } else {
-
-                                    textView.setText(split[1] + " challenged " + split[2]);
-
-                                }
-                            }
-                        });
-
-
-                    }
-
-                    if (msg.startsWith("show card")) {
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(turn)
-                                    next.setEnabled(true);
-                                textView.setText(split[2] + " showed card " + split[3]);
-                            }
-                        });
-
-                    }
-
-                    if (msg.startsWith(looseCardTxt)) {
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(turn){
-                                    next.setEnabled(true);
-                                   // next.setBackgroundColor(Color.GREEN);
-                                }
-
-                                textView.setText(split[2] + " lost an influence");
-                            }
-                        });
-
-                    }
-
-
-                    if (msg.startsWith("lostgame")) {
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(turn)
-                                    next.setEnabled(true);
-                                textView.setText(split[1] + " lost the game");
-                                removeOpponent(split[1]);
-                                opponents.remove(split[1]);
-
-                                game.removePlayer(split[1]);
-                            }
-                        });
-
-                    }
-
-                    if(msg.startsWith("coup")){
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateCoins(split[1],-7);
-                                if(split[2].equals(name)){
-
-                                    textView.setText(split[1]+" used coup on you");
-                                    mainPlayerChoosesCardToLose();
-
-
-                                }
-                                else
-                                    textView.setText(split[1]+" used coup on "+split[2]);
-
-                            }
-                        });
-
-                    }
-
-
+                        @Override
+                        public void run() {
+                            handleMessage(message,split);
+                        }
+                    });
 
                 }
             } catch (IOException e) {
