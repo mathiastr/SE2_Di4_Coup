@@ -362,6 +362,155 @@ public class TestInGame {
 
 
 
+    @Test
+    public void testExchangeTwoCards(){
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.CONTESSA));
+        cards.add(new Card(CardType.AMBASSADOR));
+
+        inGame.player.setCards(cards);
+
+        ArrayList<Card> cardstochoose = new ArrayList<>();
+
+        cardstochoose.add(new Card(CardType.CAPTAIN));
+        cardstochoose.add(new Card(CardType.DUKE));
+
+        inGame.cardsToChoose=cardstochoose;
+
+        inGame.showCardsToExchange();
+
+        inGame.ivImageC3.performClick();
+        inGame.ivImageC4.performClick();
+
+        inGame.chooseCards.performClick();
+
+        Assert.assertEquals(CardType.CAPTAIN, inGame.player.getCards().get(0).getTypeOfCard());
+        Assert.assertEquals(CardType.DUKE, inGame.player.getCards().get(1).getTypeOfCard());
+
+
+    }
+
+    @Test
+    public void testExchangeLeftCardRemoved(){
+
+        inGame.leftCardRemoved = true;
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.CONTESSA));
+
+        inGame.player.setCards(cards);
+
+        ArrayList<Card> cardstochoose = new ArrayList<>();
+
+        cardstochoose.add(new Card(CardType.CAPTAIN));
+        cardstochoose.add(new Card(CardType.DUKE));
+
+        inGame.cardsToChoose=cardstochoose;
+
+        inGame.showCardsToExchange();
+
+        inGame.ivImageC3.performClick();
+        inGame.ivImageC4.performClick();
+
+        Assert.assertEquals(CardType.CAPTAIN, inGame.player.getCards().get(0).getTypeOfCard());
+
+
+
+    }
+
+    @Test
+    public void testExchangeRightCardRemoved(){
+
+        inGame.rightCardRemoved = true;
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.CONTESSA));
+
+        inGame.player.setCards(cards);
+
+        ArrayList<Card> cardstochoose = new ArrayList<>();
+
+        cardstochoose.add(new Card(CardType.CAPTAIN));
+        cardstochoose.add(new Card(CardType.DUKE));
+
+        inGame.cardsToChoose=cardstochoose;
+
+        inGame.showCardsToExchange();
+
+        inGame.ivImageC3.performClick();
+        inGame.ivImageC4.performClick();
+
+        Assert.assertEquals(CardType.CAPTAIN, inGame.player.getCards().get(0).getTypeOfCard());
+
+
+
+    }
+
+
+    @Test
+    public void testCardNameToString(){
+        Card c1 = new Card(CardType.AMBASSADOR);
+        Assert.assertEquals("ambassador", inGame.getCardNameAsString(c1));
+        Card c2 = new Card(CardType.DUKE);
+        Assert.assertEquals("duke", inGame.getCardNameAsString(c2));
+        Card c3 = new Card(CardType.CAPTAIN);
+        Assert.assertEquals("captain", inGame.getCardNameAsString(c3));
+        Card c4 = new Card(CardType.ASSASSIN);
+        Assert.assertEquals("assassin", inGame.getCardNameAsString(c4));
+        Card c5 = new Card(CardType.CONTESSA);
+        Assert.assertEquals("contessa", inGame.getCardNameAsString(c5));
+
+    }
+
+
+    @Test
+    public void testCardToString(){
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.DUKE));
+        cards.add(new Card(CardType.ASSASSIN));
+        cards.add(new Card(CardType.CAPTAIN));
+        cards.add(new Card(CardType.CONTESSA));
+
+        List<String> cardnames = inGame.convertCardTypeToStringName(cards);
+
+        Assert.assertEquals("ambassador", cardnames.get(0));
+        Assert.assertEquals("duke", cardnames.get(1));
+        Assert.assertEquals("assassin", cardnames.get(2));
+        Assert.assertEquals("captain", cardnames.get(3));
+        Assert.assertEquals("contessa", cardnames.get(4));
+
+
+
+    }
+
+    @Test
+    public void testStringToCard(){
+
+        List<String> cardnames = new LinkedList<>();
+
+        cardnames.add("ambassador");
+        cardnames.add("duke");
+        cardnames.add("assassin");
+        cardnames.add("captain");
+        cardnames.add("contessa");
+
+        List<Card> cards = inGame.convertStringNameToCardType(cardnames);
+
+        Assert.assertEquals(CardType.AMBASSADOR, cards.get(0).getTypeOfCard());
+        Assert.assertEquals(CardType.DUKE, cards.get(1).getTypeOfCard());
+        Assert.assertEquals(CardType.ASSASSIN, cards.get(2).getTypeOfCard());
+        Assert.assertEquals(CardType.CAPTAIN, cards.get(3).getTypeOfCard());
+        Assert.assertEquals(CardType.CONTESSA, cards.get(4).getTypeOfCard());
+
+
+
+    }
 
 
 
