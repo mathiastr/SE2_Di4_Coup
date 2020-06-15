@@ -508,15 +508,368 @@ public class TestInGame {
         Assert.assertEquals(CardType.CAPTAIN, cards.get(3).getTypeOfCard());
         Assert.assertEquals(CardType.CONTESSA, cards.get(4).getTypeOfCard());
 
+    }
+
+
+    @Test
+    public void testNext(){
+
+
+        inGame.next.callOnClick();
+
+        Assert.assertEquals(false, inGame.next.isEnabled());
+
+    }
+
+    @Test
+    public void testIncome(){
+
+
+
+        inGame.incomeButton.callOnClick();
+
+
+        Assert.assertEquals("Your coins: 3", inGame.coins.getText().toString());
+
+    }
+
+    @Test
+    public void testForeignAid(){
+
+
+
+        inGame.foreignAidButton.callOnClick();
+
+
+        Assert.assertEquals("Your coins: 4" , inGame.coins.getText().toString());
+
+    }
+
+    @Test
+    public void testTax(){
+
+
+
+        inGame.taxButton.callOnClick();
+
+
+        Assert.assertEquals("Your coins: 5" , inGame.coins.getText().toString());
+
+    }
+
+    @Test
+    public void testImageAtStart1(){
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.DUKE));
+
+        inGame.player.setCards(cards);
+
+        inGame.settingCardImagesAtStartOfGame();
+
+        Assert.assertEquals(CardType.AMBASSADOR, inGame.player.getCards().get(0).getTypeOfCard());
+        Assert.assertEquals(CardType.DUKE, inGame.player.getCards().get(1).getTypeOfCard());
+
+
+    }
+
+    @Test
+    public void testImageAtStart2(){
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.ASSASSIN));
+        cards.add(new Card(CardType.CAPTAIN));
+
+        inGame.player.setCards(cards);
+
+        inGame.settingCardImagesAtStartOfGame();
+
+        Assert.assertEquals(CardType.ASSASSIN, inGame.player.getCards().get(0).getTypeOfCard());
+        Assert.assertEquals(CardType.CAPTAIN, inGame.player.getCards().get(1).getTypeOfCard());
+
+
+    }
+
+    @Test
+    public void testImageAtStart3(){
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.CONTESSA));
+        cards.add(new Card(CardType.AMBASSADOR));
+
+        inGame.player.setCards(cards);
+
+        inGame.settingCardImagesAtStartOfGame();
+
+        Assert.assertEquals(CardType.CONTESSA, inGame.player.getCards().get(0).getTypeOfCard());
+        Assert.assertEquals(CardType.AMBASSADOR, inGame.player.getCards().get(1).getTypeOfCard());
 
 
     }
 
 
+    @Test
+    public void testBlockAction(){
+        inGame.blockAction("player2","steal");
+
+        Assert.assertEquals("You blocked player2 stealing from you", inGame.textView.getText().toString());
+
+        inGame.blockAction("player2","assassinate");
+
+        Assert.assertEquals("You blocked player2 assassinating you", inGame.textView.getText().toString());
+    }
+
+    @Test
+    public void testTurn(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        String msg = "turn";
+        String[] split = msg.split(" ");
 
 
 
+        inGame.handleMessage(msg,  split);
 
+        Assert.assertEquals("Your turn", inGame.textView.getText().toString());
+
+    }
+
+    @Test
+    public void testEnemyIncome(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        String msg = "income player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("3", inGame.tvOpp1coins.getText().toString());
+
+
+    }
+
+    @Test
+    public void testEnemyFA(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        String msg = "foreignaid player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("4", inGame.tvOpp1coins.getText().toString());
+
+
+    }
+
+    @Test
+    public void testEnemyTax(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        String msg = "tax player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("5", inGame.tvOpp1coins.getText().toString());
+
+
+    }
+
+    @Test
+    public void testEnemyBlock1(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        String msg = "block player2 player1 steal";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 blocked your steal", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testEnemyBlock2(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        String msg = "block player2 player3 steal";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 blocked player3's steal", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testFAButton(){
+        inGame.foreignAidButton.callOnClick();
+    }
+
+    @Test
+    public void faBlocked1(){
+
+        inGame.name="player1";
+
+        String msg = "bfa player2 player1";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 blocked foreign aid on you", inGame.textView.getText().toString());
+
+    }
+
+    @Test
+    public void faBlocked2(){
+
+        inGame.name="player1";
+
+        String msg = "bfa player2 player3";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 blocked foreign aid on player3", inGame.textView.getText().toString());
+
+    }
+
+
+
+    @Test
+    public void testNextPlayer(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        String msg = "nextplayer player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2's turn", inGame.textView.getText().toString());
+    }
+
+
+    @Test
+    public void testLostGame1(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+
+        inGame.initializeOpponents(enemies);
+
+        String msg = "lostgame player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 lost the game", inGame.textView.getText().toString());
+
+
+
+    }
+
+    @Test
+    public void testLostGame2(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+
+        inGame.initializeOpponents(enemies);
+
+        String msg = "lostgame player3";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player3 lost the game", inGame.textView.getText().toString());
+
+
+
+    }
+
+    @Test
+    public void testLostGame3(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+
+        inGame.initializeOpponents(enemies);
+
+        String msg = "lostgame player4";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player4 lost the game", inGame.textView.getText().toString());
+
+
+
+    }
 
 
     @After
