@@ -885,6 +885,9 @@ public class InGame extends Activity implements SensorEventListener {
                 ivImageC2.setVisibility(View.INVISIBLE);
             }
 
+            ivImageC1.setOnClickListener(null);
+            ivImageC2.setOnClickListener(null);
+
             //update player
             for(Player me: game.getPlayers()){
                 if(me.getName().equals(name)){
@@ -1306,7 +1309,7 @@ public class InGame extends Activity implements SensorEventListener {
                     if(split[1].equals(name)){
                         disableAll();
                         enableNext();
-                        textView.setText("You used assassinate on"+attackedPlayer.getName());
+                        textView.setText("You used assassinate on "+attackedPlayer.getName());
 
                         player=game.updatePlayerCoins(name, -3);
 

@@ -67,7 +67,7 @@ public class TestInGame {
 
 
 
-    @org.junit.Test
+    @Test
     public void test1(){
 
         List<String> enemies = new LinkedList<>();
@@ -79,27 +79,30 @@ public class TestInGame {
 
     }
 
-    @org.junit.Test
+    @Test
     public void test2(){
 
 
         inGame.selectPlayer("steal");
 
     }
-    @org.junit.Test
+    @Test
     public void test3(){
 
         inGame.challengePlayer("player2", "tax");
 
     }
-    @org.junit.Test
+    @Test
     public void test4(){
 
         inGame.challengeConfirmation();
 
-
-
     }
+
+
+   
+
+
 
 
 
