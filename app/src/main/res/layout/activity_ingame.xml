@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="34dp"
-        tools:layout_editor_absoluteY="84dp">
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
             android:id="@+id/container_enemies"
@@ -369,17 +369,17 @@
             <TextView
                 android:id="@+id/textView_action"
                 android:layout_width="400dp"
-                android:layout_height="30dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginEnd="0dp"
                 android:layout_marginRight="0dp"
                 android:fontFamily="@font/cinzelbold"
                 android:foregroundGravity="center_vertical|center_horizontal"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="User did SOMETHING."
+                android:text="placeholder"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 

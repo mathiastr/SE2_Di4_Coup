@@ -46,15 +46,15 @@ public class InGame extends Activity implements SensorEventListener {
 
 
     private int count;
-    private boolean leftCardRemoved;
-    private boolean rightCardRemoved;
+    protected boolean leftCardRemoved;
+    protected boolean rightCardRemoved;
     private boolean cardInHand;
     private boolean challengeAccepted;
     private boolean challengeDenied;
     private boolean foreignAidBlocked;
     private boolean turn;
-    private String name;
-    private String cardNameToShow;
+    protected String name;
+    protected String cardNameToShow;
     private List<String> opponents;
     private List<String> playernames;
     protected ServerConnection connection;
@@ -70,24 +70,23 @@ public class InGame extends Activity implements SensorEventListener {
     protected Button next;
     protected Button challenge;
     protected Button blockForeignAidButton;
-    protected Button detectCheaterButton;
     private SensorManager s;
     private Sensor Accelerometer;
     private float current;
     private float last;
     private float shake;
-    private TextView coins;
+    protected TextView coins;
     private TextView tvOpp1name;
     private TextView tvOpp2name;
     private TextView tvOpp3name;
-    private TextView tvOpp1coins;
-    private TextView tvOpp2coins;
-    private TextView tvOpp3coins;
+    protected TextView tvOpp1coins;
+    protected TextView tvOpp2coins;
+    protected TextView tvOpp3coins;
     private TextView tvOpp1Inf;
     private TextView tvOpp2Inf;
     private TextView tvOpp3Inf;
     private TextView timer;
-    private TextView textView;
+    protected TextView textView;
     private CountDownTimer countDown;
     private CountDownTimer challengeTimer;
     private List<TextView> enemyTv;
@@ -181,7 +180,6 @@ public class InGame extends Activity implements SensorEventListener {
         incomeButton = (Button) findViewById(R.id.button_income);
         foreignAidButton = (Button) findViewById(R.id.button_foreign_aid);
         coupButton = (Button) findViewById(R.id.button_coup);
-        //detectCheaterButton = (Button) findViewById(R.id.);
 
 
 
@@ -195,17 +193,14 @@ public class InGame extends Activity implements SensorEventListener {
 
                 sendToServer("next");
 
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
+
 
                         disableNext();
                         foreignAidBlocked=false;
                         turn=false;
                         countDown.cancel();
                         timer.setText("");
-                    }
-                });
+
 
 
 
@@ -218,15 +213,12 @@ public class InGame extends Activity implements SensorEventListener {
             public void onClick(View v) {
                 sendToServer("income" + " " + name);
 
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
+
                         player=game.updatePlayerCoins(name, 1);
                         disableAll();
                         textView.setText("You did income");
                         coins.setText(coinsTxt + player.getCoins());
-                    }
-                });
+
 
 
             }
@@ -237,15 +229,12 @@ public class InGame extends Activity implements SensorEventListener {
             public void onClick(View v) {
                 sendToServer("foreignaid" + " " + name);
 
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
+
                         player=game.updatePlayerCoins(name, 2);
                         disableAll();
                         textView.setText("You did foreign aid");
                         coins.setText(coinsTxt + player.getCoins());
-                    }
-                });
+
 
 
             }
@@ -272,15 +261,13 @@ public class InGame extends Activity implements SensorEventListener {
             public void onClick(View v) {
                 sendToServer("tax" + " " + name);
 
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
+
                         player = game.updatePlayerCoins(name, 3);
                         disableAll();
                         textView.setText("You did tax");
                         coins.setText(coinsTxt + player.getCoins());
-                    }
-                });
+
+
 
 
             }
@@ -324,13 +311,6 @@ public class InGame extends Activity implements SensorEventListener {
             }
         });
 
-        detectCheaterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectPlayer("detectCheater");
-            }
-        });
-
         blockForeignAidButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -341,7 +321,7 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-    private void selectPlayer(final String action){
+    protected void selectPlayer(final String action){
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(InGame.this);
         builder.setTitle("Choose Player");
@@ -353,16 +333,7 @@ public class InGame extends Activity implements SensorEventListener {
             public void onClick(DialogInterface dialogInterface, int which) {
                 attackedPlayer = game.getPlayerByName(players[which]);
 
-                if(action.equals("bfa"))
-                    blockForeignAid();
-                if(action.equals(stealTxt))
-                    stealFromPlayer();
-                if(action.equals("coup"))
-                    doCoup();
-                if(action.equals(assassinateTxt))
-                    assasinateplayer();
-                if (action.equals("detectCheater"))
-                    detectCheater();
+                doAction(action);
 
 
             }
@@ -383,16 +354,22 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-    private void blockForeignAid(){
+    protected void doAction(String action) {
+        if(action.equals("bfa"))
+            blockForeignAid();
+        if(action.equals(stealTxt))
+            stealFromPlayer();
+        if(action.equals("coup"))
+            doCoup();
+        if(action.equals(assassinateTxt))
+            assasinateplayer();
+    }
+
+    protected void blockForeignAid(){
 
         sendToServer("bfa" + " " + name + " " + attackedPlayer.getName());
 
-        handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        disableAll();
-                    }
-                });
+        disableAll();
 
     }
 
@@ -560,7 +537,7 @@ public class InGame extends Activity implements SensorEventListener {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mainPlayerChoosesCardToLose();
+                                mainPlayerChoosesCardToLose("challenge");
 
                             }
                         });
@@ -625,16 +602,6 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-    public void detectCheater(){
-        if (attackedPlayer.getCheated() == true){
-            sendToServer("sCright" + " " + name + " " + attackedPlayer.getName());
-        }
-        else {
-            sendToServer("sCwrong" + " " + name + " " + attackedPlayer.getName());
-        }
-
-    }
-
     public void disableAll(){
         assassinateButton.setEnabled(false);
         incomeButton.setEnabled(false);
@@ -645,8 +612,6 @@ public class InGame extends Activity implements SensorEventListener {
         coupButton.setEnabled(false);
         challenge.setEnabled(false);
         blockForeignAidButton.setEnabled(false);
-        detectCheaterButton.setEnabled(false);
-
 
         assassinateButton.setBackgroundResource(R.drawable.assassinate_button_passive);
         incomeButton.setBackgroundResource(R.drawable.income_button_passive);
@@ -695,8 +660,6 @@ public class InGame extends Activity implements SensorEventListener {
 
             challenge.setEnabled(true);
 
-            detectCheaterButton.setEnabled(true);
-
 
             assassinateButton.setBackgroundResource(R.drawable.assassinate_button);
             incomeButton.setBackgroundResource(R.drawable.income_button);
@@ -718,19 +681,15 @@ public class InGame extends Activity implements SensorEventListener {
         next.setBackgroundResource(R.drawable.next_button_passive);
     }
 
-    private void doCoup() {
+    protected void doCoup() {
 
         sendToServer("coup" + " " + name + " " + attackedPlayer.getName());
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
+
                 disableAll();
                 player = game.updatePlayerCoins(name, -7);
                 textView.setText("You did coup on " + attackedPlayer.getName());
                 coins.setText("Your coins: " + player.getCoins());
-            }
-        });
 
 
     }
@@ -862,18 +821,27 @@ public class InGame extends Activity implements SensorEventListener {
 
 
 
-    public void mainPlayerChoosesCardToLose(){
+    public void mainPlayerChoosesCardToLose(String cause){
         ivImageC1 = (ImageView) findViewById(R.id.card_playercard1);
         ivImageC2 = (ImageView) findViewById(R.id.card_playercard2);
 
         // Display: "Click on the Card you want to lose."
 
-        textView.setText("Click on the Card you want to lose.");
+        String why=null;
+        if(cause.equals("coup"))
+            why="Couped: ";
+        if(cause.equals("challenge"))
+            why="Challenge failed: ";
+        if(cause.equals("assassinate"))
+            why="Assassinated: ";
+
+
+        textView.setText(why+"Choose a card to lose");
 
         count =0;
 
 
-        if (ivImageC1.isShown() && ivImageC2.isShown()) {
+        if (player.getCards().size()==2) {
 
             ivImageC1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -901,13 +869,12 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-    private void looseCard(){
+    protected void looseCard(){
 
         Card c;
 
         int cardToRemove = 0;
 
-        if(player.getCards().size()==2){
             if(leftCardRemoved){
                 c=player.getCards().get(0);
                 ivImageC1.setVisibility(View.INVISIBLE);
@@ -917,6 +884,9 @@ public class InGame extends Activity implements SensorEventListener {
                 cardToRemove = 1;
                 ivImageC2.setVisibility(View.INVISIBLE);
             }
+
+            ivImageC1.setOnClickListener(null);
+            ivImageC2.setOnClickListener(null);
 
             //update player
             for(Player me: game.getPlayers()){
@@ -935,11 +905,10 @@ public class InGame extends Activity implements SensorEventListener {
             sendToServer(getCardNameAsString(cardToReturn));
 
 
-        }
-        else returnLastCard();
+
     }
 
-    private void returnLastCard(){
+    protected void returnLastCard(){
 
         final Card cardToReturn = player.getCards().get(0);
 
@@ -948,7 +917,7 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-    private String getCardNameAsString(Card cardToReturn) {
+    protected String getCardNameAsString(Card cardToReturn) {
         switch (cardToReturn.getTypeOfCard()){
             case DUKE: return dukeTxt;
             case CAPTAIN: return captainTxt;
@@ -1170,36 +1139,30 @@ public class InGame extends Activity implements SensorEventListener {
     return convertedList;}
 
 
-    private void assasinateplayer(){
+    protected void assasinateplayer(){
 
         sendToServer(assassinateTxt+" "+name+" "+attackedPlayer.getName());
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
+
                 disableAll();
                 disableNext();
                 textView.setText("Assassinating "+attackedPlayer.getName());
-            }
-        });
+
 
     }
 
-    private void blockAction(final String attacker, final String action){
+    protected void blockAction(final String attacker, final String action){
 
         sendToServer("block");
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
+
                 if(action.equals(stealTxt))
                     textView.setText("You blocked "+attacker+" stealing from you");
                 else textView.setText("You blocked "+attacker+ " assassinating you");
-            }
-        });
+
     }
 
-    private void sendToServer(final String message){
+    protected void sendToServer(final String message){
 
         new Thread(new Runnable() {
             @Override
@@ -1210,7 +1173,7 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-    protected void handleMessage(String msg, final String[] split){
+    protected void handleMessage(String msg, String[] split){
 
         if(msg.startsWith("turn")){
             enableAll();
@@ -1275,7 +1238,7 @@ public class InGame extends Activity implements SensorEventListener {
                     if(split[2].equals(name)){
                         textView.setText(split[1]+" blocked foreign aid on you");
                         foreignAidBlocked = true;
-                    }else textView.setText(split[1]+" bocked foreign aid on "+split[2]);
+                    }else textView.setText(split[1]+" blocked foreign aid on "+split[2]);
 
         }
         if(msg.startsWith(stealTxt)){
@@ -1346,7 +1309,7 @@ public class InGame extends Activity implements SensorEventListener {
                     if(split[1].equals(name)){
                         disableAll();
                         enableNext();
-                        textView.setText("You used assassinate on"+attackedPlayer.getName());
+                        textView.setText("You used assassinate on "+attackedPlayer.getName());
 
                         player=game.updatePlayerCoins(name, -3);
 
@@ -1365,7 +1328,7 @@ public class InGame extends Activity implements SensorEventListener {
                         else{
 
                             textView.setText(split[1]+" used assassinate on you");
-                            mainPlayerChoosesCardToLose();
+                            mainPlayerChoosesCardToLose("assassinate");
 
                         }
 
@@ -1378,62 +1341,6 @@ public class InGame extends Activity implements SensorEventListener {
                     }
 
         }
-
-        if (msg.startsWith("sCright")){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //suspecting player
-                    if(split[1].equals(name)){
-
-                        textView.setText(attackedPlayer.getName()+" cheated");
-                        updateCoins(attackedPlayer.getName(), -attackedPlayer.getCoins());
-
-                    }
-                    else //cheating player
-                        if(split[2].equals(name)) {
-
-                            textView.setText(split[1]+" cought you cheating");
-                            player= game.updatePlayerCoins(name, -attackedPlayer.getCoins());
-                            coins.setText(coinsTxt +player.getCoins());
-
-
-
-                        }
-                        else{
-                            textView.setText(split[1]+" cought "+split[2] + " cheating");
-                            updateCoins(split[2],-attackedPlayer.getCoins());
-
-                        }
-
-                }
-            });
-
-            if (msg.startsWith("sCwrong")){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //suspecting player
-                        if(split[1].equals(name)){
-                            player=game.updatePlayerCoins(name, -3);
-                            textView.setText(attackedPlayer.getName()+" did not cheat");
-                            coins.setText(coinsTxt + player.getCoins());
-
-                        }
-                        else{
-                            textView.setText(split[1]+" lost coins for false suspicion");
-                            updateCoins(split[1],-3);
-
-                        }
-
-                    }
-                });
-            }
-
-
-
-        }
-
 
         if (msg.startsWith("lastaction")) {
             Log.e("DEBUG LASTACTION", msg);
@@ -1541,7 +1448,7 @@ public class InGame extends Activity implements SensorEventListener {
                     if(split[2].equals(name)){
 
                         textView.setText(split[1]+" used coup on you");
-                        mainPlayerChoosesCardToLose();
+                        mainPlayerChoosesCardToLose("coup");
 
 
                     }
@@ -1697,6 +1604,7 @@ public class InGame extends Activity implements SensorEventListener {
                     disableNext();
                     updateOpponentOnTurn(split[1]);
                     timer.setVisibility(View.INVISIBLE);
+                    textView.setText(split[1]+"'s turn");
 
                 }
 
@@ -1727,7 +1635,7 @@ public class InGame extends Activity implements SensorEventListener {
         }
     }
 
-    private List<Card> convertStringNameToCardType(List<String> cardnames) {
+    protected List<Card> convertStringNameToCardType(List<String> cardnames) {
         List<Card> cards = new LinkedList<>();
 
         for(String cardname: cardnames){
@@ -1799,6 +1707,13 @@ public class InGame extends Activity implements SensorEventListener {
         }
 
         protected void onPostExecute(String res){
+
+            if(res==null){
+                Toast.makeText(InGame.this,"Connection lost",Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+
+            }
 
             //switch to Aftergame on win
             if(res.equals("win")){
