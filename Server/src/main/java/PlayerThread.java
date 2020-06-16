@@ -190,22 +190,15 @@ public class PlayerThread extends Thread {
                 }
 
                 if (input.startsWith("exchange")) {
-                    /**
-                     TODO:
-                     get two cards from stack
 
-                     send two card to player (use writers.get(turn).println(cardname))
-
-                     receive exchanged cards (use readers.get(0).readline())
-
-                     push received cards back to stack
-                     **/
+                    //inform players
                     for (int i = 0; i < avaiable; i++) {
                         if (i == turn)
                             continue;
                         writers.get(i).println(input);
                     }
 
+                    //get and send cards from deck to player
                     ArrayList<String> cardsToSend = new ArrayList<String>();
 
                     cardsToSend.add(cards.pop());
@@ -215,15 +208,24 @@ public class PlayerThread extends Thread {
 
                         writers.get(turn).println("card" + " " + cardname);
                     }
+
+                    //retrieve exchanged cards from player
                     List<String> cardsToReturn = new ArrayList<String>();
 
                     cardsToReturn.add(readers.get(turn).readLine());
                     cardsToReturn.add(readers.get(turn).readLine());
 
+                    //push cards back to stack
                     for (String cardname : cardsToReturn) {
                         cards.push(cardname);
                     }
+
                     Collections.shuffle(cards);
+
+                    System.out.println("Cards in deck: "+cards.size());
+
+                    lastAction = "exchange";
+                    actionperformed=true;
 
 
                 }
