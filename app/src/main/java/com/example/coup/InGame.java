@@ -70,6 +70,7 @@ public class InGame extends Activity implements SensorEventListener {
     protected Button next;
     protected Button challenge;
     protected Button blockForeignAidButton;
+    protected Button detectCheaterButton;
     private SensorManager s;
     private Sensor Accelerometer;
     private float current;
@@ -180,6 +181,7 @@ public class InGame extends Activity implements SensorEventListener {
         incomeButton = (Button) findViewById(R.id.button_income);
         foreignAidButton = (Button) findViewById(R.id.button_foreign_aid);
         coupButton = (Button) findViewById(R.id.button_coup);
+        detectCheaterButton = (Button) findViewById(R.id.button_suspect_cheat);
 
 
 
@@ -318,6 +320,15 @@ public class InGame extends Activity implements SensorEventListener {
             }
         });
 
+        detectCheaterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectPlayer("detectCheater");
+                disableAll();
+            }
+        });
+
+
 
     }
 
@@ -363,6 +374,9 @@ public class InGame extends Activity implements SensorEventListener {
             doCoup();
         if(action.equals(assassinateTxt))
             assasinateplayer();
+        if (action.equals("detectCheater"))
+            detectCheater();
+
     }
 
     protected void blockForeignAid(){
@@ -602,6 +616,11 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
+    public void detectCheater(){
+        sendToServer("sCheat"+" "+name+" "+attackedPlayer.getName());
+
+    }
+
     public void disableAll(){
         assassinateButton.setEnabled(false);
         incomeButton.setEnabled(false);
@@ -612,6 +631,7 @@ public class InGame extends Activity implements SensorEventListener {
         coupButton.setEnabled(false);
         challenge.setEnabled(false);
         blockForeignAidButton.setEnabled(false);
+        detectCheaterButton.setEnabled(false);
 
         assassinateButton.setBackgroundResource(R.drawable.assassinate_button_passive);
         incomeButton.setBackgroundResource(R.drawable.income_button_passive);
@@ -659,6 +679,8 @@ public class InGame extends Activity implements SensorEventListener {
             blockForeignAidButton.setEnabled(true);
 
             challenge.setEnabled(true);
+
+            detectCheaterButton.setEnabled(true);
 
 
             assassinateButton.setBackgroundResource(R.drawable.assassinate_button);
@@ -742,8 +764,17 @@ public class InGame extends Activity implements SensorEventListener {
 
         for(int i=0; i<enemyTv.size();i++){
             if(enemyTv.get(i).getText().equals(onPlayer)){
+
+                if(coinsAdded==0){
+                    Player p = game.updatePlayerCoins(onPlayer, 0);
+                    coinsTv.get(i).setText(Integer.toString(p.getCoins()));
+
+                }
+                else{
+
                 Player p = game.updatePlayerCoins(onPlayer, coinsAdded);
                 coinsTv.get(i).setText(Integer.toString(p.getCoins()));
+                }
             }
         }
 
@@ -1173,7 +1204,7 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-    protected void handleMessage(String msg, String[] split){
+    protected void handleMessage(String msg, final String[] split){
 
         if(msg.startsWith("turn")){
             enableAll();
@@ -1341,6 +1372,65 @@ public class InGame extends Activity implements SensorEventListener {
                     }
 
         }
+
+        if (msg.startsWith("sCheat")){
+
+            if(split[2].equals(name)){
+
+                if(player.getCheated()){
+                    sendToServer("sRight"+" "+split[1]+" "+split[2]);
+                    player=game.updatePlayerCoins(name, -player.getCoins());
+                    coins.setText(coinsTxt+player.getCoins());
+                    textView.setText("You got caught cheating");
+
+                }
+                else{
+                    sendToServer("sWrong"+" "+split[1]+" "+split[2]);
+                    updateCoins(split[1],0);
+                    textView.setText(split[1]+" suspected you cheating");
+
+                }
+
+            }
+
+        }
+
+        if(msg.startsWith("sRight")){
+
+            if(split[1].equals(name)){
+
+                textView.setText("You caught "+split[2]+" cheating");
+                updateCoins(split[2], 0);
+
+            }
+            else {
+                textView.setText(split[1]+" caught "+split[2]+" cheating");
+                updateCoins(split[2], 0);
+
+            }
+
+
+        }
+
+        if(msg.startsWith("sWrong")){
+
+            if(split[1].equals(name)){
+
+                textView.setText("You incorrectly suspected "+split[2]+" cheating");
+                player=game.updatePlayerCoins(name,0);
+                coins.setText(coinsTxt+player.getCoins());
+
+            }
+            else {
+                textView.setText(split[1]+" incorrectly suspected "+split[2]+" cheating");
+                updateCoins(split[2], 0);
+
+            }
+
+
+        }
+
+
 
         if (msg.startsWith("lastaction")) {
             Log.e("DEBUG LASTACTION", msg);
