@@ -21,14 +21,17 @@ public class AfterGame extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
             result=bundle.getString("result");
-
-
-        //
+        
 
         setContentView(R.layout.activity_after_game);
 
         TextView resulttext = findViewById(R.id.textView_result_message);
-        resulttext.setText(result);
+
+        if (result == "lose") {
+            resulttext.setText("You have lost the game. Better luck next time.");
+        } else {
+            resulttext.setText("You have won the game!");
+        }
 
 
 
