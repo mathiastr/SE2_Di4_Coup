@@ -287,22 +287,15 @@ public class PlayerThread extends Thread {
 
 
                 if (input.startsWith("exchange")) {
-                    /**
-                     TODO:
-                     get two cards from stack
 
-                     send two card to player (use writers.get(turn).println(cardname))
-
-                     receive exchanged cards (use readers.get(0).readline())
-
-                     push received cards back to stack
-                     **/
+                    //inform players
                     for (int i = 0; i < avaiable; i++) {
                         if (i == turn)
                             continue;
                         writers.get(i).println(input);
                     }
 
+                    //get and send cards from deck to player
                     ArrayList<String> cardsToSend = new ArrayList<String>();
 
                     cardsToSend.add(cards.pop());
@@ -312,15 +305,24 @@ public class PlayerThread extends Thread {
 
                         writers.get(turn).println("card" + " " + cardname);
                     }
+
+                    //retrieve exchanged cards from player
                     List<String> cardsToReturn = new ArrayList<String>();
 
                     cardsToReturn.add(readers.get(turn).readLine());
                     cardsToReturn.add(readers.get(turn).readLine());
 
+                    //push cards back to stack
                     for (String cardname : cardsToReturn) {
                         cards.push(cardname);
                     }
+
                     Collections.shuffle(cards);
+
+                    System.out.println("Cards in deck: "+cards.size());
+
+                    lastAction = "exchange";
+                    actionperformed=true;
 
 
                 }
@@ -328,27 +330,75 @@ public class PlayerThread extends Thread {
 
                     String[] split = input.split(" ");
 
-                    for (int i = 0; i < avaiable; i++) {
-                        if (i == turn)
-                            continue;
-                        writers.get(i).println(input);
-                    }
+                    //send message to player to attack
+                    toPlayer.get(split[2]).println(input);
 
                     //retrieve card from attacked player
 
                     String cardToReturn = fromPlayer.get(split[2]).readLine();
 
+                    //retrieve last card from player
                     if(cardToReturn.startsWith("lastcard")){
                         String[] last = cardToReturn.split(" ");
                         cards.push(last[1]);
 
                         //force player to loose game
                         toPlayer.get(split[2]).println("lose");
+
+
+                        //inform other players
+                        for (int i = 0; i < avaiable; i++) {
+                            if (writers.get(i).equals(toPlayer.get(split[2])))
+                                continue;
+                            writers.get(i).println("lostgame"+" "+split[2]);
+                        }
+
+
+                        BufferedReader tmp = readers.get(turn);
+
+                        //remove player
+                        writers.remove(toPlayer.get(split[2]));
+                        readers.remove(fromPlayer.get(split[2]));
+                        names.remove(split[2]);
+
+                        turn=readers.indexOf(tmp);
+
+                        avaiable--;
+
+                        //last player wins
+                        if(avaiable==1){
+                            writers.get(0).println("win");
+                            break;
+                        }
+
                     }
-                    else
+                    //player blocked assassinate
+                    else if(cardToReturn.startsWith("block")){
+                        for (int i = 0; i < avaiable; i++) {
+                            if (writers.get(i).equals(toPlayer.get(split[2])))
+                                continue;
+                            writers.get(i).println("block"+" "+split[2]+" "+split[1]+" "+"assassinate");
+                        }
+                    }
+                    //retrieve card and push back to stack
+                    else {
                         cards.push(cardToReturn);
+                        //inform players
+                        for (int i = 0; i < avaiable; i++) {
+                            if (writers.get(i).equals(toPlayer.get(split[2])))
+                                continue;
+                            if(writers.get(i).equals(writers.get(turn)))
+                                writers.get(turn).println(input);
+                            else
+                                writers.get(i).println("loose card"+" "+split[2]);
+                        }
+
+                    }
 
                     System.out.println("card: "+cardToReturn+" returned to stack");
+
+                    lastAction = "assassinate";
+                    actionperformed=true;
 
 
 
