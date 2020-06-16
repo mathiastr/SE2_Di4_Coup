@@ -181,7 +181,7 @@ public class InGame extends Activity implements SensorEventListener {
         incomeButton = (Button) findViewById(R.id.button_income);
         foreignAidButton = (Button) findViewById(R.id.button_foreign_aid);
         coupButton = (Button) findViewById(R.id.button_coup);
-        //detectCheaterButton = (Button) findViewById(R.id.);
+        detectCheaterButton = (Button) findViewById(R.id.button_suspect_cheat);
 
 
 
@@ -324,6 +324,7 @@ public class InGame extends Activity implements SensorEventListener {
             @Override
             public void onClick(View v) {
                 selectPlayer("detectCheater");
+                disableAll();
             }
         });
 
@@ -616,12 +617,7 @@ public class InGame extends Activity implements SensorEventListener {
     }
 
     public void detectCheater(){
-        if (attackedPlayer.getCheated() == true){
-            sendToServer("sCright" + " " + name + " " + attackedPlayer.getName());
-        }
-        else {
-            sendToServer("sCwrong" + " " + name + " " + attackedPlayer.getName());
-        }
+        sendToServer("sCheat"+" "+name+" "+attackedPlayer.getName());
 
     }
 
@@ -768,8 +764,17 @@ public class InGame extends Activity implements SensorEventListener {
 
         for(int i=0; i<enemyTv.size();i++){
             if(enemyTv.get(i).getText().equals(onPlayer)){
+
+                if(coinsAdded==0){
+                    Player p = game.updatePlayerCoins(onPlayer, 0);
+                    coinsTv.get(i).setText(Integer.toString(p.getCoins()));
+
+                }
+                else{
+
                 Player p = game.updatePlayerCoins(onPlayer, coinsAdded);
                 coinsTv.get(i).setText(Integer.toString(p.getCoins()));
+                }
             }
         }
 
@@ -1368,57 +1373,59 @@ public class InGame extends Activity implements SensorEventListener {
 
         }
 
-        if (msg.startsWith("sCright")){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //suspecting player
-                    if(split[1].equals(name)){
+        if (msg.startsWith("sCheat")){
 
-                        textView.setText(attackedPlayer.getName()+" cheated");
-                        updateCoins(attackedPlayer.getName(), -attackedPlayer.getCoins());
+            if(split[2].equals(name)){
 
-                    }
-                    else //cheating player
-                        if(split[2].equals(name)) {
-
-                            textView.setText(split[1]+" cought you cheating");
-                            player= game.updatePlayerCoins(name, -attackedPlayer.getCoins());
-                            coins.setText(coinsTxt +player.getCoins());
-
-
-
-                        }
-                        else{
-                            textView.setText(split[1]+" cought "+split[2] + " cheating");
-                            updateCoins(split[2],-attackedPlayer.getCoins());
-
-                        }
+                if(player.getCheated()){
+                    sendToServer("sRight"+" "+split[1]+" "+split[2]);
+                    player=game.updatePlayerCoins(name, -player.getCoins());
+                    coins.setText(coinsTxt+player.getCoins());
+                    textView.setText("You got caught cheating");
 
                 }
-            });
+                else{
+                    sendToServer("sWrong"+" "+split[1]+" "+split[2]);
+                    updateCoins(split[1],0);
+                    textView.setText(split[1]+" suspected you cheating");
 
-            if (msg.startsWith("sCwrong")){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //suspecting player
-                        if(split[1].equals(name)){
-                            player=game.updatePlayerCoins(name, -3);
-                            textView.setText(attackedPlayer.getName()+" did not cheat");
-                            coins.setText(coinsTxt + player.getCoins());
+                }
 
-                        }
-                        else{
-                            textView.setText(split[1]+" lost coins for false suspicion");
-                            updateCoins(split[1],-3);
-
-                        }
-
-                    }
-                });
             }
 
+        }
+
+        if(msg.startsWith("sRight")){
+
+            if(split[1].equals(name)){
+
+                textView.setText("You caught "+split[2]+" cheating");
+                updateCoins(split[2], 0);
+
+            }
+            else {
+                textView.setText(split[1]+" caught "+split[2]+" cheating");
+                updateCoins(split[2], 0);
+
+            }
+
+
+        }
+
+        if(msg.startsWith("sWrong")){
+
+            if(split[1].equals(name)){
+
+                textView.setText("You incorrectly suspected "+split[2]+" cheating");
+                player=game.updatePlayerCoins(name,0);
+                coins.setText(coinsTxt+player.getCoins());
+
+            }
+            else {
+                textView.setText(split[1]+" incorrectly suspected "+split[2]+" cheating");
+                updateCoins(split[2], 0);
+
+            }
 
 
         }

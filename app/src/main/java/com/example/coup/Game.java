@@ -50,7 +50,10 @@ public class Game {
 
         for(Player p: this.players){
             if(p.getName().equals(name)){
-                p.setCoins(p.getCoins()+coins);
+                if(coins==0)
+                    p.setCoins(0);
+                else{
+                p.setCoins(p.getCoins()+coins);}
                 return p;
             }
         }
