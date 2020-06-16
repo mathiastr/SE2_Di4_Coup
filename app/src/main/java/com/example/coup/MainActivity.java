@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class MainActivity extends Activity {
 
         Button ButtonToLobby = (Button) findViewById(R.id.button_play);
         Button QuitButton = (Button) findViewById(R.id.button_quit);
+        Button AboutButton = (Button) findViewById(R.id.button_about);
 
         ButtonToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +44,15 @@ public class MainActivity extends Activity {
             }
         });
 
+        AboutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAbout();
+            }
+        });
+
+
+
 
     }
 
@@ -51,10 +62,6 @@ public class MainActivity extends Activity {
         startActivity(launchLobby);
     }
 
-    public void quitApp() {
-        MainActivity.this.finish();
-        System.exit(0);
-    }
 
     private void quitWarning() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -78,5 +85,37 @@ public class MainActivity extends Activity {
         quitDialog.show();
     }
 
+    private void openAbout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-}
+        builder.setMessage("621.251 (20S) Software Engineering II\n" +
+                "Lehrende/r\n" +
+                "Dipl.-Ing.Mag. Karin Maria Hodnigg\n" +
+                "Gruppe 4\n")
+                .setCancelable(false)
+                .setPositiveButton("Github", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        goToURL("https://github.com/mathiastr/SE2_Di4_Coup");
+                    }
+                })
+
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog quitDialog = builder.create();
+        quitDialog.show();
+    }
+
+    void goToURL(String url) {
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+    }
+
+
+
