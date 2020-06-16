@@ -70,6 +70,7 @@ public class InGame extends Activity implements SensorEventListener {
     protected Button next;
     protected Button challenge;
     protected Button blockForeignAidButton;
+    protected Button detectCheaterButton;
     private SensorManager s;
     private Sensor Accelerometer;
     private float current;
@@ -180,6 +181,7 @@ public class InGame extends Activity implements SensorEventListener {
         incomeButton = (Button) findViewById(R.id.button_income);
         foreignAidButton = (Button) findViewById(R.id.button_foreign_aid);
         coupButton = (Button) findViewById(R.id.button_coup);
+        //detectCheaterButton = (Button) findViewById(R.id.);
 
 
 
@@ -318,6 +320,14 @@ public class InGame extends Activity implements SensorEventListener {
             }
         });
 
+        detectCheaterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectPlayer("detectCheater");
+            }
+        });
+
+
 
     }
 
@@ -363,6 +373,9 @@ public class InGame extends Activity implements SensorEventListener {
             doCoup();
         if(action.equals(assassinateTxt))
             assasinateplayer();
+        if (action.equals("detectCheater"))
+            detectCheater();
+
     }
 
     protected void blockForeignAid(){
@@ -602,6 +615,16 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
+    public void detectCheater(){
+        if (attackedPlayer.getCheated() == true){
+            sendToServer("sCright" + " " + name + " " + attackedPlayer.getName());
+        }
+        else {
+            sendToServer("sCwrong" + " " + name + " " + attackedPlayer.getName());
+        }
+
+    }
+
     public void disableAll(){
         assassinateButton.setEnabled(false);
         incomeButton.setEnabled(false);
@@ -612,6 +635,7 @@ public class InGame extends Activity implements SensorEventListener {
         coupButton.setEnabled(false);
         challenge.setEnabled(false);
         blockForeignAidButton.setEnabled(false);
+        detectCheaterButton.setEnabled(false);
 
         assassinateButton.setBackgroundResource(R.drawable.assassinate_button_passive);
         incomeButton.setBackgroundResource(R.drawable.income_button_passive);
@@ -659,6 +683,8 @@ public class InGame extends Activity implements SensorEventListener {
             blockForeignAidButton.setEnabled(true);
 
             challenge.setEnabled(true);
+
+            detectCheaterButton.setEnabled(true);
 
 
             assassinateButton.setBackgroundResource(R.drawable.assassinate_button);
@@ -1173,7 +1199,7 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
-    protected void handleMessage(String msg, String[] split){
+    protected void handleMessage(String msg, final String[] split){
 
         if(msg.startsWith("turn")){
             enableAll();
@@ -1341,6 +1367,63 @@ public class InGame extends Activity implements SensorEventListener {
                     }
 
         }
+
+        if (msg.startsWith("sCright")){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //suspecting player
+                    if(split[1].equals(name)){
+
+                        textView.setText(attackedPlayer.getName()+" cheated");
+                        updateCoins(attackedPlayer.getName(), -attackedPlayer.getCoins());
+
+                    }
+                    else //cheating player
+                        if(split[2].equals(name)) {
+
+                            textView.setText(split[1]+" cought you cheating");
+                            player= game.updatePlayerCoins(name, -attackedPlayer.getCoins());
+                            coins.setText(coinsTxt +player.getCoins());
+
+
+
+                        }
+                        else{
+                            textView.setText(split[1]+" cought "+split[2] + " cheating");
+                            updateCoins(split[2],-attackedPlayer.getCoins());
+
+                        }
+
+                }
+            });
+
+            if (msg.startsWith("sCwrong")){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //suspecting player
+                        if(split[1].equals(name)){
+                            player=game.updatePlayerCoins(name, -3);
+                            textView.setText(attackedPlayer.getName()+" did not cheat");
+                            coins.setText(coinsTxt + player.getCoins());
+
+                        }
+                        else{
+                            textView.setText(split[1]+" lost coins for false suspicion");
+                            updateCoins(split[1],-3);
+
+                        }
+
+                    }
+                });
+            }
+
+
+
+        }
+
+
 
         if (msg.startsWith("lastaction")) {
             Log.e("DEBUG LASTACTION", msg);
