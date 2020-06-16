@@ -872,6 +872,263 @@ public class TestInGame {
     }
 
 
+
+
+    @Test
+    public void testChallengedOnTax(){
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.DUKE));
+        cards.add(new Card(CardType.AMBASSADOR));
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+        inGame.player=p;
+
+        String msg = "challenge player2 player1 tax";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("duke", inGame.cardNameToShow);
+
+
+    }
+
+    @Test
+    public void testChallengedOnBFA(){
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.DUKE));
+        cards.add(new Card(CardType.AMBASSADOR));
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+        inGame.player=p;
+
+        String msg = "challenge player2 player1 bfa";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("duke", inGame.cardNameToShow);
+
+
+    }
+
+    @Test
+    public void testChallengedOnSteal(){
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.DUKE));
+        cards.add(new Card(CardType.CAPTAIN));
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+        inGame.player=p;
+
+        String msg = "challenge player2 player1 steal";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("captain", inGame.cardNameToShow);
+
+
+    }
+
+    @Test
+    public void testChallengedOnAssassinate(){
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.ASSASSIN));
+        cards.add(new Card(CardType.CAPTAIN));
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+        inGame.player=p;
+
+        String msg = "challenge player2 player1 assassinate";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("assassin", inGame.cardNameToShow);
+
+
+    }
+
+    @Test
+    public void testChallengedOnExchange(){
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.CAPTAIN));
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+        inGame.player=p;
+
+        String msg = "challenge player2 player1 exchange";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("ambassador", inGame.cardNameToShow);
+
+
+    }
+
+    @Test
+    public void testChallengedOtherPlayer(){
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.ASSASSIN));
+        cards.add(new Card(CardType.CAPTAIN));
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+        inGame.player=p;
+
+        String msg = "challenge player2 player3 assassinate";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 challenged player3", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testChallengeNotPossible(){
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.ASSASSIN));
+        cards.add(new Card(CardType.CAPTAIN));
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+        inGame.player=p;
+
+        String msg = "challenge player2 player3 income";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+
+    }
+
+
+    @Test
+    public void testStealFromPlayer(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+
+        inGame.attackedPlayer=p;
+
+        String msg = "steal player1 player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("You stole from player2", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testGetStolenByPlayer(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.AMBASSADOR));
+
+        Player p1 = new Player();
+        p1.setName("player1");
+        p1.setCards(cards);
+
+
+        inGame.player=p1;
+
+        Player p2 = new Player();
+        p2.setName("player2");
+
+        inGame.attackedPlayer=p1;
+
+        String msg = "steal player2 player1";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 used steal on you", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testOtherPlayerSteal(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+
+        inGame.attackedPlayer=p;
+
+        String msg = "steal player2 player3";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 used steal on player3", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testChallengeButton(){
+        inGame.challenge.callOnClick();
+    }
+
+
     @After
     public void tearDown(){
 
