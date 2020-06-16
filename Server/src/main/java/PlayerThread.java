@@ -481,16 +481,12 @@ public class PlayerThread extends Thread {
 
 
 
-
-
-
-
-
                 if(input.startsWith("coup")){
 
 
                     String[] split = input.split(" ");
 
+                    //inform other players
                     for (int i = 0; i < avaiable; i++) {
                         if (i == turn)
                             continue;
@@ -501,17 +497,88 @@ public class PlayerThread extends Thread {
 
                     String cardToReturn = fromPlayer.get(split[2]).readLine();
 
+                    //last card
                     if(cardToReturn.startsWith("lastcard")){
                         String[] last = cardToReturn.split(" ");
                         cards.push(last[1]);
 
                         //force player to loose game
                         toPlayer.get(split[2]).println("lose");
+
+                        //inform other players
+                        for (PrintWriter writer:writers) {
+                            if (writer.equals(toPlayer.get(split[2])))
+                                continue;
+                            writer.println("lostgame"+" "+split[2]);
+                        }
+
+                        BufferedReader tmp = readers.get(turn);
+
+                        //remove player
+                        writers.remove(toPlayer.get(split[2]));
+                        readers.remove(fromPlayer.get(split[2]));
+                        names.remove(split[2]);
+
+                        turn=readers.indexOf(tmp);
+
+                        avaiable--;
+
+                        //last player wins
+                        if(avaiable==1){
+                            writers.get(0).println("win");
+                            break;
+                        }
                     }
-                    else
+                    //retrieve card from couped player
+                    else{
                         cards.push(cardToReturn);
+                        for (PrintWriter writer : writers) {
+                            if (writer.equals(toPlayer.get(split[2])))
+                                continue;
+                            writer.println("loose card"+" "+split[2]);
+                        }
+
+                    }
 
                     System.out.println("card: "+cardToReturn+" returned to stack");
+
+                    lastAction="coup";
+                    actionperformed=true;
+
+                }
+
+                if(input.startsWith("sCheat")){
+
+                    String[] split = input.split(" ");
+
+                    toPlayer.get(split[2]).println(input);
+
+                    String msg = fromPlayer.get(split[2]).readLine();
+
+                    if(msg.startsWith("sRight")){
+
+                        for (PrintWriter writer : writers) {
+                            if (writer.equals(toPlayer.get(split[2])))
+                                continue;
+                            writer.println(msg);
+                        }
+
+                    }
+                    else {
+
+                        for (PrintWriter writer : writers) {
+                            if (writer.equals(toPlayer.get(split[2])))
+                                continue;
+                            writer.println(msg);
+                        }
+
+                        lastAction="suspectCheat";
+                        actionperformed=true;
+
+
+                    }
+
+
 
                 }
 
