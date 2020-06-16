@@ -1128,6 +1128,179 @@ public class TestInGame {
         inGame.challenge.callOnClick();
     }
 
+    @Test
+    public void testsuspectCheaterright(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+        p.setCheated(false);
+
+        inGame.attackedPlayer=p;
+
+        String msg = "sRight player1 player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("You caught player2 cheating", inGame.textView.getText().toString());
+
+    }
+
+    @Test
+    public void testsuspectCheaterwrong(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+        p.setCheated(false);
+
+        inGame.attackedPlayer=p;
+
+        String msg = "sWrong player1 player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("You incorrectly suspected player2 cheating", inGame.textView.getText().toString());
+
+    }
+
+    @Test
+    public void testsuspectCheaterrightOtherPlayers(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+        p.setCheated(false);
+
+        inGame.attackedPlayer=p;
+
+        String msg = "sRight player3 player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player3 caught player2 cheating", inGame.textView.getText().toString());
+
+    }
+
+    @Test
+    public void testsuspectCheaterwrongOtherPlayers(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+        p.setCheated(false);
+
+        inGame.attackedPlayer=p;
+
+        String msg = "sWrong player3 player2";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player3 incorrectly suspected player2 cheating", inGame.textView.getText().toString());
+
+    }
+
+    @Test
+    public void testgetSuspectedRight(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+
+        Player p1 = new Player();
+        p1.setName("player1");
+        p1.setCheated(true);
+
+
+        inGame.player=p1;
+
+        Player p2 = new Player();
+        p2.setName("player2");
+
+        inGame.attackedPlayer=p1;
+
+        String msg = "sCheat player2 player1";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("You got caught cheating", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testgetSuspectedWrong(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+
+        Player p1 = new Player();
+        p1.setName("player1");
+
+        inGame.player=p1;
+
+        Player p2 = new Player();
+        p2.setName("player2");
+
+        inGame.attackedPlayer=p1;
+
+        String msg = "sCheat player2 player1";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 suspected you cheating", inGame.textView.getText().toString());
+
+
+    }
+
+
+
+
 
     @After
     public void tearDown(){
