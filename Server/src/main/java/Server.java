@@ -10,6 +10,7 @@ import java.util.List;
 public class Server {
 
 
+    private static int MAXPLAYERS = 4;
 
 
 
@@ -49,7 +50,7 @@ public class Server {
                     players.add(socket);
 
 
-                    if(players.size()>=2){
+                    if(players.size()>=MAXPLAYERS){
                         System.out.println("Staritng Multiplayer Thread");
                         System.out.println(players.isEmpty());
 
@@ -80,14 +81,23 @@ public class Server {
                 }catch (SocketTimeoutException te){
 
                     System.out.println("Time out retrying");
-                    if(players.size()==1){
+                    if(players.size()<MAXPLAYERS){
 
                         try {
                             //force client to reconnect
-                            PrintWriter writer = new PrintWriter(new OutputStreamWriter(players.get(0).getOutputStream()));
-                            writer.println("noplayer");
-                            writer.close();
-                            players.get(0).close();
+                            List<PrintWriter> writers = new LinkedList<PrintWriter>();
+                            for(int i=0;i<players.size();i++)
+                                writers.add(new PrintWriter(new OutputStreamWriter(players.get(i).getOutputStream())));
+
+                            for(PrintWriter writer:writers)
+                                writer.println("noplayer");
+
+                            for(PrintWriter writer:writers)
+                                writer.close();
+
+                            for (Socket player:players)
+                                player.close();
+
                             players.clear();
                         } catch (IOException ex) {
                             ex.printStackTrace();

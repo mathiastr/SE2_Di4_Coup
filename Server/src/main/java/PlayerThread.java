@@ -9,9 +9,10 @@ public class PlayerThread extends Thread {
     private List<Socket> players;
     private Map<String, PrintWriter> toPlayer;
     private Map<String, BufferedReader> fromPlayer;
+    //private Map<BufferedReader, String> fromPlayerName;
     private List<PrintWriter> writers;
     private List<BufferedReader> readers;
-
+    private String lastAction;
 
     private int avaiable = 0;
 
@@ -128,6 +129,8 @@ public class PlayerThread extends Thread {
 
             int turn =rand;
 
+            boolean actionperformed = false;
+
 
 
             //game loop
@@ -147,8 +150,24 @@ public class PlayerThread extends Thread {
                     readers.remove(turn);
 
                     avaiable--;
+                    turn++;
+                    if(turn>=readers.size())
+                        turn=0;
+                    writers.get(turn).println("turn");
+
+
+                    for (int i = 0; i < avaiable; i++) {
+                        if (i == turn)
+                            continue;
+
+                        writers.get(i).println("nextplayer"+" "+names.get(turn));
+                    }
+
                     if (avaiable == 1)
                         throw new IOException();
+
+                    if(avaiable < 1)
+                        break;
 
                     if (turn >= writers.size())
                         turn = 0;
@@ -156,22 +175,48 @@ public class PlayerThread extends Thread {
                 }
 
                 if (input.equals("next")) {
-                    System.out.println("next player");
+                    if(!actionperformed)
+                        lastAction="next";
+
+                    String nextplayer;
+                    int n = 0;
+                    if(turn+1<writers.size())
+                        n=turn+1;
+
+                    nextplayer=names.get(n);
+
+                    for (int i = 0; i < avaiable; i++) {
+                        if (i == n)
+                            continue;
+                        writers.get(i).println("nextplayer"+" "+names.get(n));
+                    }
+
+
+                    System.out.println("next player "+nextplayer);
+
+
+
                     turn++;
                     if (turn >= writers.size())
                         turn = 0;
                     writers.get(turn).println("turn");
 
+                    actionperformed=false;
 
                 }
                 if (input.equals("exit")) {
+                    //pass message to other players
+                    for (int i = 0; i < avaiable; i++) {
+                        if (i == turn)
+                            continue;
+                        writers.get(i).println("lostgame"+" "+names.get(turn));
+                    }
                     writers.get(turn).println("lose");
 
                     writers.remove(turn);
                     readers.remove(turn);
 
                     avaiable--;
-                    System.out.println("players avaiable: " + avaiable);
                     if (avaiable == 1) {
                         writers.get(0).println("win");
                         break;
@@ -179,7 +224,8 @@ public class PlayerThread extends Thread {
 
                 }
 
-                if (input.startsWith("income") || input.startsWith("foreignaid" )|| input.startsWith("steal")|| input.startsWith("tax")) {
+                if (input.startsWith("income") || input.startsWith("foreignaid" )||  input.startsWith("tax")
+                        ||input.startsWith("bfa")||input.startsWith("cheat")) {
 
                     //pass message to other players
                     for (int i = 0; i < avaiable; i++) {
@@ -187,7 +233,58 @@ public class PlayerThread extends Thread {
                             continue;
                         writers.get(i).println(input);
                     }
+
+                    //set last action
+                    if(input.startsWith("income"))
+                        lastAction="income";
+                    if(input.startsWith("foreignaid"))
+                        lastAction="foreignaid";
+                    if(input.startsWith("tax"))
+                        lastAction="tax";
+                    if(input.startsWith("bfa"))
+                        lastAction="bfa";
+
+
+                    actionperformed=true;
                 }
+
+                if(input.startsWith("steal")){
+
+                    String[] split = input.split(" ");
+
+                    //send message to player to attack
+                    toPlayer.get(split[2]).println(input);
+
+                    //get message from player to attack
+                    String msg = fromPlayer.get(split[2]).readLine();
+
+                    //player blocks steal
+                    if(msg.startsWith("block")){
+                        System.out.println();
+                        for (int i = 0; i < avaiable; i++) {
+                            if (writers.get(i).equals(toPlayer.get(split[2])))
+                                continue;
+                            writers.get(i).println("block"+" "+split[2]+" "+split[1]+" "+"steal");
+                        }
+                    }
+                    //steal succesful
+                    else{
+                        //inform players
+                        for (int i = 0; i < avaiable; i++) {
+                            if (writers.get(i).equals(toPlayer.get(split[2])))
+                                continue;
+                            writers.get(i).println(input);
+                        }
+
+                    }
+
+                    lastAction="steal";
+
+                    actionperformed=true;
+
+                }
+
+
 
                 if (input.startsWith("exchange")) {
                     /**
