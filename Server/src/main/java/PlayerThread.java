@@ -128,6 +128,8 @@ public class PlayerThread extends Thread {
 
             int turn =rand;
 
+
+
             //game loop
             while (running) {
 

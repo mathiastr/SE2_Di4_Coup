@@ -138,6 +138,7 @@ public class InGame extends Activity implements SensorEventListener {
 
 
 
+
         Bundle b = getIntent().getExtras();
         if (b != null)
             name = b.getString("name");
@@ -583,7 +584,7 @@ public class InGame extends Activity implements SensorEventListener {
                 challengeTimer = new CountDownTimer(10000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        challengeDialog.setMessage("Hurry up :" + millisUntilFinished / 1000);
+                        challengeDialog.setMessage("Your last move has been challenged. Do you accept the challenge?" + millisUntilFinished / 1000);
                     }
 
                     @Override
