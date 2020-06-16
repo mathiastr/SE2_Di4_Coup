@@ -547,6 +547,41 @@ public class PlayerThread extends Thread {
 
                 }
 
+                if(input.startsWith("sCheat")){
+
+                    String[] split = input.split(" ");
+
+                    toPlayer.get(split[2]).println(input);
+
+                    String msg = fromPlayer.get(split[2]).readLine();
+
+                    if(msg.startsWith("sRight")){
+
+                        for (PrintWriter writer : writers) {
+                            if (writer.equals(toPlayer.get(split[2])))
+                                continue;
+                            writer.println(msg);
+                        }
+
+                    }
+                    else {
+
+                        for (PrintWriter writer : writers) {
+                            if (writer.equals(toPlayer.get(split[2])))
+                                continue;
+                            writer.println(msg);
+                        }
+
+                        lastAction="suspectCheat";
+                        actionperformed=true;
+
+
+                    }
+
+
+
+                }
+
 
 
 
