@@ -643,6 +643,7 @@ public class InGame extends Activity implements SensorEventListener {
         coupButton.setBackgroundResource(R.drawable.coup_button_passive);
         challenge.setBackgroundResource(R.drawable.challenge_button_passive);
         blockForeignAidButton.setBackgroundResource(R.drawable.blockfa_button_passive);
+        detectCheaterButton.setBackgroundResource(R.drawable.suspect_button_passive);
 
     }
 
@@ -691,6 +692,7 @@ public class InGame extends Activity implements SensorEventListener {
             taxButton.setBackgroundResource(R.drawable.tax_button);
             challenge.setBackgroundResource(R.drawable.challenge_button);
             blockForeignAidButton.setBackgroundResource(R.drawable.blockfa_button);
+            detectCheaterButton.setBackgroundResource(R.drawable.suspect_button);
 
         }
     }
