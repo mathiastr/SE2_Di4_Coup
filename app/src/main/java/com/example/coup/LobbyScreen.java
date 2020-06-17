@@ -16,14 +16,16 @@ public class LobbyScreen extends Activity {
     public EditText nameInput;
     //private String nameInputCheck;
 
+    protected Button buttonReady;
+    protected Button buttonRules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby_screen);
 
-        Button buttonReady = (Button) findViewById(R.id.buttonReady);
-        Button buttonRules = (Button) findViewById(R.id.buttonRules);
+        buttonReady = (Button) findViewById(R.id.buttonReady);
+        buttonRules = (Button) findViewById(R.id.buttonRules);
         nameInput = (EditText) findViewById(R.id.nameInput);
         //nameInputCheck = nameInput.getText().toString();
 

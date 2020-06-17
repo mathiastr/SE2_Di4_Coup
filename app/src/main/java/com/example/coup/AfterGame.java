@@ -9,35 +9,33 @@ import android.widget.TextView;
 
 public class AfterGame extends AppCompatActivity {
 
+    protected Button buttonQuit;
+    protected Button buttonMainMenu;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+        String result=" ";
 
-       String result=" ";
-
-        // set win or lose result
         Bundle bundle = getIntent().getExtras();
+
         if(bundle!=null)
             result=bundle.getString("result");
-
 
         setContentView(R.layout.activity_after_game);
 
         TextView resulttext = findViewById(R.id.textView_result_message);
-
         if (result.equals("lose")) {
             resulttext.setText("You have lost the game. Better luck next time.");
         } else {
             resulttext.setText("You have won the game!");
         }
 
-
-
-        Button buttonQuit = (Button) findViewById(R.id.button_aftergame_quit);
-        Button buttonMainMenu = (Button) findViewById(R.id.button_aftergame_mainmenu);
-
+        buttonQuit = (Button) findViewById(R.id.button_aftergame_quit);
+        buttonMainMenu = (Button) findViewById(R.id.button_aftergame_mainmenu);
 
 
         buttonQuit.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +53,6 @@ public class AfterGame extends AppCompatActivity {
             }
         });
     }
-
     public void goToMenu() {
         Intent goMenu = new Intent(this, MainActivity.class);
         startActivity(goMenu);

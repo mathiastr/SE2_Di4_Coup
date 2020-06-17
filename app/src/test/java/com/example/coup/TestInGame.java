@@ -1,5 +1,12 @@
 package com.example.coup;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Looper;
 
 import junit.framework.Assert;
@@ -16,12 +23,15 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.internal.IShadow;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowLooper;
+import org.robolectric.shadows.ShadowSensorManager;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +52,8 @@ public class TestInGame {
     @Before
     public void setUp(){
 
+        Intent in = new Intent();
+        in.putExtra("name", "player1");
 
         inGame= Robolectric.buildActivity(InGame.class).create().get();
 
@@ -1337,6 +1349,34 @@ public class TestInGame {
     }
 
     @Test
+    public void testSetUpWait(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.opponents=enemies;
+
+        inGame.initializeOpponents(enemies);
+
+        Player p = new Player();
+        p.setName("player1");
+
+        List<Card> cards = new LinkedList<>();
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.AMBASSADOR));
+
+        p.setCards(cards);
+
+        inGame.player=p;
+        inGame.name=p.getName();
+
+
+        inGame.setUp("wait player2");
+    }
+
+    @Test
     public void testFinishGameWin(){
 
         inGame.finishGame("win");
@@ -1559,6 +1599,28 @@ public class TestInGame {
         inGame.handleMessage(msg,  split);
 
         Assert.assertEquals("player2 used exchange", inGame.textView.getText().toString());
+
+    }
+
+
+    @Test
+    public void testBFA(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+
+        inGame.attackedPlayer=p;
+
+        inGame.doAction("bfa");
+
 
     }
 

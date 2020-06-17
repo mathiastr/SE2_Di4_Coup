@@ -22,9 +22,34 @@ public class TestLobbyScreen {
     }
 
     @Test
+    public void TestButtonReadyEmpty(){
+
+        screen.nameInput.setText(null);
+        screen.buttonReady.performClick();
+
+    }
+
+
+    @Test
+    public void TestButtonReadyy(){
+
+        screen.nameInput.setText("player1");
+        screen.buttonReady.performClick();
+
+    }
+
+    @Test
     public void gotToURL(){
 
         screen.goToURL("https://github.com/mathiastr/SE2_Di4_Coup");
+    }
+
+    @Test
+    public void TestShowRules(){
+
+        screen.nameInput.setText("player1");
+        screen.buttonRules.performClick();
+
     }
 
     @After

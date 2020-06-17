@@ -1,6 +1,7 @@
 package com.example.coup;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import org.junit.Before;
@@ -17,22 +18,32 @@ public class TestAfterGame {
     private AfterGame afterGame;
 
     @Test
-    public void TestCreate(){
+    public void TestOnWin(){
 
-        afterGame = Robolectric.buildActivity(AfterGame.class).create().get();
+        Intent intent = new Intent();
+        intent.putExtra("result", "win");
+        afterGame = Robolectric.buildActivity(AfterGame.class,intent).create().get();
+
+        afterGame.buttonMainMenu.performClick();
+
+        afterGame=null;
 
 
     }
 
     @Test
-    public void TestGoToMenu(){
+    public void TestOnLose(){
 
-        afterGame = Robolectric.buildActivity(AfterGame.class).create().get();
-        afterGame.goToMenu();
+        Intent intent = new Intent();
+        intent.putExtra("result", "lose");
+        afterGame = Robolectric.buildActivity(AfterGame.class,intent).create().get();
+
+        afterGame.buttonMainMenu.performClick();
+
+        afterGame=null;
 
 
     }
-
 
 
 }

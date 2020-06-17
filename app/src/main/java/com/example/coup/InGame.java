@@ -89,7 +89,7 @@ public class InGame extends Activity implements SensorEventListener {
     protected TextView timer;
     protected TextView textView;
     protected CountDownTimer countDown;
-    private CountDownTimer challengeTimer;
+    protected CountDownTimer challengeTimer;
     private List<TextView> enemyTv;
     private List<TextView> coinsTv;
     private List<ImageView> enemyIv;
@@ -107,6 +107,8 @@ public class InGame extends Activity implements SensorEventListener {
     private String debugTXT="DEBUG";
     private boolean[] notInGame = new boolean[3];
     private List<TextView> enemyInfluence;
+    protected AlertDialog challengeDialog1;
+    protected AlertDialog challengeDialog2;
 
 
     @Override
@@ -140,7 +142,8 @@ public class InGame extends Activity implements SensorEventListener {
 
 
         Bundle b = getIntent().getExtras();
-        if (b != null)
+
+        if(b!=null)
             name = b.getString("name");
 
         challenge = (Button) findViewById(R.id.button_challenge);
@@ -504,9 +507,9 @@ public class InGame extends Activity implements SensorEventListener {
 
         }
 
-        AlertDialog challengeDialog = builder.create();
+        challengeDialog1 = builder.create();
 
-        challengeDialog.show();
+        challengeDialog1.show();
 
 
     }
@@ -604,12 +607,8 @@ public class InGame extends Activity implements SensorEventListener {
         challengeAccepted = true;
         cardInHand=false;
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                textView.setText("Challenge successful");
-            }
-        });
+        textView.setText("Challenge successful");
+
 
 
     }
@@ -1015,8 +1014,7 @@ public class InGame extends Activity implements SensorEventListener {
         ivImageC3.setVisibility(View.VISIBLE);
         ivImageC4.setVisibility(View.VISIBLE);
 
-        if(cardsToChoose==null)
-            Log.e(debugTXT, "CARDS NULL");
+
 
         chooseCards.setVisibility(View.VISIBLE);
         ivImageC4.setClickable(true);
