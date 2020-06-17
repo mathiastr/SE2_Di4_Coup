@@ -420,16 +420,27 @@ public class PlayerThread extends Thread {
                         last = readers.size()-1;
 
 
-                    //pass message to other players
+                    System.out.println(names.get(last)+ " "+ lastAction);
+                    //send player the last action the previous player did
+                    writers.get(turn).println("lastaction"+" "+names.get(last)+" "+lastAction);
+
+                    input = readers.get(turn).readLine();
+
+                    //abort challange
+                    if(input.equals("stop"))
+                        continue;
+
+                    //inform players
                     for (int i = 0; i < avaiable; i++) {
                         if (i == turn)
                             continue;
-                        writers.get(i).println(input+" "+fromPlayerName.get(readers.get(last))+" "+lastAction);
+                        writers.get(i).println(input);
                     }
 
-
+                    //get message from challanged player
                     input = readers.get(last).readLine();
 
+                    //player has the card
                     if (input.startsWith("show card")){
                         for (int i = 0; i < avaiable; i++) {
                             if (i == last)
@@ -438,31 +449,65 @@ public class PlayerThread extends Thread {
                         }
 
                     }
+                    //player loses a card
                     else {
 
-                        if(input.startsWith("losecard")){
+                        if(input.startsWith("loose card")){
 
-
-
+                            //get card from challanged player
                             String cardToReturn = readers.get(last).readLine();
 
+                            //get last card
                             if(cardToReturn.startsWith("lastcard")){
                                 String[] second = cardToReturn.split(" ");
                                 cards.push(second[1]);
 
                                 //force player to loose game
                                 writers.get(last).println("lose");
-                            }
-                            else
-                                cards.push(cardToReturn);
 
-                            for (int i = 0; i < avaiable; i++) {
-                                if (i == last)
-                                    continue;
-                                writers.get(i).println(input);
+                                for (int i = 0; i < avaiable; i++) {
+                                    if (i==last)
+                                        continue;
+                                    writers.get(i).println("lostgame"+" "+names.get(last));
+                                }
+
+                                BufferedReader tmp = readers.get(turn);
+
+                                //remove player
+                                writers.remove(last);
+                                readers.remove(last);
+                                names.remove(last);
+
+                                turn=readers.indexOf(tmp);
+
+                                avaiable--;
+
+                                //last player wins
+                                if(avaiable==1){
+                                    writers.get(0).println("win");
+                                    break;
+                                }
+
                             }
+                            //get card
+                            else{
+                                cards.push(cardToReturn);
+                                //inform players
+                                for (int i = 0; i < avaiable; i++) {
+                                    if (i == last)
+                                        continue;
+                                    writers.get(i).println(input);
+                                }
+
+
+                            }
+
+
 
                             System.out.println("Card: "+cardToReturn+" returned back to stack");
+
+                            lastAction="challenge";
+                            actionperformed=true;
 
 
                         }
@@ -470,13 +515,7 @@ public class PlayerThread extends Thread {
                     }
 
 
-
-
-
-
-
                 }
-
 
 
 
