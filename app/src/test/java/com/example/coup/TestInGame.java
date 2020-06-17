@@ -68,7 +68,7 @@ public class TestInGame {
 
 
     @Test
-    public void test1(){
+    public void testInitializeOpponents(){
 
         List<String> enemies = new LinkedList<>();
         enemies.add("player2");
@@ -80,20 +80,20 @@ public class TestInGame {
     }
 
     @Test
-    public void test2(){
+    public void testSelectPlayer(){
 
 
         inGame.selectPlayer("steal");
 
     }
     @Test
-    public void test3(){
+    public void testChallengeplayer(){
 
         inGame.challengePlayer("player2", "tax");
 
     }
     @Test
-    public void test4(){
+    public void testChallengeconfirmation(){
 
         inGame.challengeConfirmation();
 
@@ -1297,6 +1297,47 @@ public class TestInGame {
 
 
     }
+
+    @Test
+    public void testExchangeButton(){
+
+        inGame.exchangeButton.performClick();
+    }
+
+    @Test
+    public void testSetUpTurn(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.opponents=enemies;
+
+        inGame.initializeOpponents(enemies);
+
+        Player p = new Player();
+        p.setName("player1");
+
+        List<Card> cards = new LinkedList<>();
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.AMBASSADOR));
+
+        p.setCards(cards);
+
+        inGame.player=p;
+        inGame.name=p.getName();
+
+
+        inGame.setUp("turn");
+    }
+
+    @Test
+    public void testSetUpWait(){
+
+
+    }
+
 
 
 

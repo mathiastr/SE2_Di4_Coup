@@ -77,7 +77,7 @@ public class LobbyScreen extends Activity {
         quitDialog.show();
     }
 
-    void goToURL(String url) {
+    protected void goToURL(String url) {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);

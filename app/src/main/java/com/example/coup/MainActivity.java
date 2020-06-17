@@ -18,7 +18,6 @@ public class MainActivity extends Activity {
     // Wir werden einen separaten Bildschirm für die Lobby und den Spielbildschirm haben.
     // Dies ist die erste Aktivität, die gestartet wird.
 
-    Game game;
 
 
     @Override
@@ -63,7 +62,7 @@ public class MainActivity extends Activity {
     }
 
 
-    private void quitWarning() {
+    protected void quitWarning() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage("Are you sure you want to quit?")
@@ -85,7 +84,7 @@ public class MainActivity extends Activity {
         quitDialog.show();
     }
 
-    private void openAbout() {
+    protected void openAbout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage("621.251 (20S) Software Engineering II\n" +
@@ -110,7 +109,7 @@ public class MainActivity extends Activity {
         quitDialog.show();
     }
 
-    void goToURL(String url) {
+    protected void goToURL(String url) {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);

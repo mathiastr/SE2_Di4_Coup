@@ -55,7 +55,7 @@ public class InGame extends Activity implements SensorEventListener {
     private boolean turn;
     protected String name;
     protected String cardNameToShow;
-    private List<String> opponents;
+    protected List<String> opponents;
     private List<String> playernames;
     protected ServerConnection connection;
     private Handler handler;
@@ -1674,41 +1674,7 @@ public class InGame extends Activity implements SensorEventListener {
             if(res.equals("turn")||res.startsWith("wait")){
                 Toast.makeText(InGame.this,"Connected",Toast.LENGTH_SHORT).show();
 
-                next.setVisibility(View.VISIBLE);
-
-                textView.setVisibility(View.VISIBLE);
-
-
-                initializeOpponents(opponents);
-
-                String[] split = res.split(" ");
-
-                if(res.equals("turn")){
-                    enableAll();
-                    enableNext();
-                    textView.setText("Your turn");
-                    turn = true;
-                    timer.setVisibility(View.VISIBLE);
-                    countDown.start();
-
-                }
-                else{
-                    disableAll();
-                    disableNext();
-                    updateOpponentOnTurn(split[1]);
-                    timer.setVisibility(View.INVISIBLE);
-                    textView.setText(split[1]+"'s turn");
-
-                }
-
-                settingCardImagesAtStartOfGame();
-
-
-                ReadTask read = new ReadTask();
-                read.execute();
-
-
-                Log.e(debugTXT, "SUCCESS");
+                setUp(res);
 
 
             }
@@ -1726,6 +1692,44 @@ public class InGame extends Activity implements SensorEventListener {
 
 
         }
+    }
+
+    protected void setUp(String res) {
+        next.setVisibility(View.VISIBLE);
+
+        textView.setVisibility(View.VISIBLE);
+
+
+        initializeOpponents(opponents);
+
+        String[] split = res.split(" ");
+
+        if(res.equals("turn")){
+            enableAll();
+            enableNext();
+            textView.setText("Your turn");
+            turn = true;
+            timer.setVisibility(View.VISIBLE);
+            countDown.start();
+
+        }
+        else{
+            disableAll();
+            disableNext();
+            updateOpponentOnTurn(split[1]);
+            timer.setVisibility(View.INVISIBLE);
+            textView.setText(split[1]+"'s turn");
+
+        }
+
+        settingCardImagesAtStartOfGame();
+
+
+        ReadTask read = new ReadTask();
+        read.execute();
+
+
+        Log.e(debugTXT, "SUCCESS");
     }
 
     protected List<Card> convertStringNameToCardType(List<String> cardnames) {
