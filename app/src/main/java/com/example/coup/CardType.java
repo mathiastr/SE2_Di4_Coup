@@ -1,5 +1,5 @@
 package com.example.coup;
 
 public enum CardType {
-        DUKE, CAPTAIN, ASSASSIN, AMBASSADOR, CONTESSA
+        DUKE, CAPTAIN, ASSASSIN, AMBASSADOR, CONTESSA, DEFAULT
 }

@@ -463,6 +463,9 @@ public class TestInGame {
         Card c5 = new Card(CardType.CONTESSA);
         Assert.assertEquals("contessa", inGame.getCardNameAsString(c5));
 
+        Card c6 = new Card(CardType.DEFAULT);
+        Assert.assertEquals("", inGame.getCardNameAsString(c6));
+
     }
 
 
@@ -1453,6 +1456,114 @@ public class TestInGame {
 
 
     }
+
+    @Test
+    public void testStealFromPlayerNoCoins(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+        p.setCoins(0);
+
+        inGame.attackedPlayer=p;
+
+        inGame.doAction("steal");
+
+        Assert.assertEquals("player2 has not enough coins to steal from", inGame.textView.getText().toString());
+
+
+    }
+
+    @Test
+    public void testUpdateOppenentOnTurn(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.updateOpponentOnTurn("player2");
+        inGame.updateOpponentOnTurn("player3");
+        inGame.updateOpponentOnTurn("player4");
+
+    }
+
+    @Test
+    public void testdenyChallenge(){
+
+        inGame.denyChallenge();
+    }
+
+    @Test
+    public void testAcceptChallenge(){
+
+        inGame.acceptChallenge();
+    }
+
+    @Test
+    public void testChallengeNotPossible1(){
+
+        inGame.challengePlayer("player2", "income");
+    }
+
+    @Test
+    public void testCountDown(){
+
+        inGame.countDown.start();
+        inGame.countDown.onTick(6000);
+        inGame.countDown.onFinish();
+        Assert.assertEquals("Turn over", inGame.timer.getText().toString());
+    }
+
+    @Test
+    public void testBFAButton(){
+
+        inGame.blockForeignAidButton.callOnClick();
+    }
+
+    @Test
+    public void testDetectCheaterButton(){
+
+        inGame.detectCheaterButton.callOnClick();
+    }
+
+    @Test
+    public void testDoActionDetectChear(){
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+        p.setCoins(0);
+
+        inGame.attackedPlayer=p;
+
+        inGame.doAction("detectCheater");
+    }
+
+    @Test
+    public void testExchangeText(){
+
+        String msg = "exchange player2";
+        String[] split = msg.split(" ");
+
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals("player2 used exchange", inGame.textView.getText().toString());
+
+    }
+
+
+
 
 
 

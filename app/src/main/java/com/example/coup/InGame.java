@@ -86,9 +86,9 @@ public class InGame extends Activity implements SensorEventListener {
     private TextView tvOpp1Inf;
     private TextView tvOpp2Inf;
     private TextView tvOpp3Inf;
-    private TextView timer;
+    protected TextView timer;
     protected TextView textView;
-    private CountDownTimer countDown;
+    protected CountDownTimer countDown;
     private CountDownTimer challengeTimer;
     private List<TextView> enemyTv;
     private List<TextView> coinsTv;
@@ -525,18 +525,7 @@ public class InGame extends Activity implements SensorEventListener {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
 
-                        sendToServer("show card" + " "+ name+ " " + cardNameToShow);
-
-
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                textView.setText("Challenge successful");
-                            }
-                        });
-
-                        challengeAccepted = true;
-                        cardInHand=false;
+                        acceptChallenge();
                         dialogInterface.dismiss();
 
 
@@ -547,18 +536,7 @@ public class InGame extends Activity implements SensorEventListener {
                 .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        sendToServer(looseCardTxt + " " + name);
-
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mainPlayerChoosesCardToLose("challenge");
-
-                            }
-                        });
-
-                        challengeDenied = true;
-
+                        denyChallenge();
 
 
                         dialogInterface.dismiss();
@@ -605,10 +583,41 @@ public class InGame extends Activity implements SensorEventListener {
 
     }
 
+    protected void denyChallenge() {
+        sendToServer(looseCardTxt + " " + name);
+        challengeDenied = true;
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                mainPlayerChoosesCardToLose("challenge");
+
+            }
+        });
+
+
+    }
+
+    protected void acceptChallenge() {
+        sendToServer("show card" + " "+ name+ " " + cardNameToShow);
+
+        challengeAccepted = true;
+        cardInHand=false;
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText("Challenge successful");
+            }
+        });
+
+
+    }
+
     public void stealFromPlayer() {
 
         if(attackedPlayer.getCoins()<2)
-            textView.setText(attackedPlayer.getName()+" has not enough coin to steal from" );
+            textView.setText(attackedPlayer.getName()+" has not enough coins to steal from" );
         else {
 
             sendToServer(stealTxt + " " + name + " " + attackedPlayer.getName());
@@ -1333,7 +1342,7 @@ public class InGame extends Activity implements SensorEventListener {
         if(msg.startsWith(exchangeTxt)){
 
 
-                    textView.setText(split[1]+" used Exchange");
+                    textView.setText(split[1]+" used exchange");
 
 
         }
