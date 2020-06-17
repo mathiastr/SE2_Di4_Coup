@@ -51,8 +51,8 @@ public class InGame extends Activity implements SensorEventListener {
     private boolean cardInHand;
     private boolean challengeAccepted;
     private boolean challengeDenied;
-    private boolean foreignAidBlocked;
-    private boolean turn;
+    protected boolean foreignAidBlocked;
+    protected boolean turn;
     protected String name;
     protected String cardNameToShow;
     protected List<String> opponents;
@@ -1813,32 +1813,30 @@ public class InGame extends Activity implements SensorEventListener {
             }
 
             //switch to Aftergame on win
-            if(res.equals("win")){
-
+            if(res.equals("win")||res.equals("lose")){
                 try {
                     connection.disconnect();
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Intent i = new Intent(InGame.this, AfterGame.class);
-                i.putExtra("result", "win");
-                startActivity(i);
+
+                finishGame(res);
             }
 
-            //switch on lose
-            if(res.equals("lose")){
-                try {
-                    connection.disconnect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Intent i = new Intent(InGame.this, AfterGame.class);
-                i.putExtra("result", "lose");
-                startActivity(i);
-            }
+
 
         }
+    }
+
+    protected void finishGame(String res) {
+
+        Intent i = new Intent(InGame.this, AfterGame.class);
+        if(res.equals("win"))
+            i.putExtra("result", "win");
+        else
+            i.putExtra("result", "lose");
+        startActivity(i);
     }
 
 }

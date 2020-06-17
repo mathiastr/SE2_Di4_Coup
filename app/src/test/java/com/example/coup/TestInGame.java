@@ -859,6 +859,7 @@ public class TestInGame {
 
 
         inGame.initializeOpponents(enemies);
+        inGame.turn=true;
 
         String msg = "lostgame player4";
         String[] split = msg.split(" ");
@@ -1333,10 +1334,126 @@ public class TestInGame {
     }
 
     @Test
-    public void testSetUpWait(){
+    public void testFinishGameWin(){
+
+        inGame.finishGame("win");
 
 
     }
+
+    @Test
+    public void testFinishGameLose(){
+
+        inGame.finishGame("lose");
+
+
+    }
+
+    @Test
+    public void testShowCard(){
+        String msg = "show card player2 duke";
+        String[] split = msg.split(" ");
+
+        inGame.turn=true;
+
+        inGame.handleMessage(msg,  split);
+
+
+        Assert.assertEquals("player2 has card duke", inGame.textView.getText().toString());
+    }
+
+
+    @Test
+    public void testLooseCard(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.opponents=enemies;
+
+        inGame.initializeOpponents(enemies);
+        inGame.turn=true;
+
+        String msg = "loose card player2 duke";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+
+        Assert.assertEquals("player2 lost an influence", inGame.textView.getText().toString());
+    }
+
+    @Test
+    public void testLastAction(){
+        String msg = "lastaction player2 steal";
+        String[] split = msg.split(" ");
+
+        inGame.turn=true;
+
+        inGame.handleMessage(msg,  split);
+
+    }
+
+    @Test
+    public void testEnableButtonsOnlyCoup(){
+        Player p = new Player();
+        p.setName("player1");
+        p.setCoins(11);
+        inGame.player=p;
+
+        inGame.enableAll();
+        Assert.assertEquals(true, inGame.coupButton.isEnabled());
+
+    }
+    @Test
+    public void testEnableButtonsWithCoup(){
+        Player p = new Player();
+        p.setName("player1");
+        p.setCoins(8);
+        inGame.player=p;
+
+        inGame.enableAll();
+        Assert.assertEquals(true, inGame.coupButton.isEnabled());
+
+    }
+
+    @Test
+    public void testEnableButtonsFABlocked(){
+        Player p = new Player();
+        p.setName("player1");
+        p.setCoins(8);
+        inGame.player=p;
+
+        inGame.foreignAidBlocked = true;
+
+        inGame.enableAll();
+        Assert.assertEquals(false, inGame.foreignAidButton.isEnabled());
+
+    }
+
+    @Test
+    public void testStealFromPlayerMethod(){
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+        inGame.name="player1";
+
+        Player p = new Player();
+        p.setName("player2");
+
+        inGame.attackedPlayer=p;
+
+        inGame.doAction("steal");
+
+
+    }
+
 
 
 
