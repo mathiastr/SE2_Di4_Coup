@@ -48,9 +48,9 @@ public class InGame extends Activity implements SensorEventListener {
     private int count;
     protected boolean leftCardRemoved;
     protected boolean rightCardRemoved;
-    private boolean cardInHand;
-    private boolean challengeAccepted;
-    private boolean challengeDenied;
+    protected boolean cardInHand;
+    protected boolean challengeAccepted;
+    protected boolean challengeDenied;
     protected boolean foreignAidBlocked;
     protected boolean turn;
     protected String name;
@@ -105,7 +105,7 @@ public class InGame extends Activity implements SensorEventListener {
     private String ambassadorTxt="ambassador";
     private String dukeTxt="duke";
     private String debugTXT="DEBUG";
-    private boolean[] notInGame = new boolean[3];
+    protected boolean[] notInGame = new boolean[3];
     private List<TextView> enemyInfluence;
     protected AlertDialog challengeDialog1;
     protected AlertDialog challengeDialog2;
@@ -547,43 +547,47 @@ public class InGame extends Activity implements SensorEventListener {
                 });
 
 
-        final AlertDialog challengeDialog = builder.create();
+        challengeDialog2 = builder.create();
 
 
         Log.e("DEBUG CARDINHAND", "" + cardInHand);
 
 
 
-        challengeDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        challengeDialog2.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
 
 
-                if (!cardInHand)
-                    challengeDialog.getButton(challengeDialog.BUTTON_POSITIVE).setEnabled(false);
-
-                challengeTimer = new CountDownTimer(10000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        challengeDialog.setMessage("Your last move has been challenged. Do you accept the challenge?" + millisUntilFinished / 1000);
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                        if(!challengeAccepted && !challengeDenied)
-                            challengeDialog.getButton(DialogInterface.BUTTON_NEGATIVE).callOnClick();
-
-                    }
-                };
-
-                challengeTimer.start();
+                setChallengeTimer(challengeDialog2);
 
             }
         });
 
-        challengeDialog.show();
+        challengeDialog2.show();
 
+    }
+
+    protected void setChallengeTimer(final AlertDialog challengeDialog) {
+        if (!cardInHand)
+            challengeDialog.getButton(challengeDialog.BUTTON_POSITIVE).setEnabled(false);
+
+        challengeTimer = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                challengeDialog.setMessage("Your last move has been challenged. Do you accept the challenge?" + millisUntilFinished / 1000);
+            }
+
+            @Override
+            public void onFinish() {
+
+                if(!challengeAccepted && !challengeDenied)
+                    challengeDialog.getButton(DialogInterface.BUTTON_NEGATIVE).callOnClick();
+
+            }
+        };
+
+        challengeTimer.start();
     }
 
     protected void denyChallenge() {

@@ -77,6 +77,15 @@ public class TestInGame {
 
     }
 
+    @Test
+    public void testCreateWithoutIntent(){
+
+        inGame= null;
+        inGame = Robolectric.buildActivity(InGame.class).create().get();
+
+
+    }
+
 
 
     @Test
@@ -86,6 +95,17 @@ public class TestInGame {
         enemies.add("player2");
         enemies.add("player3");
         enemies.add("player4");
+
+        inGame.initializeOpponents(enemies);
+
+    }
+
+    @Test
+    public void testInitializeOpponents2Player(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+
 
         inGame.initializeOpponents(enemies);
 
@@ -1405,6 +1425,18 @@ public class TestInGame {
         Assert.assertEquals("player2 has card duke", inGame.textView.getText().toString());
     }
 
+    @Test
+    public void testShowCardNotTurn(){
+        String msg = "show card player2 duke";
+        String[] split = msg.split(" ");
+
+
+        inGame.handleMessage(msg,  split);
+
+
+        Assert.assertEquals("player2 has card duke", inGame.textView.getText().toString());
+    }
+
 
     @Test
     public void testLooseCard(){
@@ -1418,6 +1450,27 @@ public class TestInGame {
 
         inGame.initializeOpponents(enemies);
         inGame.turn=true;
+
+        String msg = "loose card player2 duke";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+
+        Assert.assertEquals("player2 lost an influence", inGame.textView.getText().toString());
+    }
+
+    @Test
+    public void testLooseCardNotTurn(){
+
+        List<String> enemies = new LinkedList<>();
+        enemies.add("player2");
+        enemies.add("player3");
+        enemies.add("player4");
+
+        inGame.opponents=enemies;
+
+        inGame.initializeOpponents(enemies);
 
         String msg = "loose card player2 duke";
         String[] split = msg.split(" ");
@@ -1535,6 +1588,11 @@ public class TestInGame {
         inGame.updateOpponentOnTurn("player3");
         inGame.updateOpponentOnTurn("player4");
 
+        boolean[] arr  = new boolean[]{true, true, true};
+
+        inGame.notInGame=arr;
+        inGame.updateOpponentOnTurn("player5");
+
     }
 
     @Test
@@ -1577,7 +1635,7 @@ public class TestInGame {
     }
 
     @Test
-    public void testDoActionDetectChear(){
+    public void testDoActionDetectCheat(){
         inGame.name="player1";
 
         Player p = new Player();
@@ -1621,9 +1679,124 @@ public class TestInGame {
 
         inGame.doAction("bfa");
 
+    }
+
+    @Test
+    public void testStealButton(){
+        inGame.stealButton.callOnClick();
+    }
+
+    @Test
+    public void testOnAccuracyChanged(){
+        inGame.onAccuracyChanged(null, 0);
+    }
+
+    @Test
+    public void testChallengeTimer1(){
+
+        inGame.challengeConfirmation();
+        inGame.setChallengeTimer(inGame.challengeDialog2);
+        inGame.challengeTimer.onTick(6000);
+        inGame.challengeTimer.onFinish();
+
 
     }
 
+    @Test
+    public void testChallengeTimer2(){
+
+        inGame.cardInHand=true;
+        inGame.challengeConfirmation();
+        inGame.setChallengeTimer(inGame.challengeDialog2);
+        inGame.challengeTimer.onTick(6000);
+        inGame.challengeTimer.onFinish();
+
+
+    }
+
+
+    @Test
+    public void testChallengeTimer3(){
+
+        inGame.cardInHand=true;
+        inGame.challengeConfirmation();
+        inGame.setChallengeTimer(inGame.challengeDialog2);
+        inGame.challengeTimer.onTick(6000);
+        inGame.challengeAccepted=true;
+        inGame.challengeDenied=true;
+        inGame.challengeTimer.onFinish();
+
+
+    }
+
+    @Test
+    public void looseCard(){
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.DUKE));
+
+        inGame.player.setCards(cards);
+
+        inGame.settingCardImagesAtStartOfGame();
+
+        inGame.mainPlayerChoosesCardToLose("challenge");
+
+        inGame.ivImageC1.callOnClick();
+
+        Assert.assertEquals(true, inGame.leftCardRemoved);
+
+    }
+
+    @Test
+    public void looseLast(){
+
+        List<Card> cards = new LinkedList<>();
+
+        cards.add(new Card(CardType.AMBASSADOR));
+        cards.add(new Card(CardType.DUKE));
+
+        inGame.player.setCards(cards);
+
+        inGame.settingCardImagesAtStartOfGame();
+
+        inGame.mainPlayerChoosesCardToLose("challenge");
+
+        inGame.ivImageC1.callOnClick();
+
+        inGame.mainPlayerChoosesCardToLose("challenge");
+
+
+
+    }
+
+    @Test
+    public void displayNoCard(){
+
+        inGame.displayCards(CardType.DEFAULT, inGame.ivImageC1);
+
+    }
+
+    @Test
+    public void missAll(){
+        List<Card> cards =new LinkedList<>();
+        cards.add(new Card(CardType.DEFAULT));
+        cards.add(new Card(CardType.DEFAULT));
+
+        Player p = new Player();
+        p.setName("player1");
+        p.setCards(cards);
+
+        inGame.player=p;
+
+        String msg = "challenge player2 player1 tax";
+        String[] split = msg.split(" ");
+
+        inGame.handleMessage(msg,  split);
+
+        Assert.assertEquals(null, inGame.cardNameToShow);
+    }
 
 
 
